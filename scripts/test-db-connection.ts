@@ -50,7 +50,9 @@ async function testConnection() {
     if (pricesError) throw pricesError;
     console.log(`   ✅ Found ${prices?.length || 0} price entries`);
     if (prices && prices.length > 0) {
-      console.log(`   Sample: ${prices[0].service_type} - ${prices[0].urgency}: $${prices[0].base_price}`);
+      console.log(
+        `   Sample: ${prices[0].service_type} - ${prices[0].urgency}: $${prices[0].base_price}`
+      );
     }
 
     // Test 3: Create a test lead (public insert)
@@ -79,35 +81,45 @@ async function testConnection() {
       console.error(`   Error code: ${leadError.code || 'unknown'}`);
       console.error(`   Error message: ${leadError.message}`);
       console.error(`   Error details: ${JSON.stringify(leadError, null, 2)}`);
-      
-      if (leadError.message.includes('row-level security') || leadError.message.includes('RLS')) {
+
+      if (
+        leadError.message.includes('row-level security') ||
+        leadError.message.includes('RLS')
+      ) {
         console.error('\n   ⚠️  RLS Policy Issue Detected!');
-        console.error('   The "Anyone can create leads" policy may not be set up correctly.');
+        console.error(
+          '   The "Anyone can create leads" policy may not be set up correctly.'
+        );
         console.error('\n   To fix this:');
         console.error('   1. Go to Supabase Dashboard → SQL Editor');
         console.error('   2. Run the SQL in: scripts/fix-rls-policies.sql');
         console.error('   3. Or manually run:');
-        console.error('      DROP POLICY IF EXISTS "Anyone can create leads" ON leads;');
+        console.error(
+          '      DROP POLICY IF EXISTS "Anyone can create leads" ON leads;'
+        );
         console.error('      CREATE POLICY "Anyone can create leads"');
         console.error('        ON leads FOR INSERT TO anon, authenticated');
         console.error('        WITH CHECK (TRUE);');
         console.error('\n   4. Verify the policy exists:');
-        console.error('      SELECT * FROM pg_policies WHERE tablename = \'leads\';');
+        console.error(
+          "      SELECT * FROM pg_policies WHERE tablename = 'leads';"
+        );
       }
       throw leadError;
     }
-    
+
     console.log(`   ✅ Lead created successfully (ID: ${lead.id})`);
 
     // Note: We can't delete via anon key due to RLS, but that's OK for testing
     // The lead will remain but can be cleaned up manually or via admin client
-    console.log('   ℹ️  Note: Test lead created (cleanup requires admin access)');
+    console.log(
+      '   ℹ️  Note: Test lead created (cleanup requires admin access)'
+    );
 
     console.log('\n' + '='.repeat(50));
     console.log('✅ All database tests passed!');
     console.log('Your database is set up correctly and ready to use.');
     console.log('='.repeat(50));
-
   } catch (error: any) {
     console.error('\n❌ Database test failed!');
     console.error(`Error: ${error.message}`);
@@ -120,4 +132,3 @@ async function testConnection() {
 }
 
 testConnection();
-

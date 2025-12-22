@@ -13,8 +13,8 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 - [x] Configure Tailwind CSS with custom theme
 - [x] Set up project directory structure
 - [x] Create environment configuration template
-- [ ] Set up Git repository and initial commit
-- [ ] Configure ESLint and Prettier rules
+- [X] Set up Git repository and initial commit
+- [x] Configure ESLint and Prettier rules
 - [ ] Set up Vercel project for deployment
 
 **Estimated Time:** 2-3 hours

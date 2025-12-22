@@ -1,0 +1,33 @@
+# Dependencies
+node_modules
+package-lock.json
+
+# Build outputs
+.next
+out
+dist
+build
+.vercel
+
+# Generated files
+*.tsbuildinfo
+next-env.d.ts
+
+# Database
+*.db
+*.sqlite
+
+# Environment
+.env*.local
+.env
+
+# Logs
+*.log
+
+# Supabase
+.supabase
+
+# TypeScript generated types (if auto-generated)
+# Uncomment if database.types.ts is auto-generated:
+# src/lib/database.types.ts
+

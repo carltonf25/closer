@@ -16,14 +16,14 @@ export function createServerSupabaseClient() {
         set(name: string, value: string, options: CookieOptions) {
           try {
             cookieStore.set({ name, value, ...options });
-          } catch (error) {
+          } catch (_error) {
             // Handle cookies in Server Components
           }
         },
         remove(name: string, options: CookieOptions) {
           try {
             cookieStore.set({ name, value: '', ...options });
-          } catch (error) {
+          } catch (_error) {
             // Handle cookies in Server Components
           }
         },
@@ -39,7 +39,9 @@ export function createAdminSupabaseClient() {
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
     {
       cookies: {
-        get() { return undefined; },
+        get() {
+          return undefined;
+        },
         set() {},
         remove() {},
       },

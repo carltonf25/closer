@@ -1,13 +1,16 @@
 import { ServiceType, LeadUrgency } from '@/lib/database.types';
 
-export const SERVICES: Record<ServiceType, {
-  label: string;
-  shortLabel: string;
-  category: 'hvac' | 'plumbing';
-  description: string;
-  seoTitle: string;
-  icon: string;
-}> = {
+export const SERVICES: Record<
+  ServiceType,
+  {
+    label: string;
+    shortLabel: string;
+    category: 'hvac' | 'plumbing';
+    description: string;
+    seoTitle: string;
+    icon: string;
+  }
+> = {
   hvac_repair: {
     label: 'HVAC Repair',
     shortLabel: 'AC/Heating Repair',
@@ -66,11 +69,14 @@ export const SERVICES: Record<ServiceType, {
   },
 };
 
-export const URGENCY_OPTIONS: Record<LeadUrgency, {
-  label: string;
-  description: string;
-  leadMultiplier: number;
-}> = {
+export const URGENCY_OPTIONS: Record<
+  LeadUrgency,
+  {
+    label: string;
+    description: string;
+    leadMultiplier: number;
+  }
+> = {
   emergency: {
     label: 'Emergency - Right Now',
     description: 'I need help immediately',
@@ -96,28 +102,148 @@ export const URGENCY_OPTIONS: Record<LeadUrgency, {
 // Georgia cities - start with metro Atlanta and expand
 export const GEORGIA_CITIES = [
   // Metro Atlanta
-  { city: 'Atlanta', state: 'GA', slug: 'atlanta', metro: 'Atlanta', population: 498715 },
-  { city: 'Marietta', state: 'GA', slug: 'marietta', metro: 'Atlanta', population: 60972 },
-  { city: 'Alpharetta', state: 'GA', slug: 'alpharetta', metro: 'Atlanta', population: 65818 },
-  { city: 'Roswell', state: 'GA', slug: 'roswell', metro: 'Atlanta', population: 92833 },
-  { city: 'Sandy Springs', state: 'GA', slug: 'sandy-springs', metro: 'Atlanta', population: 108080 },
-  { city: 'Johns Creek', state: 'GA', slug: 'johns-creek', metro: 'Atlanta', population: 82453 },
-  { city: 'Dunwoody', state: 'GA', slug: 'dunwoody', metro: 'Atlanta', population: 49356 },
-  { city: 'Brookhaven', state: 'GA', slug: 'brookhaven', metro: 'Atlanta', population: 55554 },
-  { city: 'Decatur', state: 'GA', slug: 'decatur', metro: 'Atlanta', population: 24814 },
-  { city: 'Smyrna', state: 'GA', slug: 'smyrna', metro: 'Atlanta', population: 56666 },
-  { city: 'Kennesaw', state: 'GA', slug: 'kennesaw', metro: 'Atlanta', population: 34077 },
-  { city: 'Lawrenceville', state: 'GA', slug: 'lawrenceville', metro: 'Atlanta', population: 30512 },
-  { city: 'Duluth', state: 'GA', slug: 'duluth', metro: 'Atlanta', population: 29538 },
-  { city: 'Peachtree City', state: 'GA', slug: 'peachtree-city', metro: 'Atlanta', population: 35364 },
-  { city: 'Woodstock', state: 'GA', slug: 'woodstock', metro: 'Atlanta', population: 32310 },
-  
+  {
+    city: 'Atlanta',
+    state: 'GA',
+    slug: 'atlanta',
+    metro: 'Atlanta',
+    population: 498715,
+  },
+  {
+    city: 'Marietta',
+    state: 'GA',
+    slug: 'marietta',
+    metro: 'Atlanta',
+    population: 60972,
+  },
+  {
+    city: 'Alpharetta',
+    state: 'GA',
+    slug: 'alpharetta',
+    metro: 'Atlanta',
+    population: 65818,
+  },
+  {
+    city: 'Roswell',
+    state: 'GA',
+    slug: 'roswell',
+    metro: 'Atlanta',
+    population: 92833,
+  },
+  {
+    city: 'Sandy Springs',
+    state: 'GA',
+    slug: 'sandy-springs',
+    metro: 'Atlanta',
+    population: 108080,
+  },
+  {
+    city: 'Johns Creek',
+    state: 'GA',
+    slug: 'johns-creek',
+    metro: 'Atlanta',
+    population: 82453,
+  },
+  {
+    city: 'Dunwoody',
+    state: 'GA',
+    slug: 'dunwoody',
+    metro: 'Atlanta',
+    population: 49356,
+  },
+  {
+    city: 'Brookhaven',
+    state: 'GA',
+    slug: 'brookhaven',
+    metro: 'Atlanta',
+    population: 55554,
+  },
+  {
+    city: 'Decatur',
+    state: 'GA',
+    slug: 'decatur',
+    metro: 'Atlanta',
+    population: 24814,
+  },
+  {
+    city: 'Smyrna',
+    state: 'GA',
+    slug: 'smyrna',
+    metro: 'Atlanta',
+    population: 56666,
+  },
+  {
+    city: 'Kennesaw',
+    state: 'GA',
+    slug: 'kennesaw',
+    metro: 'Atlanta',
+    population: 34077,
+  },
+  {
+    city: 'Lawrenceville',
+    state: 'GA',
+    slug: 'lawrenceville',
+    metro: 'Atlanta',
+    population: 30512,
+  },
+  {
+    city: 'Duluth',
+    state: 'GA',
+    slug: 'duluth',
+    metro: 'Atlanta',
+    population: 29538,
+  },
+  {
+    city: 'Peachtree City',
+    state: 'GA',
+    slug: 'peachtree-city',
+    metro: 'Atlanta',
+    population: 35364,
+  },
+  {
+    city: 'Woodstock',
+    state: 'GA',
+    slug: 'woodstock',
+    metro: 'Atlanta',
+    population: 32310,
+  },
+
   // Other major Georgia cities
-  { city: 'Savannah', state: 'GA', slug: 'savannah', metro: 'Savannah', population: 147780 },
-  { city: 'Augusta', state: 'GA', slug: 'augusta', metro: 'Augusta', population: 202081 },
-  { city: 'Columbus', state: 'GA', slug: 'columbus', metro: 'Columbus', population: 206922 },
-  { city: 'Macon', state: 'GA', slug: 'macon', metro: 'Macon', population: 157346 },
-  { city: 'Athens', state: 'GA', slug: 'athens', metro: 'Athens', population: 127315 },
+  {
+    city: 'Savannah',
+    state: 'GA',
+    slug: 'savannah',
+    metro: 'Savannah',
+    population: 147780,
+  },
+  {
+    city: 'Augusta',
+    state: 'GA',
+    slug: 'augusta',
+    metro: 'Augusta',
+    population: 202081,
+  },
+  {
+    city: 'Columbus',
+    state: 'GA',
+    slug: 'columbus',
+    metro: 'Columbus',
+    population: 206922,
+  },
+  {
+    city: 'Macon',
+    state: 'GA',
+    slug: 'macon',
+    metro: 'Macon',
+    population: 157346,
+  },
+  {
+    city: 'Athens',
+    state: 'GA',
+    slug: 'athens',
+    metro: 'Athens',
+    population: 127315,
+  },
 ];
 
 // Service slugs for URL routing
@@ -132,7 +258,7 @@ export const SERVICE_SLUGS: Record<string, ServiceType> = {
   'emergency-plumber': 'plumbing_emergency',
   '24-hour-plumber': 'plumbing_emergency',
   'plumbing-repair': 'plumbing_repair',
-  'plumber': 'plumbing_repair',
+  plumber: 'plumbing_repair',
   'plumbing-installation': 'plumbing_install',
   'water-heater': 'water_heater',
   'water-heater-repair': 'water_heater',
@@ -150,7 +276,10 @@ export const SERVICE_TO_SLUG: Record<ServiceType, string> = {
 };
 
 // Base lead prices (in dollars)
-export const BASE_LEAD_PRICES: Record<ServiceType, { shared: number; exclusive: number }> = {
+export const BASE_LEAD_PRICES: Record<
+  ServiceType,
+  { shared: number; exclusive: number }
+> = {
   hvac_repair: { shared: 25, exclusive: 60 },
   hvac_install: { shared: 45, exclusive: 120 },
   hvac_maintenance: { shared: 15, exclusive: 35 },

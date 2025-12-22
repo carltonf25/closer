@@ -14,18 +14,21 @@ A Next.js 14 + Supabase application for generating and selling home service lead
 ## Features
 
 ### Consumer-Facing (Lead Capture)
+
 - SEO-optimized landing pages for city/service combinations
 - Multi-step lead capture forms
 - Mobile-responsive design
 - Trust signals and social proof
 
 ### Contractor Portal (Coming Soon)
+
 - Lead inbox with real-time notifications
 - Lead accept/reject workflow
 - Billing dashboard
 - Service area management
 
 ### Admin Dashboard (Coming Soon)
+
 - Lead management
 - Contractor management
 - Revenue analytics
@@ -120,13 +123,13 @@ Open [http://localhost:3000](http://localhost:3000)
 
 ### Core Tables
 
-| Table | Purpose |
-|-------|---------|
-| `leads` | Captured lead data from forms |
-| `contractors` | Service provider profiles |
+| Table             | Purpose                                      |
+| ----------------- | -------------------------------------------- |
+| `leads`           | Captured lead data from forms                |
+| `contractors`     | Service provider profiles                    |
 | `lead_deliveries` | Tracks which leads sent to which contractors |
-| `service_areas` | SEO landing page configuration |
-| `lead_prices` | Configurable pricing matrix |
+| `service_areas`   | SEO landing page configuration               |
+| `lead_prices`     | Configurable pricing matrix                  |
 
 ### Key Relationships
 
@@ -143,12 +146,12 @@ Edit `src/config/services.ts`:
 ```typescript
 export const GEORGIA_CITIES = [
   // Add new city
-  { 
-    city: 'Gainesville', 
-    state: 'GA', 
-    slug: 'gainesville', 
-    metro: 'Atlanta', 
-    population: 43000 
+  {
+    city: 'Gainesville',
+    state: 'GA',
+    slug: 'gainesville',
+    metro: 'Atlanta',
+    population: 43000,
   },
   // ...existing cities
 ];
@@ -159,6 +162,7 @@ Also add to `service_areas` table in Supabase.
 ## SEO Strategy
 
 Each city/service combination generates a unique landing page:
+
 - URL: `/{city-slug}/{service-slug}`
 - Example: `/atlanta/hvac-repair`
 
@@ -170,8 +174,8 @@ Edit `SERVICE_SLUGS` in `src/config/services.ts` to add URL aliases:
 
 ```typescript
 export const SERVICE_SLUGS = {
-  'ac-repair': 'hvac_repair',        // alias
-  'air-conditioning-repair': 'hvac_repair',  // another alias
+  'ac-repair': 'hvac_repair', // alias
+  'air-conditioning-repair': 'hvac_repair', // another alias
   // ...
 };
 ```
@@ -197,24 +201,28 @@ NEXT_PUBLIC_APP_URL=https://yourdomain.com
 ## Next Steps (Roadmap)
 
 ### Phase 1: MVP (Current)
+
 - [x] Lead capture forms
 - [x] SEO landing pages
 - [x] Database schema
 - [ ] Basic email notifications
 
 ### Phase 2: Contractor Portal
+
 - [ ] Contractor signup/login
 - [ ] Lead inbox
 - [ ] Accept/reject workflow
 - [ ] SMS notifications (Twilio)
 
 ### Phase 3: Monetization
+
 - [ ] Stripe integration
 - [ ] Pay-per-lead billing
 - [ ] Invoice generation
 - [ ] Usage dashboard
 
 ### Phase 4: Growth
+
 - [ ] PPC landing page variants
 - [ ] A/B testing framework
 - [ ] Lead quality scoring

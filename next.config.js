@@ -2,17 +2,17 @@
 const nextConfig = {
   // Enable static exports for SEO landing pages
   // output: 'export', // Uncomment for full static export
-  
+
   // Image optimization
   images: {
     domains: ['images.unsplash.com'],
   },
-  
+
   // Redirect www to non-www (configure in Vercel as well)
   async redirects() {
     return [];
   },
-  
+
   // Headers for security
   async headers() {
     return [

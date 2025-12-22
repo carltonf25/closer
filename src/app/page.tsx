@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Phone, Shield, Clock, Star, ChevronRight } from 'lucide-react';
 import { QuickLeadForm } from '@/components/forms/QuickLeadForm';
-import { SERVICES, GEORGIA_CITIES } from '@/config/services';
+import { GEORGIA_CITIES } from '@/config/services';
 
 export default function HomePage() {
   const popularServices = [
@@ -19,9 +19,12 @@ export default function HomePage() {
       <section className="relative bg-gradient-to-br from-brand-900 via-brand-800 to-brand-900 overflow-hidden">
         {/* Background pattern */}
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          }} />
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+            }}
+          />
         </div>
 
         <div className="container-marketing relative">
@@ -30,7 +33,9 @@ export default function HomePage() {
             <div className="text-white">
               <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur rounded-full px-4 py-2 mb-6">
                 <span className="flex h-2 w-2 rounded-full bg-green-400 animate-pulse" />
-                <span className="text-sm font-medium">Pros available now in Georgia</span>
+                <span className="text-sm font-medium">
+                  Pros available now in Georgia
+                </span>
               </div>
 
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6">
@@ -40,8 +45,8 @@ export default function HomePage() {
               </h1>
 
               <p className="text-xl text-brand-100 mb-8 max-w-lg">
-                Connect with licensed, background-checked contractors in minutes. 
-                Free quotes, no obligation.
+                Connect with licensed, background-checked contractors in
+                minutes. Free quotes, no obligation.
               </p>
 
               {/* Trust badges */}
@@ -85,8 +90,8 @@ export default function HomePage() {
                 <QuickLeadForm />
 
                 <p className="text-xs text-gray-500 text-center mt-4">
-                  By submitting, you agree to receive calls/texts. 
-                  Message & data rates may apply.
+                  By submitting, you agree to receive calls/texts. Message &
+                  data rates may apply.
                 </p>
               </div>
             </div>
@@ -102,7 +107,7 @@ export default function HomePage() {
           </h2>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {popularServices.map((service) => (
+            {popularServices.map(service => (
               <Link
                 key={service.slug}
                 href={`/atlanta/${service.slug}`}
@@ -127,9 +132,7 @@ export default function HomePage() {
       {/* How It Works */}
       <section className="py-16">
         <div className="container-marketing">
-          <h2 className="text-3xl font-bold text-center mb-4">
-            How It Works
-          </h2>
+          <h2 className="text-3xl font-bold text-center mb-4">How It Works</h2>
           <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
             Getting help for your home has never been easier
           </p>
@@ -139,19 +142,22 @@ export default function HomePage() {
               {
                 step: '1',
                 title: 'Tell Us What You Need',
-                description: 'Fill out our quick form with details about your project or repair.',
+                description:
+                  'Fill out our quick form with details about your project or repair.',
               },
               {
                 step: '2',
                 title: 'Get Matched Instantly',
-                description: 'We connect you with licensed, vetted pros in your area.',
+                description:
+                  'We connect you with licensed, vetted pros in your area.',
               },
               {
                 step: '3',
                 title: 'Compare & Choose',
-                description: 'Review quotes, read reviews, and pick the best fit for you.',
+                description:
+                  'Review quotes, read reviews, and pick the best fit for you.',
               },
-            ].map((item) => (
+            ].map(item => (
               <div key={item.step} className="text-center">
                 <div className="w-16 h-16 bg-brand-100 text-brand-600 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
                   {item.step}
@@ -175,14 +181,16 @@ export default function HomePage() {
           </p>
 
           <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
-            {popularCities.map((city) => (
+            {popularCities.map(city => (
               <Link
                 key={city.slug}
                 href={`/${city.slug}/hvac-repair`}
                 className="bg-white rounded-lg p-4 hover:shadow-md transition-shadow border border-gray-100"
               >
                 <span className="font-medium text-gray-900">{city.city}</span>
-                <span className="text-gray-500 text-sm ml-1">, {city.state}</span>
+                <span className="text-gray-500 text-sm ml-1">
+                  , {city.state}
+                </span>
               </Link>
             ))}
           </div>
@@ -201,16 +209,14 @@ export default function HomePage() {
       {/* Final CTA */}
       <section className="py-16 bg-brand-900 text-white">
         <div className="container-marketing text-center">
-          <h2 className="text-3xl font-bold mb-4">
-            Ready to Get Started?
-          </h2>
+          <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
           <p className="text-brand-100 mb-8 max-w-2xl mx-auto">
-            Join thousands of Georgia homeowners who've found trusted 
+            Join thousands of Georgia homeowners who've found trusted
             professionals through our service.
           </p>
           <a
             href="#"
-            onClick={(e) => {
+            onClick={e => {
               e.preventDefault();
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
@@ -226,39 +232,107 @@ export default function HomePage() {
         <div className="container-marketing">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-white font-semibold mb-4">Georgia Home Services</h3>
+              <h3 className="text-white font-semibold mb-4">
+                Georgia Home Services
+              </h3>
               <p className="text-sm">
-                Connecting Georgia homeowners with trusted HVAC and plumbing professionals.
+                Connecting Georgia homeowners with trusted HVAC and plumbing
+                professionals.
               </p>
             </div>
             <div>
               <h4 className="text-white font-semibold mb-4">Services</h4>
               <ul className="space-y-2 text-sm">
-                <li><Link href="/atlanta/hvac-repair" className="hover:text-white">HVAC Repair</Link></li>
-                <li><Link href="/atlanta/emergency-plumber" className="hover:text-white">Emergency Plumber</Link></li>
-                <li><Link href="/atlanta/hvac-installation" className="hover:text-white">AC Installation</Link></li>
-                <li><Link href="/atlanta/water-heater" className="hover:text-white">Water Heater</Link></li>
+                <li>
+                  <Link
+                    href="/atlanta/hvac-repair"
+                    className="hover:text-white"
+                  >
+                    HVAC Repair
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/atlanta/emergency-plumber"
+                    className="hover:text-white"
+                  >
+                    Emergency Plumber
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/atlanta/hvac-installation"
+                    className="hover:text-white"
+                  >
+                    AC Installation
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/atlanta/water-heater"
+                    className="hover:text-white"
+                  >
+                    Water Heater
+                  </Link>
+                </li>
               </ul>
             </div>
             <div>
               <h4 className="text-white font-semibold mb-4">Top Cities</h4>
               <ul className="space-y-2 text-sm">
-                <li><Link href="/atlanta/hvac-repair" className="hover:text-white">Atlanta</Link></li>
-                <li><Link href="/marietta/hvac-repair" className="hover:text-white">Marietta</Link></li>
-                <li><Link href="/savannah/hvac-repair" className="hover:text-white">Savannah</Link></li>
-                <li><Link href="/alpharetta/hvac-repair" className="hover:text-white">Alpharetta</Link></li>
+                <li>
+                  <Link
+                    href="/atlanta/hvac-repair"
+                    className="hover:text-white"
+                  >
+                    Atlanta
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/marietta/hvac-repair"
+                    className="hover:text-white"
+                  >
+                    Marietta
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/savannah/hvac-repair"
+                    className="hover:text-white"
+                  >
+                    Savannah
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/alpharetta/hvac-repair"
+                    className="hover:text-white"
+                  >
+                    Alpharetta
+                  </Link>
+                </li>
               </ul>
             </div>
             <div>
               <h4 className="text-white font-semibold mb-4">For Contractors</h4>
               <ul className="space-y-2 text-sm">
-                <li><Link href="/contractor/signup" className="hover:text-white">Join Our Network</Link></li>
-                <li><Link href="/contractor/login" className="hover:text-white">Contractor Login</Link></li>
+                <li>
+                  <Link href="/contractor/signup" className="hover:text-white">
+                    Join Our Network
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/contractor/login" className="hover:text-white">
+                    Contractor Login
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-sm text-center">
-            © {new Date().getFullYear()} Georgia Home Services. All rights reserved.
+            © {new Date().getFullYear()} Georgia Home Services. All rights
+            reserved.
           </div>
         </div>
       </footer>

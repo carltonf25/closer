@@ -32,8 +32,10 @@ export async function generateStaticParams() {
 }
 
 // Generate metadata for SEO
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const city = GEORGIA_CITIES.find((c) => c.slug === params.city);
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const city = GEORGIA_CITIES.find(c => c.slug === params.city);
   const serviceType = SERVICE_SLUGS[params.service];
   const service = serviceType ? SERVICES[serviceType] : null;
 
@@ -59,7 +61,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default function CityServicePage({ params }: PageProps) {
-  const city = GEORGIA_CITIES.find((c) => c.slug === params.city);
+  const city = GEORGIA_CITIES.find(c => c.slug === params.city);
   const serviceType = SERVICE_SLUGS[params.service] as ServiceType;
   const service = serviceType ? SERVICES[serviceType] : null;
 
@@ -69,12 +71,14 @@ export default function CityServicePage({ params }: PageProps) {
 
   // Related services in same category
   const relatedServices = Object.entries(SERVICES)
-    .filter(([key, s]) => s.category === service.category && key !== serviceType)
+    .filter(
+      ([key, s]) => s.category === service.category && key !== serviceType
+    )
     .slice(0, 3);
 
   // Nearby cities
   const nearbyCities = GEORGIA_CITIES.filter(
-    (c) => c.metro === city.metro && c.slug !== city.slug
+    c => c.metro === city.metro && c.slug !== city.slug
   ).slice(0, 4);
 
   const jsonLd = {
@@ -120,9 +124,9 @@ export default function CityServicePage({ params }: PageProps) {
                 </h1>
 
                 <p className="text-xl text-brand-100 mb-8">
-                  Connect with licensed {service.label.toLowerCase()} professionals
-                  in {city.city}. Get free quotes from vetted contractors ready to
-                  help today.
+                  Connect with licensed {service.label.toLowerCase()}{' '}
+                  professionals in {city.city}. Get free quotes from vetted
+                  contractors ready to help today.
                 </p>
 
                 {/* Trust signals */}
@@ -133,7 +137,9 @@ export default function CityServicePage({ params }: PageProps) {
                     </div>
                     <div>
                       <div className="font-semibold">Licensed & Insured</div>
-                      <div className="text-sm text-brand-200">All contractors verified</div>
+                      <div className="text-sm text-brand-200">
+                        All contractors verified
+                      </div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
@@ -142,7 +148,9 @@ export default function CityServicePage({ params }: PageProps) {
                     </div>
                     <div>
                       <div className="font-semibold">Fast Response</div>
-                      <div className="text-sm text-brand-200">Same-day available</div>
+                      <div className="text-sm text-brand-200">
+                        Same-day available
+                      </div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
@@ -151,7 +159,9 @@ export default function CityServicePage({ params }: PageProps) {
                     </div>
                     <div>
                       <div className="font-semibold">Top Rated</div>
-                      <div className="text-sm text-brand-200">4.8+ star average</div>
+                      <div className="text-sm text-brand-200">
+                        4.8+ star average
+                      </div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
@@ -160,7 +170,9 @@ export default function CityServicePage({ params }: PageProps) {
                     </div>
                     <div>
                       <div className="font-semibold">Free Quotes</div>
-                      <div className="text-sm text-brand-200">No obligation</div>
+                      <div className="text-sm text-brand-200">
+                        No obligation
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -209,9 +221,13 @@ export default function CityServicePage({ params }: PageProps) {
               <div className="prose prose-lg text-gray-600">
                 <p>
                   Looking for reliable {service.label.toLowerCase()} services in{' '}
-                  {city.city}? You've come to the right place. We connect homeowners
-                  across {city.metro || city.city} with trusted, licensed professionals
-                  who are ready to help with all your {service.category === 'hvac' ? 'heating and cooling' : 'plumbing'} needs.
+                  {city.city}? You've come to the right place. We connect
+                  homeowners across {city.metro || city.city} with trusted,
+                  licensed professionals who are ready to help with all your{' '}
+                  {service.category === 'hvac'
+                    ? 'heating and cooling'
+                    : 'plumbing'}{' '}
+                  needs.
                 </p>
 
                 <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-4">
@@ -222,29 +238,31 @@ export default function CityServicePage({ params }: PageProps) {
                   <li className="flex items-start gap-3">
                     <CheckCircle className="h-5 w-5 text-green-500 mt-1 flex-shrink-0" />
                     <span>
-                      <strong>Licensed & Insured:</strong> Every contractor in our
-                      network is fully licensed in Georgia and carries proper insurance.
+                      <strong>Licensed & Insured:</strong> Every contractor in
+                      our network is fully licensed in Georgia and carries
+                      proper insurance.
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <CheckCircle className="h-5 w-5 text-green-500 mt-1 flex-shrink-0" />
                     <span>
-                      <strong>Background Checked:</strong> We verify credentials and
-                      check backgrounds so you can hire with confidence.
+                      <strong>Background Checked:</strong> We verify credentials
+                      and check backgrounds so you can hire with confidence.
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <CheckCircle className="h-5 w-5 text-green-500 mt-1 flex-shrink-0" />
                     <span>
-                      <strong>Local Expertise:</strong> Our pros know {city.city} and
-                      understand the specific needs of homes in this area.
+                      <strong>Local Expertise:</strong> Our pros know{' '}
+                      {city.city} and understand the specific needs of homes in
+                      this area.
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <CheckCircle className="h-5 w-5 text-green-500 mt-1 flex-shrink-0" />
                     <span>
-                      <strong>Upfront Pricing:</strong> Get clear quotes before work
-                      begins. No surprise charges.
+                      <strong>Upfront Pricing:</strong> Get clear quotes before
+                      work begins. No surprise charges.
                     </span>
                   </li>
                 </ul>
@@ -294,7 +312,8 @@ export default function CityServicePage({ params }: PageProps) {
           <section className="py-16 bg-gray-50">
             <div className="container-marketing">
               <h2 className="text-2xl font-bold mb-8">
-                Other {service.category === 'hvac' ? 'HVAC' : 'Plumbing'} Services in {city.city}
+                Other {service.category === 'hvac' ? 'HVAC' : 'Plumbing'}{' '}
+                Services in {city.city}
               </h2>
 
               <div className="grid sm:grid-cols-3 gap-6">
@@ -324,7 +343,7 @@ export default function CityServicePage({ params }: PageProps) {
               </h2>
 
               <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
-                {nearbyCities.map((nearbyCity) => (
+                {nearbyCities.map(nearbyCity => (
                   <Link
                     key={nearbyCity.slug}
                     href={`/${nearbyCity.slug}/${params.service}`}
@@ -346,16 +365,14 @@ export default function CityServicePage({ params }: PageProps) {
         {/* Final CTA */}
         <section className="py-16 bg-brand-900 text-white">
           <div className="container-marketing text-center">
-            <h2 className="text-3xl font-bold mb-4">
-              Ready to Get Started?
-            </h2>
+            <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
             <p className="text-brand-100 mb-8 max-w-2xl mx-auto">
-              Get free quotes from licensed {service.label.toLowerCase()} professionals
-              in {city.city} today.
+              Get free quotes from licensed {service.label.toLowerCase()}{' '}
+              professionals in {city.city} today.
             </p>
             <a
               href="#"
-              onClick={(e) => {
+              onClick={e => {
                 e.preventDefault();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}

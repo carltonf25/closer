@@ -1,9 +1,9 @@
 #!/usr/bin/env tsx
 /**
  * Database Setup Verification Script
- * 
+ *
  * Run this after setting up your Supabase database to verify everything is working.
- * 
+ *
  * Usage:
  *   npx tsx scripts/verify-db-setup.ts
  */
@@ -39,7 +39,7 @@ async function verifyDatabaseSetup() {
           .from('service_areas')
           .select('id, city, slug')
           .limit(5);
-        
+
         if (error) throw error;
         return { success: true, count: data?.length || 0, sample: data };
       },
@@ -51,7 +51,7 @@ async function verifyDatabaseSetup() {
           .from('lead_prices')
           .select('service_type, urgency, base_price')
           .limit(5);
-        
+
         if (error) throw error;
         return { success: true, count: data?.length || 0, sample: data };
       },
@@ -95,7 +95,7 @@ async function verifyDatabaseSetup() {
     try {
       console.log(`Checking ${check.name}...`);
       const result = await check.query();
-      
+
       if (result.success) {
         console.log(`  ✅ ${check.name} - OK`);
         if ('count' in result) {
@@ -115,7 +115,9 @@ async function verifyDatabaseSetup() {
 
   if (failed === 0) {
     console.log('\n✅ Database setup verified successfully!');
-    console.log('You can now proceed with the next steps in DEVELOPMENT_PLAN.md');
+    console.log(
+      'You can now proceed with the next steps in DEVELOPMENT_PLAN.md'
+    );
   } else {
     console.log('\n❌ Some checks failed. Please review the errors above.');
     console.log('Make sure you have:');
@@ -125,8 +127,7 @@ async function verifyDatabaseSetup() {
   }
 }
 
-verifyDatabaseSetup().catch((error) => {
+verifyDatabaseSetup().catch(error => {
   console.error('Fatal error:', error);
   process.exit(1);
 });
-

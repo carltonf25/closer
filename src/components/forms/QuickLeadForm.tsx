@@ -44,9 +44,7 @@ export function QuickLeadForm() {
         <h3 className="text-2xl font-bold text-gray-900 mb-2">
           Request Received!
         </h3>
-        <p className="text-gray-600">
-          {state.message}
-        </p>
+        <p className="text-gray-600">{state.message}</p>
         <p className="text-sm text-gray-500 mt-4">
           A licensed professional will contact you shortly.
         </p>
@@ -72,17 +70,14 @@ export function QuickLeadForm() {
           name="service_type"
           required
           value={selectedService}
-          onChange={(e) => setSelectedService(e.target.value)}
-          className={cn(
-            'input',
-            state?.errors?.service_type && 'input-error'
-          )}
+          onChange={e => setSelectedService(e.target.value)}
+          className={cn('input', state?.errors?.service_type && 'input-error')}
         >
           <option value="">Select a service...</option>
           <optgroup label="HVAC / Air Conditioning">
             {serviceOptions
-              .filter((s) => s.category === 'hvac')
-              .map((service) => (
+              .filter(s => s.category === 'hvac')
+              .map(service => (
                 <option key={service.value} value={service.value}>
                   {service.label}
                 </option>
@@ -90,8 +85,8 @@ export function QuickLeadForm() {
           </optgroup>
           <optgroup label="Plumbing">
             {serviceOptions
-              .filter((s) => s.category === 'plumbing')
-              .map((service) => (
+              .filter(s => s.category === 'plumbing')
+              .map(service => (
                 <option key={service.value} value={service.value}>
                   {service.label}
                 </option>
@@ -129,10 +124,7 @@ export function QuickLeadForm() {
           name="phone"
           required
           placeholder="(404) 555-1234"
-          className={cn(
-            'input',
-            state?.errors?.phone && 'input-error'
-          )}
+          className={cn('input', state?.errors?.phone && 'input-error')}
         />
         {state?.errors?.phone && (
           <p className="error-message">{state.errors.phone[0]}</p>

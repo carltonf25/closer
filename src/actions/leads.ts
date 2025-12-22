@@ -2,7 +2,6 @@
 
 import { createAdminSupabaseClient } from '@/lib/supabase/server';
 import { leadFormSchema, LeadFormData } from '@/lib/validations';
-import { revalidatePath } from 'next/cache';
 
 export type ActionState = {
   success: boolean;
@@ -38,15 +37,15 @@ export async function submitLead(
 
   // Validate
   const result = leadFormSchema.safeParse(rawData);
-  
+
   if (!result.success) {
     const errors: Record<string, string[]> = {};
-    result.error.issues.forEach((issue) => {
+    result.error.issues.forEach(issue => {
       const path = issue.path.join('.');
       if (!errors[path]) errors[path] = [];
       errors[path].push(issue.message);
     });
-    
+
     return {
       success: false,
       message: 'Please fix the errors below',
@@ -54,14 +53,14 @@ export async function submitLead(
     };
   }
 
-  const data = result.data;
-  
+  const { data } = result;
+
   // Clean phone number
   const cleanPhone = data.phone.replace(/\D/g, '');
-  
+
   try {
     const supabase = createAdminSupabaseClient();
-    
+
     // Insert lead
     const { data: lead, error } = await supabase
       .from('leads')
@@ -100,13 +99,12 @@ export async function submitLead(
     // TODO: Trigger lead matching and notification
     // This would call a function to find matching contractors
     // and send them SMS/email notifications
-    
+
     return {
       success: true,
       message: 'Thank you! A local professional will contact you shortly.',
       data: { lead_id: lead.id },
     };
-    
   } catch (error) {
     console.error('Lead submission error:', error);
     return {
@@ -125,7 +123,8 @@ export async function submitQuickLead(
     service_type: formData.get('service_type'),
     urgency: 'this_week', // Default urgency for quick form
     first_name: formData.get('name')?.toString().split(' ')[0] || '',
-    last_name: formData.get('name')?.toString().split(' ').slice(1).join(' ') || '',
+    last_name:
+      formData.get('name')?.toString().split(' ').slice(1).join(' ') || '',
     phone: formData.get('phone'),
     email: formData.get('email') || undefined,
     address: '', // Will need to collect later
@@ -138,7 +137,10 @@ export async function submitQuickLead(
   };
 
   // Minimal validation for quick form
-  if (!rawData.phone || rawData.phone.toString().replace(/\D/g, '').length < 10) {
+  if (
+    !rawData.phone ||
+    rawData.phone.toString().replace(/\D/g, '').length < 10
+  ) {
     return {
       success: false,
       message: 'Please enter a valid phone number',
@@ -156,7 +158,7 @@ export async function submitQuickLead(
 
   try {
     const supabase = createAdminSupabaseClient();
-    
+
     const { data: lead, error } = await supabase
       .from('leads')
       .insert({
@@ -192,7 +194,6 @@ export async function submitQuickLead(
       message: "We'll call you shortly!",
       data: { lead_id: lead.id },
     };
-    
   } catch (error) {
     console.error('Quick lead submission error:', error);
     return {

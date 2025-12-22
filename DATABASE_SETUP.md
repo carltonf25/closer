@@ -7,15 +7,12 @@ This guide will help you complete the database setup for your HVAC lead generati
 1. Go to your Supabase project dashboard: https://app.supabase.com
 2. Navigate to **Settings** → **API**
 3. You'll need three values:
-
    - **Project URL**: Found at the top of the API settings page
      - Format: `https://xxxxxxxxxxxxx.supabase.co`
-   
    - **anon/public key**: Listed under "Project API keys"
      - This is the public key that can be exposed in client-side code
      - ⚠️ **Important**: This should be a JWT token starting with `eyJ...`
      - It's a long string (200+ characters)
-   
    - **service_role key**: Also listed under "Project API keys"
      - ⚠️ **Keep this secret!** Never commit this to version control
      - This key bypasses Row Level Security (RLS) - use only server-side
@@ -69,13 +66,14 @@ After running the migration, verify that everything was created correctly:
 Run this query in the SQL Editor:
 
 ```sql
-SELECT table_name 
-FROM information_schema.tables 
-WHERE table_schema = 'public' 
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema = 'public'
 ORDER BY table_name;
 ```
 
 You should see:
+
 - `contractors`
 - `lead_deliveries`
 - `lead_prices`
@@ -85,13 +83,14 @@ You should see:
 ### Check Enums
 
 ```sql
-SELECT typname 
-FROM pg_type 
-WHERE typtype = 'e' 
+SELECT typname
+FROM pg_type
+WHERE typtype = 'e'
 ORDER BY typname;
 ```
 
 You should see:
+
 - `billing_type`
 - `contractor_status`
 - `delivery_outcome`
@@ -122,7 +121,7 @@ Test that Row Level Security is working correctly:
 ```sql
 -- This should work (anyone can create leads)
 INSERT INTO leads (
-  service_type, urgency, first_name, last_name, phone, 
+  service_type, urgency, first_name, last_name, phone,
   address, city, state, zip, property_type
 ) VALUES (
   'hvac_repair', 'today', 'Test', 'User', '555-1234',
@@ -179,14 +178,16 @@ npx tsx scripts/test-with-service-role.ts
 ```
 
 **Important Note**: Your application uses the `service_role` key (via `createAdminSupabaseClient()`), which bypasses RLS. This means:
+
 - ✅ **Your application forms will work** even if the anon RLS test fails
 - ✅ The service role test confirms everything is set up correctly
 - ⚠️ The anon RLS test is mainly for security best practices
 
 The tests verify:
+
 - ✅ Database connection works
 - ✅ Public read access to service_areas
-- ✅ Public read access to lead_prices  
+- ✅ Public read access to lead_prices
 - ✅ Lead creation with service role (your app uses this)
 - ⚠️ Public insert access to leads via anon key (optional, for security)
 
@@ -207,11 +208,14 @@ If you get an "Invalid API key" error when running `npm run db:test`:
 ### Migration Fails with "already exists" errors
 
 If you see errors about tables/enums already existing, you can either:
+
 1. Drop and recreate (⚠️ **WARNING**: This will delete all data):
+
    ```sql
    DROP SCHEMA public CASCADE;
    CREATE SCHEMA public;
    ```
+
    Then re-run the migration.
 
 2. Or modify the migration to use `CREATE IF NOT EXISTS` (not recommended for production).
@@ -221,6 +225,7 @@ If you see errors about tables/enums already existing, you can either:
 If you get "new row violates row-level security policy" when running `npm run db:test`:
 
 **First, verify your app will work:**
+
 ```bash
 npx tsx scripts/test-with-service-role.ts
 ```
@@ -230,11 +235,13 @@ If that passes ✅, your application will work fine because it uses the service 
 **To fix RLS for anonymous access** (optional, for security best practices):
 
 Run the comprehensive fix script in Supabase SQL Editor:
+
 ```sql
 -- See scripts/fix-rls-complete.sql for full fix
 ```
 
 Or try this simplified approach:
+
 ```sql
 -- Grant explicit permissions
 GRANT INSERT ON leads TO anon;
@@ -260,6 +267,7 @@ CREATE POLICY "leads_insert_authenticated"
 ### Type Generation Fails
 
 If `npm run db:types` fails:
+
 - Make sure you have the Supabase CLI installed: `npm install -g supabase`
 - Verify your project ID is correct
 - Check that your Supabase project is accessible

@@ -26,13 +26,15 @@ if (!supabaseUrl || !serviceRoleKey) {
 const supabase = createClient(supabaseUrl, serviceRoleKey, {
   auth: {
     autoRefreshToken: false,
-    persistSession: false
-  }
+    persistSession: false,
+  },
 });
 
 async function testWithServiceRole() {
   console.log('🔍 Testing lead creation with SERVICE ROLE (admin) key...\n');
-  console.log('This bypasses RLS, so it should work regardless of policy configuration.\n');
+  console.log(
+    'This bypasses RLS, so it should work regardless of policy configuration.\n'
+  );
 
   try {
     const testLead = {
@@ -63,7 +65,9 @@ async function testWithServiceRole() {
       process.exit(1);
     }
 
-    console.log(`✅ Lead created successfully with service role (ID: ${lead.id})`);
+    console.log(
+      `✅ Lead created successfully with service role (ID: ${lead.id})`
+    );
 
     // Clean up
     await supabase.from('leads').delete().eq('id', lead.id);
@@ -76,12 +80,15 @@ async function testWithServiceRole() {
     console.log('  ✅ Database connection works');
     console.log('  ✅ Service role key is valid');
     console.log('  ✅ Table structure is correct');
-    console.log('  ✅ Your application forms will work (they use service role)');
+    console.log(
+      '  ✅ Your application forms will work (they use service role)'
+    );
     console.log('\nThe RLS policy issue only affects anonymous/public access.');
     console.log('For production, you can either:');
     console.log('  1. Fix the RLS policies (for security best practices)');
-    console.log('  2. Continue using service role (current approach - works fine)');
-
+    console.log(
+      '  2. Continue using service role (current approach - works fine)'
+    );
   } catch (error: any) {
     console.error('Fatal error:', error);
     process.exit(1);
@@ -89,4 +96,3 @@ async function testWithServiceRole() {
 }
 
 testWithServiceRole();
-

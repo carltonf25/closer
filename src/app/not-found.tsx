@@ -9,8 +9,8 @@ export default function NotFound() {
           Page Not Found
         </h2>
         <p className="text-gray-600 mb-8 max-w-md">
-          Sorry, we couldn't find the page you're looking for. 
-          Let's get you back on track.
+          Sorry, we couldn't find the page you're looking for. Let's get you
+          back on track.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link href="/" className="btn-primary btn-md">

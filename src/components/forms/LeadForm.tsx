@@ -51,7 +51,7 @@ export function LeadForm({
     // Add step 1 data to form
     data.set('service_type', formData.service_type);
     data.set('urgency', formData.urgency);
-    
+
     const result = await submitLead(null, data);
     setState(result);
   }
@@ -66,9 +66,7 @@ export function LeadForm({
         <h3 className="text-2xl font-bold text-gray-900 mb-2">
           Request Submitted!
         </h3>
-        <p className="text-gray-600 mb-4">
-          {state.message}
-        </p>
+        <p className="text-gray-600 mb-4">{state.message}</p>
         <div className="bg-blue-50 rounded-lg p-4 text-sm text-blue-800">
           <strong>What happens next?</strong>
           <p className="mt-1">
@@ -96,7 +94,7 @@ export function LeadForm({
             What service do you need? <span className="text-red-500">*</span>
           </label>
           <div className="grid grid-cols-2 gap-3">
-            {serviceOptions.map((service) => (
+            {serviceOptions.map(service => (
               <button
                 key={service.value}
                 type="button"
@@ -352,8 +350,8 @@ export function LeadForm({
       <SubmitButton />
 
       <p className="text-xs text-gray-500 text-center">
-        By submitting, you agree to receive calls and texts. Message & data rates
-        may apply. Reply STOP to opt out.
+        By submitting, you agree to receive calls and texts. Message & data
+        rates may apply. Reply STOP to opt out.
       </p>
     </form>
   );
