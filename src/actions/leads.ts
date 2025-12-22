@@ -14,6 +14,16 @@ export async function submitLead(
   prevState: ActionState | null,
   formData: FormData
 ): Promise<ActionState> {
+  // Honeypot spam check
+  const honeypot = formData.get('website');
+  if (honeypot) {
+    // Silently reject spam submissions
+    return {
+      success: false,
+      message: 'Submission failed. Please try again.',
+    };
+  }
+
   // Parse form data
   const rawData = {
     service_type: formData.get('service_type'),
@@ -62,8 +72,8 @@ export async function submitLead(
     const supabase = createAdminSupabaseClient();
 
     // Insert lead
-    const { data: lead, error } = await supabase
-      .from('leads')
+    const insertResult = await (supabase
+      .from('leads') as any)
       .insert({
         service_type: data.service_type,
         urgency: data.urgency,
@@ -88,13 +98,15 @@ export async function submitLead(
       .select('id')
       .single();
 
-    if (error) {
-      console.error('Lead insert error:', error);
+    if (insertResult.error) {
+      console.error('Lead insert error:', insertResult.error);
       return {
         success: false,
         message: 'Something went wrong. Please try again.',
       };
     }
+
+    const lead = insertResult.data as { id: string };
 
     // TODO: Trigger lead matching and notification
     // This would call a function to find matching contractors
@@ -119,6 +131,16 @@ export async function submitQuickLead(
   prevState: ActionState | null,
   formData: FormData
 ): Promise<ActionState> {
+  // Honeypot spam check
+  const honeypot = formData.get('website');
+  if (honeypot) {
+    // Silently reject spam submissions
+    return {
+      success: false,
+      message: 'Submission failed. Please try again.',
+    };
+  }
+
   const rawData = {
     service_type: formData.get('service_type'),
     urgency: 'this_week', // Default urgency for quick form
@@ -159,8 +181,8 @@ export async function submitQuickLead(
   try {
     const supabase = createAdminSupabaseClient();
 
-    const { data: lead, error } = await supabase
-      .from('leads')
+    const insertResult = await (supabase
+      .from('leads') as any)
       .insert({
         service_type: rawData.service_type as LeadFormData['service_type'],
         urgency: 'this_week',
@@ -181,13 +203,15 @@ export async function submitQuickLead(
       .select('id')
       .single();
 
-    if (error) {
-      console.error('Quick lead insert error:', error);
+    if (insertResult.error) {
+      console.error('Quick lead insert error:', insertResult.error);
       return {
         success: false,
         message: 'Something went wrong. Please try again.',
       };
     }
+
+    const lead = insertResult.data as { id: string };
 
     return {
       success: true,

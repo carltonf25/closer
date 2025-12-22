@@ -42,7 +42,6 @@
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^7.0.1",
     "postcss": "^8.4.47",
     "prettier": "^3.7.4",
     "supabase": "^1.200.3",

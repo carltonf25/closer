@@ -13,12 +13,8 @@
     --ring: 221.2 83.2% 53.3%;
   }
 
-  * {
-    @apply border-border;
-  }
-
   body {
-    @apply bg-white text-foreground antialiased;
+    @apply bg-white text-gray-900 antialiased;
   }
 }
 

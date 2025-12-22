@@ -6,9 +6,10 @@ import { submitLead, ActionState } from '@/actions/leads';
 import { SERVICES, URGENCY_OPTIONS } from '@/config/services';
 import { ServiceType, LeadUrgency } from '@/lib/database.types';
 import { cn } from '@/lib/utils';
+import { usePhoneFormat } from '@/lib/hooks/usePhoneFormat';
 import { Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 
-function SubmitButton() {
+const SubmitButton = () => {
   const { pending } = useFormStatus();
 
   return (
@@ -27,7 +28,7 @@ function SubmitButton() {
       )}
     </button>
   );
-}
+};
 
 interface LeadFormProps {
   defaultService?: ServiceType;
@@ -35,22 +36,32 @@ interface LeadFormProps {
   defaultState?: string;
 }
 
-export function LeadForm({
+export const LeadForm = ({
   defaultService,
   defaultCity,
   defaultState = 'GA',
-}: LeadFormProps) {
+}: LeadFormProps) => {
   const [state, setState] = useState<ActionState | null>(null);
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     service_type: defaultService || '',
     urgency: '' as LeadUrgency | '',
   });
+  const phoneFormat = usePhoneFormat();
 
   async function handleSubmit(data: FormData) {
+    // Honeypot check - if filled, it's spam
+    const honeypot = data.get('website');
+    if (honeypot) {
+      // Silently fail - don't show error to spammer
+      return;
+    }
+
     // Add step 1 data to form
     data.set('service_type', formData.service_type);
     data.set('urgency', formData.urgency);
+    // Set cleaned phone number
+    data.set('phone', phoneFormat.value);
 
     const result = await submitLead(null, data);
     setState(result);
@@ -222,6 +233,9 @@ export function LeadForm({
           name="phone"
           required
           placeholder="(404) 555-1234"
+          value={phoneFormat.displayValue}
+          onChange={phoneFormat.handleChange}
+          onBlur={phoneFormat.handleBlur}
           className={cn('input', state?.errors?.phone && 'input-error')}
         />
         {state?.errors?.phone && (
@@ -331,6 +345,20 @@ export function LeadForm({
         />
       </div>
 
+      {/* Honeypot field - hidden from users, visible to bots */}
+      <div className="hidden" aria-hidden="true">
+        <label htmlFor="website">
+          Don't fill this out if you're human:
+          <input
+            type="text"
+            id="website"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+          />
+        </label>
+      </div>
+
       {/* Hidden fields */}
       <input type="hidden" name="source" value="seo" />
       <input
@@ -355,4 +383,4 @@ export function LeadForm({
       </p>
     </form>
   );
-}
+};

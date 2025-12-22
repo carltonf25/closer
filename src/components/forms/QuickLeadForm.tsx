@@ -5,9 +5,10 @@ import { useFormStatus } from 'react-dom';
 import { submitQuickLead, ActionState } from '@/actions/leads';
 import { SERVICES } from '@/config/services';
 import { cn } from '@/lib/utils';
+import { usePhoneFormat } from '@/lib/hooks/usePhoneFormat';
 import { Loader2, CheckCircle } from 'lucide-react';
 
-function SubmitButton() {
+const SubmitButton = () => {
   const { pending } = useFormStatus();
 
   return (
@@ -26,13 +27,24 @@ function SubmitButton() {
       )}
     </button>
   );
-}
+};
 
-export function QuickLeadForm() {
+export const QuickLeadForm = () => {
   const [state, setState] = useState<ActionState | null>(null);
   const [selectedService, setSelectedService] = useState<string>('');
+  const phoneFormat = usePhoneFormat();
 
   async function handleSubmit(formData: FormData) {
+    // Honeypot check - if filled, it's spam
+    const honeypot = formData.get('website');
+    if (honeypot) {
+      // Silently fail - don't show error to spammer
+      return;
+    }
+
+    // Set cleaned phone number
+    formData.set('phone', phoneFormat.value);
+
     const result = await submitQuickLead(null, formData);
     setState(result);
   }
@@ -124,11 +136,28 @@ export function QuickLeadForm() {
           name="phone"
           required
           placeholder="(404) 555-1234"
+          value={phoneFormat.displayValue}
+          onChange={phoneFormat.handleChange}
+          onBlur={phoneFormat.handleBlur}
           className={cn('input', state?.errors?.phone && 'input-error')}
         />
         {state?.errors?.phone && (
           <p className="error-message">{state.errors.phone[0]}</p>
         )}
+      </div>
+
+      {/* Honeypot field - hidden from users, visible to bots */}
+      <div className="hidden" aria-hidden="true">
+        <label htmlFor="website">
+          Don't fill this out if you're human:
+          <input
+            type="text"
+            id="website"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+          />
+        </label>
       </div>
 
       {/* ZIP Code */}
@@ -167,4 +196,4 @@ export function QuickLeadForm() {
       <SubmitButton />
     </form>
   );
-}
+};
