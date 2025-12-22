@@ -342,3 +342,7 @@ npm install
 - Fixed build error: Extracted onClick handlers to `ScrollToTopButton` Client Component
 - Build now successfully generates all 284 static pages
 - Created this claude.md documentation file
+- **Fixed Vercel deployment**: Removed Supabase CLI from package.json to prevent postinstall script failures
+  - The CLI is only needed for local development (generating types)
+  - Developers should install it globally: `npm install -g supabase`
+  - Pre-generated types are committed to the repo

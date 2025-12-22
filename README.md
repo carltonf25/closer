@@ -89,7 +89,23 @@ npm install
    - Paste and run in SQL Editor
 3. Get your API keys from Settings > API
 
-### 3. Configure Environment
+### 3. Install Supabase CLI (Optional)
+
+The Supabase CLI is only needed if you want to generate TypeScript types from your database schema.
+
+```bash
+npm install -g supabase
+```
+
+Then you can run:
+
+```bash
+npm run db:types  # Generates src/lib/database.types.ts
+```
+
+**Note**: The CLI is not included in package.json to avoid installation issues on Vercel. The pre-generated types are already committed to the repo.
+
+### 4. Configure Environment
 
 ```bash
 cp .env.local.example .env.local
@@ -103,7 +119,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 ```
 
-### 4. Run Development Server
+### 5. Run Development Server
 
 ```bash
 npm run dev
