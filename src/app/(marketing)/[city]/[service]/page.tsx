@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Phone, Shield, Clock, Star, MapPin, CheckCircle } from 'lucide-react';
 import { LeadForm } from '@/components/forms/LeadForm';
+import { ScrollToTopButton } from '@/components/ui/ScrollToTopButton';
 import {
   SERVICES,
   SERVICE_SLUGS,
@@ -370,15 +371,7 @@ export default function CityServicePage({ params }: PageProps) {
               Get free quotes from licensed {service.label.toLowerCase()}{' '}
               professionals in {city.city} today.
             </p>
-            <button
-              type="button"
-              onClick={() => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
-              className="btn-primary btn-lg"
-            >
-              Get Free Quotes Now
-            </button>
+            <ScrollToTopButton>Get Free Quotes Now</ScrollToTopButton>
           </div>
         </section>
       </main>

@@ -1,11 +1,16 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useFormStatus } from 'react-dom';
 import { submitQuickLead, ActionState } from '@/actions/leads';
 import { SERVICES } from '@/config/services';
 import { cn } from '@/lib/utils';
 import { usePhoneFormat } from '@/lib/hooks/usePhoneFormat';
+import {
+  trackFormView,
+  trackFormStart,
+  trackFormSubmit,
+} from '@/lib/analytics';
 import { Loader2, CheckCircle } from 'lucide-react';
 
 const SubmitButton = () => {
@@ -34,12 +39,24 @@ export const QuickLeadForm = () => {
   const [selectedService, setSelectedService] = useState<string>('');
   const phoneFormat = usePhoneFormat();
 
+  // Track form view
+  useEffect(() => {
+    trackFormView('quick');
+  }, []);
+
+  // Track form start when user interacts
+  useEffect(() => {
+    if (selectedService) {
+      trackFormStart('quick');
+    }
+  }, [selectedService]);
+
   async function handleSubmit(formData: FormData) {
     // Honeypot check - if filled, it's spam
     const honeypot = formData.get('website');
     if (honeypot) {
       // Silently fail - don't show error to spammer
-      return;
+      return Promise.resolve();
     }
 
     // Set cleaned phone number
@@ -47,6 +64,10 @@ export const QuickLeadForm = () => {
 
     const result = await submitQuickLead(null, formData);
     setState(result);
+
+    // Track submission
+    trackFormSubmit('quick', result.success, result.errors);
+    return Promise.resolve();
   }
 
   if (state?.success) {

@@ -1,12 +1,19 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useFormStatus } from 'react-dom';
 import { submitLead, ActionState } from '@/actions/leads';
 import { SERVICES, URGENCY_OPTIONS } from '@/config/services';
 import { ServiceType, LeadUrgency } from '@/lib/database.types';
 import { cn } from '@/lib/utils';
 import { usePhoneFormat } from '@/lib/hooks/usePhoneFormat';
+import { AddressAutocomplete } from './AddressAutocomplete';
+import {
+  trackFormView,
+  trackFormStart,
+  trackFormStep,
+  trackFormSubmit,
+} from '@/lib/analytics';
 import { Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 
 const SubmitButton = () => {
@@ -46,10 +53,33 @@ export const LeadForm = ({
   const [formData, setFormData] = useState({
     service_type: defaultService || '',
     urgency: '' as LeadUrgency | '',
+    address: '',
+    city: defaultCity || '',
+    state: defaultState,
+    zip: '',
   });
   const phoneFormat = usePhoneFormat();
 
-  async function handleSubmit(data: FormData) {
+  // Track form view
+  useEffect(() => {
+    trackFormView('full');
+  }, []);
+
+  // Track form start when user begins
+  useEffect(() => {
+    if (step === 2) {
+      trackFormStart('full');
+    }
+  }, [step]);
+
+  // Track step changes
+  useEffect(() => {
+    if (step > 1) {
+      trackFormStep(step, 'full');
+    }
+  }, [step]);
+
+  async function handleSubmit(data: FormData): Promise<void> {
     // Honeypot check - if filled, it's spam
     const honeypot = data.get('website');
     if (honeypot) {
@@ -62,9 +92,17 @@ export const LeadForm = ({
     data.set('urgency', formData.urgency);
     // Set cleaned phone number
     data.set('phone', phoneFormat.value);
+    // Set address fields from formData (may be auto-filled by autocomplete)
+    if (formData.address) data.set('address', formData.address);
+    if (formData.city) data.set('city', formData.city);
+    if (formData.state) data.set('state', formData.state);
+    if (formData.zip) data.set('zip', formData.zip);
 
     const result = await submitLead(null, data);
     setState(result);
+
+    // Track submission
+    trackFormSubmit('full', result.success, result.errors);
   }
 
   // Success state
@@ -294,14 +332,25 @@ export const LeadForm = ({
         <label htmlFor="address" className="label">
           Street Address <span className="text-red-500">*</span>
         </label>
-        <input
-          type="text"
+        <AddressAutocomplete
           id="address"
           name="address"
-          required
-          aria-required="true"
+          value={formData.address}
+          onChange={e => setFormData({ ...formData, address: e.target.value })}
+          onSelect={components => {
+            setFormData({
+              ...formData,
+              address: components.address,
+              city: components.city || formData.city,
+              state: components.state || formData.state,
+              zip: components.zip || formData.zip,
+            });
+          }}
           placeholder="123 Main Street"
-          className={cn('input', state?.errors?.address && 'input-error')}
+          required
+          aria-required
+          error={!!state?.errors?.address}
+          className={cn(state?.errors?.address && 'input-error')}
           aria-invalid={state?.errors?.address ? 'true' : 'false'}
           aria-describedby={
             state?.errors?.address ? 'address-error' : undefined
@@ -325,7 +374,8 @@ export const LeadForm = ({
             name="city"
             required
             aria-required="true"
-            defaultValue={defaultCity}
+            value={formData.city}
+            onChange={e => setFormData({ ...formData, city: e.target.value })}
             className={cn('input', state?.errors?.city && 'input-error')}
             aria-invalid={state?.errors?.city ? 'true' : 'false'}
           />
@@ -339,7 +389,8 @@ export const LeadForm = ({
             type="text"
             id="state"
             name="state"
-            defaultValue={defaultState}
+            value={formData.state}
+            onChange={e => setFormData({ ...formData, state: e.target.value })}
             maxLength={2}
             className="input"
             readOnly
@@ -357,6 +408,8 @@ export const LeadForm = ({
             name="zip"
             required
             aria-required="true"
+            value={formData.zip}
+            onChange={e => setFormData({ ...formData, zip: e.target.value })}
             maxLength={5}
             pattern="[0-9]{5}"
             className={cn('input', state?.errors?.zip && 'input-error')}

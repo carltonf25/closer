@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { Phone, Shield, Clock, Star, ChevronRight } from 'lucide-react';
 import { QuickLeadForm } from '@/components/forms/QuickLeadForm';
+import { ScrollToTopButton } from '@/components/ui/ScrollToTopButton';
 import { GEORGIA_CITIES } from '@/config/services';
 
 export default function HomePage() {
@@ -216,15 +217,7 @@ export default function HomePage() {
             Join thousands of Georgia homeowners who've found trusted
             professionals through our service.
           </p>
-          <button
-            type="button"
-            onClick={() => {
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            className="btn-primary btn-lg"
-          >
-            Get Free Quotes Now
-          </button>
+          <ScrollToTopButton>Get Free Quotes Now</ScrollToTopButton>
         </div>
       </section>
 

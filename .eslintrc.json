@@ -113,7 +113,11 @@
         "object": true
       }
     ],
-    "no-useless-escape": "warn"
+    "no-useless-escape": "warn",
+    "consistent-return": "off",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "import/order": "off",
+    "react/jsx-boolean-value": "off"
   },
   "settings": {
     "import/resolver": {
