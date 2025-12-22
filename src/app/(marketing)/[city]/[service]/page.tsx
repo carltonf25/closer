@@ -370,16 +370,15 @@ export default function CityServicePage({ params }: PageProps) {
               Get free quotes from licensed {service.label.toLowerCase()}{' '}
               professionals in {city.city} today.
             </p>
-            <a
-              href="#"
-              onClick={e => {
-                e.preventDefault();
+            <button
+              type="button"
+              onClick={() => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
               className="btn-primary btn-lg"
             >
               Get Free Quotes Now
-            </a>
+            </button>
           </div>
         </section>
       </main>

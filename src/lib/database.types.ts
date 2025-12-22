@@ -540,3 +540,13 @@ export const Constants = {
     },
   },
 } as const;
+
+// Export type aliases for convenience
+export type ServiceType = Database['public']['Enums']['service_type'];
+export type LeadUrgency = Database['public']['Enums']['lead_urgency'];
+export type LeadStatus = Database['public']['Enums']['lead_status'];
+export type LeadSource = Database['public']['Enums']['lead_source'];
+export type PropertyType = Database['public']['Enums']['property_type'];
+export type ContractorStatus = Database['public']['Enums']['contractor_status'];
+export type BillingType = Database['public']['Enums']['billing_type'];
+export type DeliveryOutcome = Database['public']['Enums']['delivery_outcome'];

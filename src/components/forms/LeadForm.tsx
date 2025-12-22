@@ -101,10 +101,14 @@ export const LeadForm = ({
       <div className="space-y-6">
         {/* Service Selection */}
         <div className="form-group">
-          <label className="label">
+          <div className="label">
             What service do you need? <span className="text-red-500">*</span>
-          </label>
-          <div className="grid grid-cols-2 gap-3">
+          </div>
+          <div
+            className="grid grid-cols-2 gap-3"
+            role="group"
+            aria-label="Service selection"
+          >
             {serviceOptions.map(service => (
               <button
                 key={service.value}
@@ -127,10 +131,14 @@ export const LeadForm = ({
 
         {/* Urgency Selection */}
         <div className="form-group">
-          <label className="label">
+          <div className="label">
             When do you need service? <span className="text-red-500">*</span>
-          </label>
-          <div className="space-y-2">
+          </div>
+          <div
+            className="space-y-2"
+            role="group"
+            aria-label="Service urgency selection"
+          >
             {Object.entries(URGENCY_OPTIONS).map(([key, option]) => (
               <button
                 key={key}
@@ -199,10 +207,17 @@ export const LeadForm = ({
             id="first_name"
             name="first_name"
             required
+            aria-required="true"
             className={cn('input', state?.errors?.first_name && 'input-error')}
+            aria-invalid={state?.errors?.first_name ? 'true' : 'false'}
+            aria-describedby={
+              state?.errors?.first_name ? 'first_name-error' : undefined
+            }
           />
           {state?.errors?.first_name && (
-            <p className="error-message">{state.errors.first_name[0]}</p>
+            <p id="first_name-error" className="error-message" role="alert">
+              {state.errors.first_name[0]}
+            </p>
           )}
         </div>
 
@@ -215,10 +230,17 @@ export const LeadForm = ({
             id="last_name"
             name="last_name"
             required
+            aria-required="true"
             className={cn('input', state?.errors?.last_name && 'input-error')}
+            aria-invalid={state?.errors?.last_name ? 'true' : 'false'}
+            aria-describedby={
+              state?.errors?.last_name ? 'last_name-error' : undefined
+            }
           />
           {state?.errors?.last_name && (
-            <p className="error-message">{state.errors.last_name[0]}</p>
+            <p id="last_name-error" className="error-message" role="alert">
+              {state.errors.last_name[0]}
+            </p>
           )}
         </div>
       </div>
@@ -232,14 +254,19 @@ export const LeadForm = ({
           id="phone"
           name="phone"
           required
+          aria-required="true"
           placeholder="(404) 555-1234"
           value={phoneFormat.displayValue}
           onChange={phoneFormat.handleChange}
           onBlur={phoneFormat.handleBlur}
           className={cn('input', state?.errors?.phone && 'input-error')}
+          aria-invalid={state?.errors?.phone ? 'true' : 'false'}
+          aria-describedby={state?.errors?.phone ? 'phone-error' : undefined}
         />
         {state?.errors?.phone && (
-          <p className="error-message">{state.errors.phone[0]}</p>
+          <p id="phone-error" className="error-message" role="alert">
+            {state.errors.phone[0]}
+          </p>
         )}
       </div>
 
@@ -253,9 +280,13 @@ export const LeadForm = ({
           name="email"
           placeholder="you@example.com"
           className={cn('input', state?.errors?.email && 'input-error')}
+          aria-invalid={state?.errors?.email ? 'true' : 'false'}
+          aria-describedby={state?.errors?.email ? 'email-error' : undefined}
         />
         {state?.errors?.email && (
-          <p className="error-message">{state.errors.email[0]}</p>
+          <p id="email-error" className="error-message" role="alert">
+            {state.errors.email[0]}
+          </p>
         )}
       </div>
 
@@ -268,11 +299,18 @@ export const LeadForm = ({
           id="address"
           name="address"
           required
+          aria-required="true"
           placeholder="123 Main Street"
           className={cn('input', state?.errors?.address && 'input-error')}
+          aria-invalid={state?.errors?.address ? 'true' : 'false'}
+          aria-describedby={
+            state?.errors?.address ? 'address-error' : undefined
+          }
         />
         {state?.errors?.address && (
-          <p className="error-message">{state.errors.address[0]}</p>
+          <p id="address-error" className="error-message" role="alert">
+            {state.errors.address[0]}
+          </p>
         )}
       </div>
 
@@ -286,8 +324,10 @@ export const LeadForm = ({
             id="city"
             name="city"
             required
+            aria-required="true"
             defaultValue={defaultCity}
             className={cn('input', state?.errors?.city && 'input-error')}
+            aria-invalid={state?.errors?.city ? 'true' : 'false'}
           />
         </div>
 
@@ -303,6 +343,7 @@ export const LeadForm = ({
             maxLength={2}
             className="input"
             readOnly
+            aria-readonly="true"
           />
         </div>
 
@@ -315,9 +356,11 @@ export const LeadForm = ({
             id="zip"
             name="zip"
             required
+            aria-required="true"
             maxLength={5}
             pattern="[0-9]{5}"
             className={cn('input', state?.errors?.zip && 'input-error')}
+            aria-invalid={state?.errors?.zip ? 'true' : 'false'}
           />
         </div>
       </div>
@@ -326,7 +369,12 @@ export const LeadForm = ({
         <label htmlFor="property_type" className="label">
           Property Type
         </label>
-        <select id="property_type" name="property_type" className="input">
+        <select
+          id="property_type"
+          name="property_type"
+          className="input"
+          aria-label="Property type"
+        >
           <option value="residential">Residential</option>
           <option value="commercial">Commercial</option>
         </select>
@@ -342,6 +390,7 @@ export const LeadForm = ({
           rows={3}
           placeholder="Tell us more about what you need help with..."
           className="input resize-none"
+          aria-label="Issue description"
         />
       </div>
 

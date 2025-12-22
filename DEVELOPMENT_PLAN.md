@@ -9,17 +9,19 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 ## Phase 1: Foundation & MVP (Weeks 1-2)
 
 ### 1.1 Project Setup
+
 - [x] Initialize Next.js 14 project with TypeScript
 - [x] Configure Tailwind CSS with custom theme
 - [x] Set up project directory structure
 - [x] Create environment configuration template
-- [X] Set up Git repository and initial commit
+- [x] Set up Git repository and initial commit
 - [x] Configure ESLint and Prettier rules
-- [ ] Set up Vercel project for deployment
+- [x] Set up Vercel project for deployment
 
 **Estimated Time:** 2-3 hours
 
 ### 1.2 Database Setup
+
 - [x] Create Supabase project
 - [x] Run initial migration SQL script
 - [x] Verify tables, enums, and indexes created correctly
@@ -30,6 +32,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 **Estimated Time:** 1-2 hours
 
 ### 1.3 Lead Capture Forms
+
 - [x] Build QuickLeadForm component (minimal fields)
 - [x] Build full LeadForm component (multi-step)
 - [x] Create Zod validation schemas
@@ -43,6 +46,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 **Estimated Time:** 4-6 hours
 
 ### 1.4 SEO Landing Pages
+
 - [x] Create dynamic [city]/[service] route
 - [x] Implement generateStaticParams for all city/service combos
 - [x] Add JSON-LD structured data
@@ -58,6 +62,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 **Estimated Time:** 4-5 hours
 
 ### 1.5 Homepage & Marketing
+
 - [x] Build homepage hero section
 - [x] Create trust badges and social proof elements
 - [x] Add "How It Works" section
@@ -75,6 +80,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 ## Phase 2: Notifications & Lead Routing (Weeks 3-4)
 
 ### 2.1 Email Notifications
+
 - [ ] Set up SendGrid or Resend account
 - [ ] Create email templates:
   - [ ] New lead confirmation (to homeowner)
@@ -88,6 +94,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 **Estimated Time:** 4-5 hours
 
 ### 2.2 SMS Notifications (Twilio)
+
 - [ ] Set up Twilio account and phone number
 - [ ] Create Twilio utility functions
 - [ ] Implement SMS templates:
@@ -101,6 +108,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 **Estimated Time:** 4-5 hours
 
 ### 2.3 Lead Routing Logic
+
 - [ ] Implement contractor matching algorithm:
   - [ ] Match by service type
   - [ ] Match by ZIP code coverage
@@ -117,6 +125,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 **Estimated Time:** 6-8 hours
 
 ### 2.4 Phone Verification (Optional but Recommended)
+
 - [ ] Implement Twilio Verify or similar service
 - [ ] Add verification step to lead form
 - [ ] Update lead status after verification
@@ -130,6 +139,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 ## Phase 3: Contractor Portal (Weeks 5-7)
 
 ### 3.1 Authentication
+
 - [ ] Create contractor signup page
 - [ ] Implement Supabase Auth signup flow
 - [ ] Create contractor login page
@@ -141,6 +151,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 **Estimated Time:** 4-5 hours
 
 ### 3.2 Contractor Onboarding
+
 - [ ] Build multi-step onboarding form:
   - [ ] Step 1: Company information
   - [ ] Step 2: Services offered
@@ -155,6 +166,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 **Estimated Time:** 6-8 hours
 
 ### 3.3 Lead Inbox
+
 - [ ] Create leads dashboard page
 - [ ] Build lead list component with filtering:
   - [ ] Filter by status (new, viewed, accepted, rejected)
@@ -172,6 +184,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 **Estimated Time:** 8-10 hours
 
 ### 3.4 Lead Actions
+
 - [ ] Implement "Accept Lead" action:
   - [ ] Update lead_delivery status
   - [ ] Trigger billing (if applicable)
@@ -190,6 +203,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 **Estimated Time:** 5-6 hours
 
 ### 3.5 Contractor Settings
+
 - [ ] Build settings page with sections:
   - [ ] Profile information
   - [ ] Service areas (add/remove ZIPs)
@@ -207,6 +221,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 ## Phase 4: Billing & Payments (Weeks 8-9)
 
 ### 4.1 Stripe Setup
+
 - [ ] Create Stripe account and get API keys
 - [ ] Install Stripe SDK
 - [ ] Create Stripe utility functions
@@ -217,6 +232,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 **Estimated Time:** 2-3 hours
 
 ### 4.2 Contractor Billing Setup
+
 - [ ] Create Stripe Customer for each contractor
 - [ ] Build payment method management:
   - [ ] Add card via Stripe Elements
@@ -229,6 +245,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 **Estimated Time:** 5-6 hours
 
 ### 4.3 Lead Billing
+
 - [ ] Implement pay-per-lead billing:
   - [ ] Create invoice item when lead accepted
   - [ ] Calculate price based on service/urgency/exclusivity
@@ -244,6 +261,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 **Estimated Time:** 6-8 hours
 
 ### 4.4 Billing Dashboard
+
 - [ ] Create billing overview page:
   - [ ] Current balance
   - [ ] Recent charges
@@ -263,6 +281,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 ## Phase 5: Admin Dashboard (Weeks 10-11)
 
 ### 5.1 Admin Authentication
+
 - [ ] Create admin role in Supabase
 - [ ] Build admin login page
 - [ ] Implement admin-only middleware
@@ -271,6 +290,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 **Estimated Time:** 2-3 hours
 
 ### 5.2 Lead Management
+
 - [ ] Create admin leads dashboard:
   - [ ] List all leads with search/filter
   - [ ] View lead details
@@ -287,6 +307,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 **Estimated Time:** 6-8 hours
 
 ### 5.3 Contractor Management
+
 - [ ] Create contractor list view:
   - [ ] Search and filter
   - [ ] Status indicators
@@ -304,6 +325,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 **Estimated Time:** 6-8 hours
 
 ### 5.4 Revenue Analytics
+
 - [ ] Create revenue dashboard:
   - [ ] Total revenue (daily/weekly/monthly)
   - [ ] Revenue by service type
@@ -319,6 +341,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 **Estimated Time:** 5-6 hours
 
 ### 5.5 System Configuration
+
 - [ ] Build pricing management:
   - [ ] View/edit lead prices by service/urgency
   - [ ] Set city-specific pricing
@@ -338,6 +361,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 ## Phase 6: Growth & Optimization (Weeks 12+)
 
 ### 6.1 SEO Optimization
+
 - [ ] Implement content strategy:
   - [ ] Create blog section
   - [ ] Write city-specific content
@@ -354,6 +378,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 **Estimated Time:** Ongoing
 
 ### 6.2 PPC Landing Pages
+
 - [ ] Create dedicated PPC landing page template
 - [ ] Build variant system for A/B testing
 - [ ] Implement conversion tracking:
@@ -366,6 +391,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 **Estimated Time:** 4-5 hours
 
 ### 6.3 A/B Testing Framework
+
 - [ ] Choose A/B testing tool (PostHog/Optimizely/custom)
 - [ ] Implement experiment wrapper component
 - [ ] Create test variations for:
@@ -379,6 +405,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 **Estimated Time:** 5-6 hours
 
 ### 6.4 Lead Quality Scoring
+
 - [ ] Define quality scoring criteria:
   - [ ] Phone verification status
   - [ ] Email provided
@@ -393,6 +420,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 **Estimated Time:** 4-5 hours
 
 ### 6.5 Contractor Reviews & Ratings
+
 - [ ] Create review request flow:
   - [ ] Send review request after service
   - [ ] Build review submission form
@@ -406,6 +434,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 **Estimated Time:** 6-8 hours
 
 ### 6.6 Referral Program
+
 - [ ] Design referral program:
   - [ ] Contractor-to-contractor referrals
   - [ ] Customer referrals
@@ -421,6 +450,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 ## Technical Debt & Maintenance
 
 ### Ongoing Tasks
+
 - [ ] Write unit tests for critical functions
 - [ ] Add integration tests for forms
 - [ ] Set up error monitoring (Sentry)
@@ -432,6 +462,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 - [ ] Security audits
 
 ### Performance Monitoring
+
 - [ ] Set up uptime monitoring
 - [ ] Implement performance tracking (Web Vitals)
 - [ ] Create alerting for errors/downtime
@@ -443,6 +474,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 ## Task Priority Matrix
 
 ### Must Have (Launch Blockers)
+
 1. Database setup and migrations
 2. Lead capture forms working end-to-end
 3. Basic email notifications
@@ -450,12 +482,14 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 5. Manual lead delivery process documented
 
 ### Should Have (Week 1-4)
+
 1. SMS notifications
 2. Automated lead routing
 3. Contractor signup flow
 4. Basic contractor portal
 
 ### Nice to Have (Month 2+)
+
 1. Stripe billing automation
 2. Admin dashboard
 3. A/B testing
@@ -466,30 +500,35 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 ## Milestone Checklist
 
 ### Milestone 1: Soft Launch (Week 2)
+
 - [ ] Forms capturing leads to database
 - [ ] Email notifications working
 - [ ] 10+ landing pages indexed
 - [ ] Manual contractor outreach started
 
 ### Milestone 2: Contractor Beta (Week 4)
+
 - [ ] 3+ contractors signed up
 - [ ] Lead routing automated
 - [ ] SMS notifications live
 - [ ] Basic contractor portal functional
 
 ### Milestone 3: Revenue (Week 6)
+
 - [ ] First paid lead delivered
 - [ ] Billing system functional
 - [ ] 10+ active contractors
 - [ ] 50+ leads/month
 
 ### Milestone 4: Scale (Week 10)
+
 - [ ] Admin dashboard complete
 - [ ] 25+ contractors
 - [ ] 200+ leads/month
 - [ ] Expand to 2nd Georgia metro
 
 ### Milestone 5: Growth (Week 16)
+
 - [ ] PPC campaigns running
 - [ ] A/B testing active
 - [ ] Review system live
@@ -509,4 +548,4 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 
 ---
 
-*Last Updated: December 2024*
+_Last Updated: December 2024_

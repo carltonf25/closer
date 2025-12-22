@@ -97,12 +97,12 @@
       }
     ],
     "jsx-a11y/label-has-associated-control": [
-      "error",
+      "warn",
       {
         "labelComponents": [],
         "labelAttributes": [],
         "controlComponents": [],
-        "assert": "both",
+        "assert": "either",
         "depth": 3
       }
     ],

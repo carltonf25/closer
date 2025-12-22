@@ -72,8 +72,7 @@ export async function submitLead(
     const supabase = createAdminSupabaseClient();
 
     // Insert lead
-    const insertResult = await (supabase
-      .from('leads') as any)
+    const insertResult = await (supabase.from('leads') as any)
       .insert({
         service_type: data.service_type,
         urgency: data.urgency,
@@ -181,8 +180,7 @@ export async function submitQuickLead(
   try {
     const supabase = createAdminSupabaseClient();
 
-    const insertResult = await (supabase
-      .from('leads') as any)
+    const insertResult = await (supabase.from('leads') as any)
       .insert({
         service_type: rawData.service_type as LeadFormData['service_type'],
         urgency: 'this_week',

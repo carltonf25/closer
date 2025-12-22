@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { Phone, Shield, Clock, Star, ChevronRight } from 'lucide-react';
 import { QuickLeadForm } from '@/components/forms/QuickLeadForm';
@@ -214,16 +216,15 @@ export default function HomePage() {
             Join thousands of Georgia homeowners who've found trusted
             professionals through our service.
           </p>
-          <a
-            href="#"
-            onClick={e => {
-              e.preventDefault();
+          <button
+            type="button"
+            onClick={() => {
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
             className="btn-primary btn-lg"
           >
             Get Free Quotes Now
-          </a>
+          </button>
         </div>
       </section>
 
