@@ -107,9 +107,7 @@ async function runTests() {
 
   // Check environment variables
   if (!process.env.MAILCHIMP_API_KEY) {
-    console.error(
-      '\n❌ MAILCHIMP_API_KEY not found in environment variables'
-    );
+    console.error('\n❌ MAILCHIMP_API_KEY not found in environment variables');
     console.error('   Please set it in .env.local');
     process.exit(1);
   }
@@ -122,7 +120,9 @@ async function runTests() {
     process.exit(1);
   }
 
-  console.log(`\n📬 Sending test emails to: ${process.env.TEST_EMAIL || 'test@example.com'}`);
+  console.log(
+    `\n📬 Sending test emails to: ${process.env.TEST_EMAIL || 'test@example.com'}`
+  );
   console.log('   (Set TEST_EMAIL in .env.local to use a different address)');
 
   const results = {
@@ -156,9 +156,7 @@ async function runTests() {
   );
 
   const allPassed =
-    results.leadConfirmation &&
-    results.contractorAlert &&
-    results.leadAccepted;
+    results.leadConfirmation && results.contractorAlert && results.leadAccepted;
 
   if (allPassed) {
     console.log('\n🎉 All email tests passed!');

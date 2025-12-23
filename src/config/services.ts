@@ -69,6 +69,9 @@ export const SERVICES: Record<
   },
 };
 
+// Urgency multipliers for dynamic lead pricing
+// See PRICING_TIERS.md for full pricing strategy
+// Recommended range: same-day 1.3-1.6×, baseline 1.0×, flexible 0.8×
 export const URGENCY_OPTIONS: Record<
   LeadUrgency,
   {
@@ -80,22 +83,22 @@ export const URGENCY_OPTIONS: Record<
   emergency: {
     label: 'Emergency - Right Now',
     description: 'I need help immediately',
-    leadMultiplier: 1.5,
+    leadMultiplier: 1.5, // 1.5× premium for emergency service
   },
   today: {
     label: 'Today',
     description: 'I need help today',
-    leadMultiplier: 1.25,
+    leadMultiplier: 1.25, // 1.25× premium for same-day service
   },
   this_week: {
     label: 'This Week',
     description: 'Sometime in the next few days',
-    leadMultiplier: 1.0,
+    leadMultiplier: 1.0, // Baseline pricing
   },
   flexible: {
     label: 'Flexible',
     description: "I'm planning ahead",
-    leadMultiplier: 0.8,
+    leadMultiplier: 0.8, // 20% discount for flexible scheduling
   },
 };
 
@@ -275,16 +278,66 @@ export const SERVICE_TO_SLUG: Record<ServiceType, string> = {
   water_heater: 'water-heater',
 };
 
-// Base lead prices (in dollars)
+// Base lead prices (in dollars) - used as fallback if database pricing fails
+// These are the 'this_week' urgency baseline prices
+// Actual prices are calculated: base_price × urgency_multiplier
+//
+// PRICING STRATEGY (see PRICING_TIERS.md):
+// - Shared leads: Multiple contractors receive the same lead (broadcast model)
+// - Exclusive leads: Single contractor gets the lead exclusively (1.4-1.6× multiplier)
+// - Urgency multipliers: emergency 1.5×, today 1.25×, this_week 1.0×, flexible 0.8×
+// - Tier discounts: Pro tier gets 20-30% off per-lead prices
+//
+// Example: HVAC repair shared, emergency = $25 × 1.5 = $37.50
+// Example: HVAC install exclusive, today = $120 × 1.25 = $150
 export const BASE_LEAD_PRICES: Record<
   ServiceType,
   { shared: number; exclusive: number }
 > = {
-  hvac_repair: { shared: 25, exclusive: 60 },
-  hvac_install: { shared: 45, exclusive: 120 },
-  hvac_maintenance: { shared: 15, exclusive: 35 },
-  plumbing_emergency: { shared: 30, exclusive: 75 },
-  plumbing_repair: { shared: 20, exclusive: 50 },
-  plumbing_install: { shared: 35, exclusive: 85 },
-  water_heater: { shared: 40, exclusive: 100 },
+  hvac_repair: { shared: 25, exclusive: 60 }, // Repairs typically $20-35 shared
+  hvac_install: { shared: 45, exclusive: 120 }, // Installs $35-55 shared (high-value leads)
+  hvac_maintenance: { shared: 15, exclusive: 35 }, // Routine maintenance (lower value)
+  plumbing_emergency: { shared: 30, exclusive: 75 }, // Emergency calls command premium
+  plumbing_repair: { shared: 20, exclusive: 50 }, // Standard repairs
+  plumbing_install: { shared: 35, exclusive: 85 }, // Installations (higher value)
+  water_heater: { shared: 40, exclusive: 100 }, // Replacement jobs (high-value)
 };
+
+// Contractor pricing tiers (see PRICING_TIERS.md for full details)
+export const CONTRACTOR_TIERS = {
+  starter: {
+    name: 'Starter',
+    monthlyFee: 0,
+    leadDiscount: 0, // No discount - pays full price
+    features: [
+      'Prepaid lead credits',
+      'Shared leads',
+      'Basic filters (service + radius)',
+      'Charged only when accepted',
+    ],
+  },
+  pro: {
+    name: 'Pro',
+    monthlyFee: 149, // $99-$199 range, using $149 as default
+    leadDiscount: 0.25, // 25% off per-lead prices
+    features: [
+      'Priority lead routing',
+      'Lead quality score visibility',
+      'Advanced filters (urgency, property type, scope)',
+      'Configurable acceptance rules',
+      'Monthly invoicing',
+    ],
+  },
+  elite: {
+    name: 'Elite',
+    monthlyFee: 399, // $299-$499 range, using $399 as default
+    leadDiscount: 0, // Exclusive leads have different pricing, not discounted
+    features: [
+      'Exclusive or 24-hour protected leads',
+      'Highest routing priority',
+      'Guaranteed response SLA',
+      'Optional call-transfer leads',
+      'Dedicated account support',
+    ],
+  },
+} as const;

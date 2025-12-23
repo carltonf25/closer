@@ -46,6 +46,7 @@ After deployment completes:
 Once deployment is complete, test these URLs:
 
 ### Core Pages
+
 - [ ] Homepage: `[your-url]/`
 - [ ] Locations: `[your-url]/locations`
 - [ ] HVAC Services: `[your-url]/services/hvac`
@@ -53,15 +54,18 @@ Once deployment is complete, test these URLs:
 - [ ] Sample page: `[your-url]/atlanta/hvac-repair`
 
 ### SEO
+
 - [ ] Sitemap: `[your-url]/sitemap.xml`
 - [ ] Robots: `[your-url]/robots.txt`
 
 ### Forms (Critical!)
+
 - [ ] Submit QuickLeadForm on homepage
 - [ ] Submit full form on city/service page
 - [ ] Verify lead appears in Supabase database
 
 ### Mobile
+
 - [ ] Exit-intent popup (move mouse to leave)
 - [ ] Sticky CTA (scroll on mobile)
 - [ ] Responsive layout
@@ -69,15 +73,18 @@ Once deployment is complete, test these URLs:
 ## 🐛 If Deployment Fails
 
 ### Build Error: "Module not found"
+
 - Check that all imports are correct
 - Verify all files were pushed to GitHub
 
 ### Runtime Error: "Invalid API key"
+
 - Environment variables not set in Vercel
 - Add them in Project Settings → Environment Variables
 - Redeploy after adding
 
 ### Forms Don't Work
+
 - Supabase environment variables missing
 - Check browser console for errors
 - Verify Supabase URL and keys in Vercel settings
@@ -107,6 +114,7 @@ Once deployment is complete, test these URLs:
 ## 📊 Expected Build Output
 
 Your build should show:
+
 ```
 ✓ Compiled successfully
 ✓ Linting and checking validity of types

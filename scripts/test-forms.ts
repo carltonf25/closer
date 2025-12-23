@@ -52,9 +52,15 @@ async function testFullLeadForm() {
   formData.append('state', 'GA');
   formData.append('zip', '30303');
   formData.append('property_type', 'residential');
-  formData.append('description', 'Burst pipe in basement - need immediate help');
+  formData.append(
+    'description',
+    'Burst pipe in basement - need immediate help'
+  );
   formData.append('source', 'seo');
-  formData.append('source_url', 'http://localhost:3000/atlanta/emergency-plumber');
+  formData.append(
+    'source_url',
+    'http://localhost:3000/atlanta/emergency-plumber'
+  );
 
   const result = await submitLead(null, formData);
 
@@ -84,9 +90,13 @@ async function testValidation() {
   const invalidResult = await submitQuickLead(null, invalidPhoneData);
 
   if (!invalidResult.success && invalidResult.errors?.phone) {
-    console.log('✅ Phone validation PASSED - correctly rejected invalid phone');
+    console.log(
+      '✅ Phone validation PASSED - correctly rejected invalid phone'
+    );
   } else {
-    console.log('❌ Phone validation FAILED - should have rejected invalid phone');
+    console.log(
+      '❌ Phone validation FAILED - should have rejected invalid phone'
+    );
   }
 
   // Test missing required field
@@ -98,9 +108,13 @@ async function testValidation() {
   const missingResult = await submitQuickLead(null, missingServiceData);
 
   if (!missingResult.success && missingResult.errors?.service_type) {
-    console.log('✅ Required field validation PASSED - correctly rejected missing service');
+    console.log(
+      '✅ Required field validation PASSED - correctly rejected missing service'
+    );
   } else {
-    console.log('❌ Required field validation FAILED - should have rejected missing service');
+    console.log(
+      '❌ Required field validation FAILED - should have rejected missing service'
+    );
   }
 
   return true;
@@ -129,7 +143,7 @@ async function testHoneypot() {
 
 async function runAllTests() {
   console.log('🚀 Starting Lead Capture Forms End-to-End Tests\n');
-  console.log('=' .repeat(60));
+  console.log('='.repeat(60));
 
   try {
     const quickLeadPassed = await testQuickLeadForm();
@@ -139,12 +153,16 @@ async function runAllTests() {
 
     console.log('\n' + '='.repeat(60));
     console.log('\n📊 Test Summary:\n');
-    console.log(`QuickLeadForm: ${quickLeadPassed ? '✅ PASSED' : '❌ FAILED'}`);
+    console.log(
+      `QuickLeadForm: ${quickLeadPassed ? '✅ PASSED' : '❌ FAILED'}`
+    );
     console.log(`Full LeadForm: ${fullLeadPassed ? '✅ PASSED' : '❌ FAILED'}`);
     console.log('\n' + '='.repeat(60));
 
     if (quickLeadPassed && fullLeadPassed) {
-      console.log('\n🎉 All critical tests PASSED! Forms are working correctly.\n');
+      console.log(
+        '\n🎉 All critical tests PASSED! Forms are working correctly.\n'
+      );
       process.exit(0);
     } else {
       console.log('\n⚠️  Some tests FAILED. Please review the errors above.\n');

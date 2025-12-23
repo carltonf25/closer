@@ -109,20 +109,22 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 
 ### 2.3 Lead Routing Logic
 
-- [ ] Implement contractor matching algorithm:
-  - [ ] Match by service type
-  - [ ] Match by ZIP code coverage
-  - [ ] Check contractor daily/monthly lead limits
-  - [ ] Check contractor active status
-- [ ] Create lead distribution function:
-  - [ ] Exclusive lead logic (single contractor)
-  - [ ] Shared lead logic (multiple contractors)
-  - [ ] Round-robin distribution for fairness
-- [ ] Add lead_deliveries record creation
+- [x] Implement contractor matching algorithm:
+  - [x] Match by service type
+  - [x] Match by ZIP code coverage
+  - [ ] Check contractor daily/monthly lead limits (deferred)
+  - [x] Check contractor active status
+- [x] Create lead distribution function:
+  - [x] Exclusive lead logic (single contractor)
+  - [x] Shared lead logic (broadcast to multiple contractors)
+  - [x] Database function handles matching logic
+- [x] Add lead_deliveries record creation
+- [x] Pricing based on service_type + urgency from database
 - [ ] Implement retry logic for failed notifications
 - [ ] Create lead routing dashboard/logs for debugging
 
 **Estimated Time:** 6-8 hours
+**Status:** ✅ Complete (basic routing implemented)
 
 ### 2.4 Phone Verification (Optional but Recommended)
 
@@ -154,16 +156,20 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 
 - [ ] Build multi-step onboarding form:
   - [ ] Step 1: Company information
-  - [ ] Step 2: Services offered
-  - [ ] Step 3: Service area (ZIP codes)
-  - [ ] Step 4: License verification
-  - [ ] Step 5: Notification preferences
+  - [ ] Step 2: Pricing tier selection (Starter/Pro/Elite with comparison)
+  - [ ] Step 3: Services offered
+  - [ ] Step 4: Service area (ZIP codes or metro area)
+  - [ ] Step 5: License verification
+  - [ ] Step 6: Notification preferences
+  - [ ] Step 7: Payment method (if Pro/Elite tier selected)
 - [ ] Create contractor profile in database
 - [ ] Implement ZIP code selector (map or list)
 - [ ] Add license number validation (if GA has API)
 - [ ] Set initial status to 'pending'
+- [ ] Display tier benefits and pricing clearly
+- [ ] Show refund policy during onboarding
 
-**Estimated Time:** 6-8 hours
+**Estimated Time:** 8-10 hours
 
 ### 3.3 Lead Inbox
 
@@ -231,7 +237,22 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 
 **Estimated Time:** 2-3 hours
 
-### 4.2 Contractor Billing Setup
+### 4.2 Contractor Pricing Tiers
+
+- [ ] Implement three-tier system:
+  - [ ] **Tier 1: Starter** - Pay-per-lead only, no monthly fee
+  - [ ] **Tier 2: Pro** - $99-$199/mo + 20-30% lead discount
+  - [ ] **Tier 3: Elite** - $299-$499/mo + exclusive leads
+- [ ] Add tier selection during contractor onboarding
+- [ ] Create tier upgrade/downgrade flow
+- [ ] Implement tier-based lead pricing discounts
+- [ ] Add tier benefits to contractor dashboard (priority routing, quality scores)
+- [ ] Create Stripe subscription products for Pro/Elite tiers
+- [ ] Handle tier change proration
+
+**Estimated Time:** 6-8 hours
+
+### 4.3 Contractor Billing Setup
 
 - [ ] Create Stripe Customer for each contractor
 - [ ] Build payment method management:
@@ -239,42 +260,75 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
   - [ ] List saved payment methods
   - [ ] Set default payment method
   - [ ] Remove payment method
-- [ ] Store Stripe customer ID in contractors table
+- [ ] Store Stripe customer ID and tier in contractors table
 - [ ] Handle payment method failures
+- [ ] Implement prepaid credit system for Starter tier
 
 **Estimated Time:** 5-6 hours
 
-### 4.3 Lead Billing
+### 4.4 Lead Billing
 
 - [ ] Implement pay-per-lead billing:
   - [ ] Create invoice item when lead accepted
-  - [ ] Calculate price based on service/urgency/exclusivity
-  - [ ] Apply any discounts or credits
+  - [ ] Calculate price based on service/urgency/exclusivity (from lead_prices table)
+  - [ ] Apply tier-based discounts (20-30% for Pro tier)
+  - [ ] Deduct from prepaid credits (Starter tier)
+  - [ ] Add to monthly invoice (Pro/Elite tiers)
 - [ ] Create billing record in lead_deliveries
 - [ ] Implement invoice generation (weekly/monthly)
 - [ ] Set up automatic payment collection
 - [ ] Handle failed payments:
-  - [ ] Retry logic
-  - [ ] Pause lead delivery
+  - [ ] Retry logic (3 attempts over 7 days)
+  - [ ] Pause lead delivery after failure
   - [ ] Send payment failure notifications
+  - [ ] Downgrade tier if subscription payment fails
 
 **Estimated Time:** 6-8 hours
 
-### 4.4 Billing Dashboard
+### 4.5 Refund & Credit Management
+
+- [ ] Implement automated refund system:
+  - [ ] Auto-approve for invalid contact info (verify via system logs)
+  - [ ] Auto-approve for wrong service area (geographic check)
+  - [ ] Auto-approve for incorrect service type (data mismatch)
+  - [ ] Auto-approve for duplicate leads within 7 days
+  - [ ] Auto-deny for non-refundable scenarios (show reason)
+- [ ] Build refund request UI:
+  - [ ] "Request Review" button on lead detail page
+  - [ ] Reason dropdown with predefined options
+  - [ ] Show eligibility before submission
+  - [ ] Display refund policy link
+- [ ] Create refund management for admins:
+  - [ ] Manual review queue for edge cases
+  - [ ] Approve/deny with notes
+  - [ ] Track refund rate by contractor
+  - [ ] Flag abuse patterns (>10% refund requests)
+- [ ] Issue refunds as account credits (default)
+- [ ] Add credit balance display to contractor dashboard
+- [ ] Apply credits automatically to future lead purchases
+
+**Estimated Time:** 8-10 hours
+
+### 4.6 Billing Dashboard
 
 - [ ] Create billing overview page:
-  - [ ] Current balance
+  - [ ] Current tier and benefits
+  - [ ] Current balance (credits - pending charges)
+  - [ ] Next billing date and amount
   - [ ] Recent charges
   - [ ] Payment history
+  - [ ] Available credits from refunds
 - [ ] Build invoice list with download links
 - [ ] Add spending analytics:
   - [ ] Leads purchased this month
   - [ ] Spend by service type
   - [ ] Cost per lead trends
-- [ ] Implement credit/refund display
+  - [ ] ROI calculator (if conversion data available)
+- [ ] Implement credit/refund history display
 - [ ] Add billing alert thresholds
+- [ ] Show tier comparison and upgrade prompts
 
-**Estimated Time:** 5-6 hours
+**Estimated Time:** 6-8 hours
 
 ---
 
@@ -330,15 +384,20 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
   - [ ] Total revenue (daily/weekly/monthly)
   - [ ] Revenue by service type
   - [ ] Revenue by city
-  - [ ] Average lead price
+  - [ ] Revenue by contractor tier (Starter/Pro/Elite)
+  - [ ] Average lead price by tier
+  - [ ] MRR (Monthly Recurring Revenue) from subscriptions
 - [ ] Build financial reports:
   - [ ] Accounts receivable
   - [ ] Payment success rates
-  - [ ] Refund/credit tracking
+  - [ ] Refund/credit tracking and rate
+  - [ ] Refund reasons breakdown
+  - [ ] Contractors by refund rate (flag >10%)
 - [ ] Add revenue forecasting (basic)
 - [ ] Create exportable reports
+- [ ] Track tier conversion rates (Starter → Pro → Elite)
 
-**Estimated Time:** 5-6 hours
+**Estimated Time:** 6-8 hours
 
 ### 5.5 System Configuration
 

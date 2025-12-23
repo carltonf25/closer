@@ -3,6 +3,7 @@
 import { createAdminSupabaseClient } from '@/lib/supabase/server';
 import { leadFormSchema, LeadFormData } from '@/lib/validations';
 import { sendLeadConfirmationEmail } from '@/lib/email/send';
+import { routeLeadToContractors } from '@/services/lead-routing';
 
 export type ActionState = {
   success: boolean;
@@ -126,9 +127,17 @@ export async function submitLead(
       }
     }
 
-    // TODO: Trigger lead matching and notification
-    // This would call a function to find matching contractors
-    // and send them SMS/email notifications
+    // Route lead to matching contractors
+    const routingResult = await routeLeadToContractors(lead.id);
+
+    if (!routingResult.success) {
+      // Log error but don't fail the submission
+      console.error('Lead routing failed:', routingResult.error);
+    } else {
+      console.log(
+        `Lead ${lead.id} routed to ${routingResult.matchedContractors} contractors`
+      );
+    }
 
     return {
       success: true,
@@ -246,6 +255,18 @@ export async function submitQuickLead(
         // Log error but don't fail the submission
         console.error('Failed to send confirmation email:', emailResult.error);
       }
+    }
+
+    // Route lead to matching contractors
+    const routingResult = await routeLeadToContractors(lead.id);
+
+    if (!routingResult.success) {
+      // Log error but don't fail the submission
+      console.error('Lead routing failed:', routingResult.error);
+    } else {
+      console.log(
+        `Lead ${lead.id} routed to ${routingResult.matchedContractors} contractors`
+      );
     }
 
     return {

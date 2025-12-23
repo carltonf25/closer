@@ -47,6 +47,7 @@ vercel --prod
 ```
 
 The CLI will guide you through:
+
 1. Linking to existing project or creating new one
 2. Setting up environment variables
 3. Deploying
@@ -73,6 +74,7 @@ The CLI will guide you through:
 Once deployed, test these URLs:
 
 ### Core Pages
+
 - [ ] Homepage: `https://yourdomain.com`
 - [ ] Locations: `https://yourdomain.com/locations`
 - [ ] HVAC Services: `https://yourdomain.com/services/hvac`
@@ -80,15 +82,18 @@ Once deployed, test these URLs:
 - [ ] Sample City Page: `https://yourdomain.com/atlanta/hvac-repair`
 
 ### SEO Files
+
 - [ ] Sitemap: `https://yourdomain.com/sitemap.xml`
 - [ ] Robots: `https://yourdomain.com/robots.txt`
 
 ### Forms
+
 - [ ] QuickLeadForm on homepage
 - [ ] Full LeadForm on city/service pages
 - [ ] Test submission and verify in Supabase
 
 ### Mobile Features
+
 - [ ] Exit-intent popup (try to leave page)
 - [ ] Sticky mobile CTA (scroll on mobile)
 - [ ] Responsive design
@@ -105,22 +110,26 @@ If using a custom domain:
 ## Step 5: Post-Deployment Checklist
 
 ### SEO Setup
+
 - [ ] Submit sitemap to Google Search Console
 - [ ] Submit sitemap to Bing Webmaster Tools
 - [ ] Verify all 284 pages are indexed
 - [ ] Check structured data with Google's Rich Results Test
 
 ### Analytics
+
 - [ ] Configure PostHog/Mixpanel (if using)
 - [ ] Set up Google Analytics (optional)
 - [ ] Test form tracking events
 
 ### Performance
+
 - [ ] Run Lighthouse audit
 - [ ] Check Core Web Vitals
 - [ ] Verify page load times
 
 ### Monitoring
+
 - [ ] Set up uptime monitoring (UptimeRobot, etc.)
 - [ ] Configure Vercel alerts
 - [ ] Monitor error logs
@@ -128,9 +137,11 @@ If using a custom domain:
 ## Step 6: Update Phone Numbers
 
 Replace placeholder phone numbers:
+
 - `(404) 555-1234` → Your actual phone number
 
 Files to update:
+
 - `src/app/page.tsx`
 - `src/app/(marketing)/[city]/[service]/page.tsx`
 - `src/components/sections/FAQ.tsx`

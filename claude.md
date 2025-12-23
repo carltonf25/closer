@@ -5,11 +5,13 @@
 This is a Next.js 14 lead generation platform for HVAC and plumbing services in Georgia. The platform connects homeowners with licensed contractors by capturing leads through SEO-optimized landing pages and multi-step forms, then routing them to contractors who pay per lead.
 
 **Business Model**: Lead generation marketplace where:
+
 - Homeowners submit service requests for free
 - Contractors pay per lead (either shared or exclusive)
 - Platform generates 280+ static SEO landing pages (20 cities × 14 service variations)
+- Three-tier contractor pricing: Starter (pay-per-lead), Pro (monthly + discounted leads), Elite (exclusive leads)
 
-**Current Status**: MVP Phase - Forms and landing pages complete, contractor portal and billing not yet implemented.
+**Current Status**: Phase 2 - Lead routing implemented, working on contractor portal and billing.
 
 ## Tech Stack
 
@@ -67,28 +69,33 @@ supabase/
 ### Tables
 
 **leads** - Captured lead data
+
 - Primary fields: service_type, urgency, phone, email, description
 - Address fields: city, state, zip_code, full_address
 - Metadata: source, utm tracking, ip_address, user_agent
 - Status tracking: status enum, submitted_at
 
 **contractors** - Service provider profiles
+
 - Profile: company_name, contact info, license_number
 - Settings: is_active, max_daily/monthly leads, service types
 - Auth: Links to auth.users via user_id
 
 **lead_deliveries** - Junction table tracking lead routing
+
 - Relationships: lead_id → leads, contractor_id → contractors
 - Pricing: lead_price, is_exclusive
 - Status: delivered_at, viewed_at, accepted/rejected_at
 - Billing: billing_status, stripe_charge_id
 
 **service_areas** - Defines contractor coverage and SEO landing pages
+
 - Geography: city, state, zip_codes array
 - Services: available_service_types array
 - SEO: is_active, priority ranking
 
 **lead_prices** - Dynamic pricing matrix
+
 - Keys: service_type, urgency, is_exclusive
 - Pricing: base_price, multiplier
 - Geography: Optional city/state overrides
@@ -96,13 +103,17 @@ supabase/
 ### Key Enums
 
 ```typescript
-ServiceType: 'hvac_repair' | 'hvac_install' | 'hvac_maintenance' |
-             'plumbing_emergency' | 'plumbing_repair' | 'plumbing_install' |
-             'water_heater'
+ServiceType: 'hvac_repair' |
+  'hvac_install' |
+  'hvac_maintenance' |
+  'plumbing_emergency' |
+  'plumbing_repair' |
+  'plumbing_install' |
+  'water_heater';
 
-LeadUrgency: 'emergency' | 'today' | 'this_week' | 'flexible'
+LeadUrgency: 'emergency' | 'today' | 'this_week' | 'flexible';
 
-LeadStatus: 'new' | 'delivered' | 'contacted' | 'converted' | 'junk'
+LeadStatus: 'new' | 'delivered' | 'contacted' | 'converted' | 'junk';
 ```
 
 ## Configuration Files
@@ -110,20 +121,25 @@ LeadStatus: 'new' | 'delivered' | 'contacted' | 'converted' | 'junk'
 ### src/config/services.ts
 
 **SERVICES** - Service type definitions
+
 - Maps ServiceType enums to labels, descriptions, SEO titles, categories
 
 **GEORGIA_CITIES** - 20 cities configured
+
 - Metro Atlanta (15): Atlanta, Marietta, Alpharetta, Roswell, Sandy Springs, etc.
 - Other metros (5): Savannah, Augusta, Columbus, Macon, Athens
 
 **SERVICE_SLUGS** - URL routing (14 slug variations → 7 service types)
+
 - Example: 'hvac-repair', 'ac-repair', 'heating-repair' → all map to 'hvac_repair'
 
 **BASE_LEAD_PRICES** - Pricing matrix
+
 - Each service has shared and exclusive pricing
 - Example: hvac_repair = $25 shared, $60 exclusive
 
 **URGENCY_OPTIONS** - Urgency multipliers
+
 - emergency: 1.5×, today: 1.25×, this_week: 1.0×, flexible: 0.8×
 
 ## Key Features & Components
@@ -131,11 +147,13 @@ LeadStatus: 'new' | 'delivered' | 'contacted' | 'converted' | 'junk'
 ### Lead Forms
 
 **QuickLeadForm** (`src/components/forms/QuickLeadForm.tsx`)
+
 - Minimal 3-field form: phone, service, urgency
 - Used on homepage for quick conversions
 - Client component with React state
 
 **LeadForm** (`src/components/forms/LeadForm.tsx`)
+
 - Full multi-step form with all fields
 - Optional fields: email, address, description, contact preferences
 - Pre-fills city/state from URL params
@@ -143,6 +161,7 @@ LeadStatus: 'new' | 'delivered' | 'contacted' | 'converted' | 'junk'
 - Client component with React Hook Form
 
 **AddressAutocomplete** (`src/components/forms/AddressAutocomplete.tsx`)
+
 - Google Places API integration (optional, degrades gracefully)
 - Falls back to regular text input if no API key
 - Client component
@@ -152,12 +171,14 @@ LeadStatus: 'new' | 'delivered' | 'contacted' | 'converted' | 'junk'
 **Route**: `/src/app/(marketing)/[city]/[service]/page.tsx`
 
 Generates 280 static pages at build time (20 cities × 14 service slugs):
+
 - `/atlanta/hvac-repair`
 - `/marietta/emergency-plumber`
 - `/savannah/water-heater`
 - etc.
 
 **Features**:
+
 - Server Component (for SEO)
 - Dynamic metadata generation
 - JSON-LD structured data
@@ -171,6 +192,7 @@ Generates 280 static pages at build time (20 cities × 14 service slugs):
 ### Server Actions
 
 **submitLead** (`src/actions/leads.ts`)
+
 - Validates form data with Zod schema
 - Creates lead record in Supabase
 - Optional: triggers analytics event
@@ -181,6 +203,7 @@ Generates 280 static pages at build time (20 cities × 14 service slugs):
 ### Adding a New City
 
 1. Add to `GEORGIA_CITIES` in `src/config/services.ts`:
+
 ```typescript
 {
   city: 'Gainesville',
@@ -205,6 +228,7 @@ Generates 280 static pages at build time (20 cities × 14 service slugs):
 ### Adding URL Aliases
 
 Just add to `SERVICE_SLUGS` in `src/config/services.ts`:
+
 ```typescript
 'air-conditioner-repair': 'hvac_repair',  // New alias
 ```
@@ -212,6 +236,7 @@ Just add to `SERVICE_SLUGS` in `src/config/services.ts`:
 ### Updating Lead Prices
 
 Edit `BASE_LEAD_PRICES` in `src/config/services.ts`:
+
 ```typescript
 hvac_repair: { shared: 30, exclusive: 70 },  // Changed from 25/60
 ```
@@ -235,11 +260,13 @@ NEXT_PUBLIC_POSTHOG_HOST=https://app.posthog.com
 ## ESLint Configuration
 
 **Current Rules**:
+
 - Airbnb base + TypeScript
 - Warnings for: function component definitions, unescaped entities, console statements
 - These are warnings only and don't block builds
 
 **Common Warnings**:
+
 - `react/function-component-definition` - Airbnb prefers arrow functions
 - `react/no-unescaped-entities` - Use `&apos;` instead of `'`
 - `@typescript-eslint/no-explicit-any` - Avoid `any` type
@@ -255,6 +282,7 @@ npm run lint:fix  # Auto-fix ESLint issues
 ```
 
 **Build Output**:
+
 - 284 total pages (280 city/service + homepage + 404 + marketing layout)
 - All pre-rendered as static HTML for fast loading
 - First Load JS: ~108 KB
@@ -266,11 +294,13 @@ npm run lint:fix  # Auto-fix ESLint issues
 **Problem**: Server Components can't pass onClick handlers during static generation
 
 **Solution**: Extract interactive elements to separate Client Components
+
 - Example: Created `ScrollToTopButton.tsx` with `'use client'` directive
 
 ### Form Submission Not Working
 
 **Check**:
+
 1. Supabase credentials in `.env.local`
 2. RLS policies allow INSERT on leads table
 3. Network tab shows successful POST to Supabase
@@ -278,6 +308,7 @@ npm run lint:fix  # Auto-fix ESLint issues
 ### Missing Types
 
 Regenerate from Supabase:
+
 ```bash
 npm run db:types
 ```
@@ -290,20 +321,149 @@ npm run db:types
 4. **Run build** - `npm run build` to verify static generation works
 5. **Commit** and push to trigger Vercel deployment
 
+## Pricing Strategy
+
+### Contractor Pricing Tiers
+
+The platform uses a three-tier pricing model to accommodate contractors at different business stages:
+
+**Tier 1: Starter (Pay-Per-Lead)**
+
+- No monthly platform fee
+- Higher per-lead pricing
+- Shared or semi-exclusive leads
+- Target: Small contractors, new users testing the platform
+- Example pricing: Plumbing repair $35-$55, HVAC repair $45-$75, Replacements $80-$150
+- Features: Prepaid lead credits, charged only when accepted, basic filters (service + radius)
+- Pros: Low barrier to entry, fast onboarding
+- Cons: Lower margins, higher churn risk
+
+**Tier 2: Pro (Recommended Default)**
+
+- $99-$199 monthly platform fee
+- 20-30% discount on per-lead pricing
+- Target: Growth-focused contractors who want consistency
+- Example: $55 Starter lead → ~$38 Pro lead, $120 replacement → ~$85 Pro
+- Features: Priority routing, quality score visibility, advanced filters, configurable acceptance rules
+- Pros: Predictable recurring revenue, higher LTV, better conversion
+
+**Tier 3: Elite / Exclusive**
+
+- $299-$499 monthly platform fee
+- Premium per-lead pricing for exclusive leads
+- Exclusive leads by ZIP code, service type, or time window
+- Target: High-volume, high-margin contractors
+- Example: Emergency HVAC exclusive $110-$160, Replacement exclusive $180-$250+
+- Features: Exclusive/24hr protected leads, highest routing priority, guaranteed SLA, optional call-transfer
+- Pros: Highest margins, lowest churn, minimal competition
+
+### Dynamic Lead Pricing
+
+Lead prices are calculated using a base price multiplied by quality and demand factors:
+
+**Base Price Factors:**
+
+- Trade (HVAC vs Plumbing)
+- Service type (repair, install, maintenance, emergency)
+- Market (city or cost index)
+
+**Multipliers Applied:**
+
+- **Urgency (same-day/today)**: 1.3-1.5× (emergency: 1.5×, today: 1.25×, this_week: 1.0×, flexible: 0.8×)
+- **Exclusivity**: 1.4-1.6× (exclusive leads cost ~2.4-2.8× shared leads)
+- **Replacement scope**: 1.8-2.5× (install jobs vs repairs)
+- **Verified SMS response**: 1.1-1.2× (when phone verification implemented)
+
+Contractors are shown a transparent breakdown explaining each lead's price to reduce disputes.
+
+### Pricing Examples (Current)
+
+Based on database seed data:
+
+**HVAC Repair (shared)**: $20 (flexible) → $25 (this_week) → $30 (today) → $35 (emergency)
+**HVAC Repair (exclusive)**: $50 (flexible) → $60 (this_week) → $70 (today) → $85 (emergency)
+
+**HVAC Install (shared)**: $35 (flexible) → $45 (this_week) → $50 (today) → $55 (emergency)
+**HVAC Install (exclusive)**: $100 (flexible) → $120 (this_week) → $130 (today) → $140 (emergency)
+
+**Plumbing Emergency (shared)**: $25 (flexible) → $30 (this_week) → $38 (today) → $45 (emergency)
+**Plumbing Emergency (exclusive)**: $60 (flexible) → $75 (this_week) → $95 (today) → $110 (emergency)
+
+## Refund Strategy
+
+The platform uses an objective, automated refund policy to minimize disputes while maintaining contractor trust.
+
+### Core Philosophy
+
+- Refunds based on **objective, verifiable criteria only**
+- Subjective outcomes (booking success, pricing disagreements) are **not refundable**
+- Rules are visible to contractors before purchase
+- Target refund rate: **< 5% of delivered leads**
+- Refunds issued as **credits by default**, not cash
+
+### Auto-Approved Refunds
+
+A refund or credit is issued automatically if the lead meets any condition:
+
+1. **Invalid contact information** - Disconnected or incorrect phone/email (verified by system logs)
+2. **Wrong service area** - Lead location outside contractor's selected coverage
+3. **Incorrect service category** - E.g., plumbing lead sent to HVAC-only contractor
+4. **Duplicate lead** - Same homeowner within 7 days (system detects)
+
+These conditions can be validated by system data without manual review.
+
+### Non-Refundable Scenarios
+
+No refund will be issued for:
+
+- Homeowner did not answer the phone
+- Homeowner chose another contractor
+- Lead was price shopping or collecting quotes
+- Job was not booked
+- Contractor followed up late or not at all
+
+These outcomes are considered normal business risk.
+
+### Refund Request Flow
+
+1. Contractor selects "Request Review" on a lead
+2. Contractor chooses a reason from predefined dropdown
+3. System evaluates eligibility:
+   - If criteria match refundable rules → auto-approve
+   - If criteria match non-refundable rules → auto-deny with explanation
+   - Ambiguous edge cases → manual review queue (should be rare)
+4. Approved refunds issued as account credits within 24 hours
+
+### Dispute Prevention
+
+- Refund rules displayed during contractor onboarding
+- Refund eligibility shown before lead acceptance
+- Each lead includes visible quality score and qualification summary
+- Clear expectations reduce support load and contractor frustration
+
+### Enforcement
+
+- Abuse patterns (excessive refund requests) trigger account review
+- May result in throttling or account suspension
+- All refund decisions logged for transparency
+
 ## Future Implementation (Not Yet Built)
 
 ### Contractor Portal
+
 - `/contractor/signup` - Registration flow
 - `/contractor/login` - Auth
 - `/contractor/dashboard` - Lead inbox
 - `/contractor/settings` - Service areas, preferences
 
 ### Admin Dashboard
+
 - `/admin/leads` - Lead management
 - `/admin/contractors` - Contractor approval/management
 - `/admin/analytics` - Revenue and conversion tracking
 
 ### Integrations
+
 - **Stripe**: Pay-per-lead billing
 - **Twilio**: SMS notifications to contractors
 - **SendGrid/Resend**: Email notifications
@@ -312,19 +472,23 @@ npm run db:types
 ## Troubleshooting
 
 ### "Module not found" errors
+
 ```bash
 npm install
 ```
 
 ### Build timeouts
+
 - Check for infinite loops in components
 - Verify all static params are valid
 
 ### Supabase connection errors
+
 - Verify `.env.local` has correct credentials
 - Check Supabase project is not paused
 
 ### TypeScript errors
+
 - Run `npm run db:types` to regenerate database types
 - Check `tsconfig.json` paths are correct
 
@@ -339,6 +503,7 @@ npm install
 ## Recent Changes
 
 ### 2024-12-22
+
 - Fixed build error: Extracted onClick handlers to `ScrollToTopButton` Client Component
 - Build now successfully generates all 284 static pages
 - Created this claude.md documentation file
