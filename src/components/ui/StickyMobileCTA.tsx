@@ -5,7 +5,7 @@ import { Phone } from 'lucide-react';
 import { ScrollToTopButton } from './ScrollToTopButton';
 import { cn } from '@/lib/utils';
 
-export function StickyMobileCTA() {
+export const StickyMobileCTA: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -46,4 +46,4 @@ export function StickyMobileCTA() {
       </div>
     </div>
   );
-}
+};

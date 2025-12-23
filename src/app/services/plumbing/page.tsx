@@ -1,11 +1,18 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { Droplet, Wrench, Flame, AlertCircle, ChevronRight } from 'lucide-react';
+import {
+  Droplet,
+  Wrench,
+  Flame,
+  AlertCircle,
+  ChevronRight,
+} from 'lucide-react';
 import { SERVICES, SERVICE_TO_SLUG, GEORGIA_CITIES } from '@/config/services';
 import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
 
 export const metadata: Metadata = {
-  title: 'Plumbing Services in Georgia - Emergency Plumber, Repair & Installation',
+  title:
+    'Plumbing Services in Georgia - Emergency Plumber, Repair & Installation',
   description:
     'Find trusted plumbing professionals across Georgia for emergency service, pipe repair, water heater installation, drain cleaning, and more. Licensed and insured plumbers.',
   openGraph: {

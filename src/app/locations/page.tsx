@@ -43,8 +43,8 @@ export default function LocationsPage() {
             Service Areas Across Georgia
           </h1>
           <p className="text-xl text-brand-100 max-w-3xl">
-            Find licensed HVAC and plumbing professionals in your city. We connect
-            homeowners across Georgia with trusted local contractors.
+            Find licensed HVAC and plumbing professionals in your city. We
+            connect homeowners across Georgia with trusted local contractors.
           </p>
         </div>
       </section>
@@ -118,8 +118,8 @@ export default function LocationsPage() {
                 Plumbing Services
               </h3>
               <p className="text-gray-600 mb-4">
-                Emergency plumbing, pipe repair, water heater installation, drain
-                cleaning, and more.
+                Emergency plumbing, pipe repair, water heater installation,
+                drain cleaning, and more.
               </p>
               <span className="inline-flex items-center text-brand-600 font-medium">
                 View all plumbing services{' '}

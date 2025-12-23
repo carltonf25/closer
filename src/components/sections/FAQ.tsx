@@ -23,22 +23,22 @@ const faqs: FAQItem[] = [
   {
     question: 'How quickly will I hear from a contractor?',
     answer:
-      "Most homeowners receive their first contact within 30 minutes of submitting a request. For emergency services, you can often get same-day or next-day appointments. Response times may vary based on time of day and contractor availability.",
+      'Most homeowners receive their first contact within 30 minutes of submitting a request. For emergency services, you can often get same-day or next-day appointments. Response times may vary based on time of day and contractor availability.',
   },
   {
     question: 'Are the contractors licensed and insured?',
     answer:
-      "Yes! All contractors in our network are required to be licensed in Georgia and carry proper insurance. We verify credentials before allowing contractors to join our platform, so you can hire with confidence.",
+      'Yes! All contractors in our network are required to be licensed in Georgia and carry proper insurance. We verify credentials before allowing contractors to join our platform, so you can hire with confidence.',
   },
   {
     question: 'What areas of Georgia do you serve?',
     answer:
-      "We serve all major metro areas across Georgia, including Atlanta, Marietta, Savannah, Augusta, Columbus, and many more. Check our locations page to see if we serve your city.",
+      'We serve all major metro areas across Georgia, including Atlanta, Marietta, Savannah, Augusta, Columbus, and many more. Check our locations page to see if we serve your city.',
   },
   {
     question: 'Can I get multiple quotes?',
     answer:
-      "Absolutely! In fact, we recommend it. When you submit a request, we typically connect you with 2-4 qualified contractors so you can compare quotes, read reviews, and choose the best option for your project and budget.",
+      'Absolutely! In fact, we recommend it. When you submit a request, we typically connect you with 2-4 qualified contractors so you can compare quotes, read reviews, and choose the best option for your project and budget.',
   },
   {
     question: 'What if I need emergency service?',
@@ -83,8 +83,8 @@ export function FAQ() {
               Frequently Asked Questions
             </h2>
             <p className="text-gray-600">
-              Everything you need to know about finding trusted HVAC and plumbing
-              professionals
+              Everything you need to know about finding trusted HVAC and
+              plumbing professionals
             </p>
           </div>
 
@@ -95,7 +95,9 @@ export function FAQ() {
                 className="border border-gray-200 rounded-lg overflow-hidden"
               >
                 <button
-                  onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                  onClick={() =>
+                    setOpenIndex(openIndex === index ? null : index)
+                  }
                   className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
                   aria-expanded={openIndex === index}
                 >

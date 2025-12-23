@@ -114,7 +114,10 @@ export default function CityServicePage({ params }: PageProps) {
               items={[
                 { label: city.city, href: `/locations#${city.slug}` },
                 {
-                  label: service.category === 'hvac' ? 'HVAC Services' : 'Plumbing Services',
+                  label:
+                    service.category === 'hvac'
+                      ? 'HVAC Services'
+                      : 'Plumbing Services',
                   href: `/services/${service.category}`,
                 },
                 { label: service.shortLabel },

@@ -117,7 +117,12 @@
     "consistent-return": "off",
     "@typescript-eslint/no-explicit-any": "warn",
     "import/order": "off",
-    "react/jsx-boolean-value": "off"
+    "react/jsx-boolean-value": "off",
+    "react/button-has-type": "warn",
+    "react/no-array-index-key": "warn",
+    "jsx-a11y/click-events-have-key-events": "warn",
+    "jsx-a11y/no-static-element-interactions": "warn",
+    "react/prop-types": "off"
   },
   "settings": {
     "import/resolver": {

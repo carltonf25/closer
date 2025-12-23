@@ -1,6 +1,12 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { Thermometer, Wind, Wrench, Calendar, ChevronRight } from 'lucide-react';
+import {
+  Thermometer,
+  Wind,
+  Wrench,
+  Calendar,
+  ChevronRight,
+} from 'lucide-react';
 import { SERVICES, SERVICE_TO_SLUG, GEORGIA_CITIES } from '@/config/services';
 import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
 
@@ -40,8 +46,9 @@ export default function HVACServicesPage() {
             HVAC Services Across Georgia
           </h1>
           <p className="text-xl text-brand-100 max-w-3xl">
-            Connect with licensed HVAC professionals for air conditioning repair,
-            heating installation, system maintenance, and emergency services.
+            Connect with licensed HVAC professionals for air conditioning
+            repair, heating installation, system maintenance, and emergency
+            services.
           </p>
         </div>
       </section>

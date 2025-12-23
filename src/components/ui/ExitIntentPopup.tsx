@@ -72,8 +72,9 @@ export function ExitIntentPopup() {
                 Get Your Free Quote in 60 Seconds
               </h2>
               <p className="text-gray-600 text-lg">
-                Join 5,000+ Georgia homeowners who found trusted HVAC and plumbing
-                pros through our service. No obligation, completely free.
+                Join 5,000+ Georgia homeowners who found trusted HVAC and
+                plumbing pros through our service. No obligation, completely
+                free.
               </p>
             </div>
 

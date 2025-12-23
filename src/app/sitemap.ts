@@ -2,7 +2,8 @@ import { MetadataRoute } from 'next';
 import { GEORGIA_CITIES, SERVICE_SLUGS } from '@/config/services';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://georgiahomeservices.com';
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || 'https://georgiahomeservices.com';
 
   // Homepage
   const routes: MetadataRoute.Sitemap = [

@@ -40,6 +40,7 @@ export function trackFormEvent(event: FormEvent): void {
     case 'none':
       // Fallback: log to console in development
       if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
         console.log('[Analytics]', eventName, properties);
       }
       break;

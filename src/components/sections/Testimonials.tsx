@@ -15,7 +15,7 @@ const testimonials: Testimonial[] = [
     location: 'Atlanta, GA',
     service: 'AC Repair',
     rating: 5,
-    text: "My AC went out in the middle of July and I was desperate. Within 30 minutes of submitting my request, I had three contractors reach out. The pro I chose came the same day and had my system running in no time. Highly recommend!",
+    text: 'My AC went out in the middle of July and I was desperate. Within 30 minutes of submitting my request, I had three contractors reach out. The pro I chose came the same day and had my system running in no time. Highly recommend!',
     date: '2 weeks ago',
   },
   {
@@ -23,7 +23,7 @@ const testimonials: Testimonial[] = [
     location: 'Marietta, GA',
     service: 'Emergency Plumbing',
     rating: 5,
-    text: "Burst pipe at 2am - total nightmare! Used this service and had a plumber at my door within an hour. Professional, fair pricing, and fixed everything perfectly. Saved my hardwood floors from serious damage.",
+    text: 'Burst pipe at 2am - total nightmare! Used this service and had a plumber at my door within an hour. Professional, fair pricing, and fixed everything perfectly. Saved my hardwood floors from serious damage.',
     date: '1 month ago',
   },
   {
@@ -39,7 +39,7 @@ const testimonials: Testimonial[] = [
     location: 'Roswell, GA',
     service: 'Water Heater Replacement',
     rating: 5,
-    text: "Super easy process. Filled out the form, got 3 quotes by the end of the day, and had my new water heater installed two days later. Much easier than calling around myself!",
+    text: 'Super easy process. Filled out the form, got 3 quotes by the end of the day, and had my new water heater installed two days later. Much easier than calling around myself!',
     date: '2 months ago',
   },
 ];
@@ -86,8 +86,8 @@ export function Testimonials() {
               What Homeowners Are Saying
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Join thousands of satisfied Georgia homeowners who've found trusted
-              professionals through our service.
+              Join thousands of satisfied Georgia homeowners who've found
+              trusted professionals through our service.
             </p>
           </div>
 
@@ -144,7 +144,9 @@ export function Testimonials() {
               <div className="text-sm text-gray-600">Average Rating</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-brand-600 mb-1">5,000+</div>
+              <div className="text-3xl font-bold text-brand-600 mb-1">
+                5,000+
+              </div>
               <div className="text-sm text-gray-600">Happy Homeowners</div>
             </div>
             <div className="text-center">

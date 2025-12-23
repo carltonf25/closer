@@ -5,10 +5,10 @@ interface ScrollToTopButtonProps {
   className?: string;
 }
 
-export function ScrollToTopButton({
+export const ScrollToTopButton: React.FC<ScrollToTopButtonProps> = ({
   children,
   className = 'btn-primary btn-lg',
-}: ScrollToTopButtonProps) {
+}) => {
   const handleClick = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -18,4 +18,4 @@ export function ScrollToTopButton({
       {children}
     </button>
   );
-}
+};
