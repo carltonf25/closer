@@ -187,3 +187,5 @@ NEXT_PUBLIC_GOOGLE_PLACES_API_KEY=your-google-places-api-key
 - Verify RLS policies are set up correctly
 - Check server logs for errors
 - Ensure all required fields are filled
+
+

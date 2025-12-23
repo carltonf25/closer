@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Phone, Shield, Clock, Star, MapPin, CheckCircle } from 'lucide-react';
 import { LeadForm } from '@/components/forms/LeadForm';
 import { ScrollToTopButton } from '@/components/ui/ScrollToTopButton';
+import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
 import {
   SERVICES,
   SERVICE_SLUGS,
@@ -109,6 +110,16 @@ export default function CityServicePage({ params }: PageProps) {
         {/* Hero */}
         <section className="bg-gradient-to-br from-brand-900 via-brand-800 to-brand-900 text-white">
           <div className="container-marketing py-12 lg:py-20">
+            <Breadcrumbs
+              items={[
+                { label: city.city, href: `/locations#${city.slug}` },
+                {
+                  label: service.category === 'hvac' ? 'HVAC Services' : 'Plumbing Services',
+                  href: `/services/${service.category}`,
+                },
+                { label: service.shortLabel },
+              ]}
+            />
             <div className="grid lg:grid-cols-2 gap-12">
               {/* Content */}
               <div>

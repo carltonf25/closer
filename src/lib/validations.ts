@@ -47,9 +47,16 @@ export const leadFormSchema = z.object({
   address: z
     .string()
     .min(5, 'Please enter your street address')
-    .max(200, 'Address is too long'),
+    .max(200, 'Address is too long')
+    .optional()
+    .or(z.literal('')),
 
-  city: z.string().min(2, 'City is required').max(100, 'City name is too long'),
+  city: z
+    .string()
+    .min(2, 'City is required')
+    .max(100, 'City name is too long')
+    .optional()
+    .or(z.literal('')),
 
   state: z.string().length(2, 'Please use 2-letter state code').default('GA'),
 

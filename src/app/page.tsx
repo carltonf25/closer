@@ -4,6 +4,10 @@ import Link from 'next/link';
 import { Phone, Shield, Clock, Star, ChevronRight } from 'lucide-react';
 import { QuickLeadForm } from '@/components/forms/QuickLeadForm';
 import { ScrollToTopButton } from '@/components/ui/ScrollToTopButton';
+import { Testimonials } from '@/components/sections/Testimonials';
+import { FAQ } from '@/components/sections/FAQ';
+import { ExitIntentPopup } from '@/components/ui/ExitIntentPopup';
+import { StickyMobileCTA } from '@/components/ui/StickyMobileCTA';
 import { GEORGIA_CITIES } from '@/config/services';
 
 export default function HomePage() {
@@ -209,6 +213,12 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Testimonials */}
+      <Testimonials />
+
+      {/* FAQ */}
+      <FAQ />
+
       {/* Final CTA */}
       <section className="py-16 bg-brand-900 text-white">
         <div className="container-marketing text-center">
@@ -330,6 +340,12 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
+
+      {/* Exit Intent Popup */}
+      <ExitIntentPopup />
+
+      {/* Sticky Mobile CTA */}
+      <StickyMobileCTA />
     </main>
   );
 }
