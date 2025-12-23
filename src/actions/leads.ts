@@ -2,6 +2,7 @@
 
 import { createAdminSupabaseClient } from '@/lib/supabase/server';
 import { leadFormSchema, LeadFormData } from '@/lib/validations';
+import { sendLeadConfirmationEmail } from '@/lib/email/send';
 
 export type ActionState = {
   success: boolean;
@@ -107,6 +108,24 @@ export async function submitLead(
 
     const lead = insertResult.data as { id: string };
 
+    // Send confirmation email to homeowner (if email provided)
+    if (data.email) {
+      const emailResult = await sendLeadConfirmationEmail({
+        to: data.email,
+        firstName: data.first_name,
+        lastName: data.last_name,
+        serviceType: data.service_type,
+        city: data.city || '',
+        state: data.state,
+        urgency: data.urgency,
+      });
+
+      if (!emailResult.success) {
+        // Log error but don't fail the submission
+        console.error('Failed to send confirmation email:', emailResult.error);
+      }
+    }
+
     // TODO: Trigger lead matching and notification
     // This would call a function to find matching contractors
     // and send them SMS/email notifications
@@ -210,6 +229,24 @@ export async function submitQuickLead(
     }
 
     const lead = insertResult.data as { id: string };
+
+    // Send confirmation email to homeowner (if email provided)
+    if (rawData.email) {
+      const emailResult = await sendLeadConfirmationEmail({
+        to: rawData.email.toString(),
+        firstName: rawData.first_name,
+        lastName: rawData.last_name,
+        serviceType: rawData.service_type as string,
+        city: rawData.city?.toString() || '',
+        state: rawData.state,
+        urgency: 'this_week',
+      });
+
+      if (!emailResult.success) {
+        // Log error but don't fail the submission
+        console.error('Failed to send confirmation email:', emailResult.error);
+      }
+    }
 
     return {
       success: true,

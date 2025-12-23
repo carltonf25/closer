@@ -14,6 +14,7 @@
     "db:test": "tsx scripts/test-db-connection.ts"
   },
   "dependencies": {
+    "@mailchimp/mailchimp_transactional": "^1.1.2",
     "@supabase/ssr": "^0.5.1",
     "@supabase/supabase-js": "^2.45.4",
     "clsx": "^2.1.1",

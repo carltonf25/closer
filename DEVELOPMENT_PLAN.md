@@ -81,15 +81,15 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 
 ### 2.1 Email Notifications
 
-- [ ] Set up SendGrid or Resend account
-- [ ] Create email templates:
-  - [ ] New lead confirmation (to homeowner)
-  - [ ] New lead alert (to contractor)
-  - [ ] Lead accepted notification (to homeowner)
-- [ ] Implement email sending utility function
-- [ ] Add email to lead submission flow
-- [ ] Set up email tracking (opens, clicks)
-- [ ] Handle email bounces and failures
+- [x] Set up Mailchimp Transactional (Mandrill) account
+- [x] Create email templates:
+  - [x] New lead confirmation (to homeowner)
+  - [x] New lead alert (to contractor)
+  - [x] Lead accepted notification (to homeowner)
+- [x] Implement email sending utility function
+- [x] Add email to lead submission flow
+- [x] Set up email tracking (opens, clicks) - Mailchimp handles automatically
+- [ ] Handle email bounces and failures - Future enhancement
 
 **Estimated Time:** 4-5 hours
 
