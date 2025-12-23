@@ -1,4 +1,4 @@
-import mailchimp from './client';
+import getMailchimpClient from './client';
 import {
   generateLeadConfirmationEmail,
   generateContractorAlertEmail,
@@ -24,6 +24,15 @@ export async function sendLeadConfirmationEmail(data: {
   urgency: string;
 }): Promise<SendEmailResult> {
   try {
+    // Skip email sending if API key is not configured
+    if (!process.env.MAILCHIMP_API_KEY) {
+      console.warn('MAILCHIMP_API_KEY not configured, skipping email');
+      return {
+        success: false,
+        error: 'Email service not configured',
+      };
+    }
+
     const { html, text, subject } = generateLeadConfirmationEmail({
       firstName: data.firstName,
       lastName: data.lastName,
@@ -33,7 +42,7 @@ export async function sendLeadConfirmationEmail(data: {
       urgency: data.urgency,
     });
 
-    const response = await mailchimp.messages.send({
+    const response = await getMailchimpClient().messages.send({
       message: {
         html,
         text,
@@ -104,6 +113,15 @@ export async function sendContractorAlertEmail(data: {
   description?: string;
 }): Promise<SendEmailResult> {
   try {
+    // Skip email sending if API key is not configured
+    if (!process.env.MAILCHIMP_API_KEY) {
+      console.warn('MAILCHIMP_API_KEY not configured, skipping email');
+      return {
+        success: false,
+        error: 'Email service not configured',
+      };
+    }
+
     const { html, text, subject } = generateContractorAlertEmail({
       contractorName: data.contractorName,
       leadId: data.leadId,
@@ -120,7 +138,7 @@ export async function sendContractorAlertEmail(data: {
       description: data.description,
     });
 
-    const response = await mailchimp.messages.send({
+    const response = await getMailchimpClient().messages.send({
       message: {
         html,
         text,
@@ -183,6 +201,15 @@ export async function sendLeadAcceptedEmail(data: {
   serviceType: string;
 }): Promise<SendEmailResult> {
   try {
+    // Skip email sending if API key is not configured
+    if (!process.env.MAILCHIMP_API_KEY) {
+      console.warn('MAILCHIMP_API_KEY not configured, skipping email');
+      return {
+        success: false,
+        error: 'Email service not configured',
+      };
+    }
+
     const { html, text, subject } = generateLeadAcceptedEmail({
       homeownerName: data.homeownerName,
       contractorName: data.contractorName,
@@ -191,7 +218,7 @@ export async function sendLeadAcceptedEmail(data: {
       serviceType: data.serviceType,
     });
 
-    const response = await mailchimp.messages.send({
+    const response = await getMailchimpClient().messages.send({
       message: {
         html,
         text,

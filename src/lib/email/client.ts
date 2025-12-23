@@ -1,6 +1,13 @@
 import Mailchimp from '@mailchimp/mailchimp_transactional';
 
-// Initialize Mailchimp Transactional client
-const mailchimp = Mailchimp(process.env.MAILCHIMP_API_KEY || '');
+// Lazy initialization to avoid issues with Next.js serverless environment
+let mailchimpClient: ReturnType<typeof Mailchimp> | null = null;
 
-export default mailchimp;
+function getMailchimpClient() {
+  if (!mailchimpClient) {
+    mailchimpClient = Mailchimp(process.env.MAILCHIMP_API_KEY || '');
+  }
+  return mailchimpClient;
+}
+
+export default getMailchimpClient;
