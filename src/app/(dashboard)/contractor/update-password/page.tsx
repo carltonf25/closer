@@ -1,7 +1,7 @@
 'use client';
 
 import { useFormState, useFormStatus } from 'react-dom';
-import { updatePassword, AuthActionState } from '@/actions/auth';
+import { updatePassword } from '@/actions/auth';
 import { Loader2 } from 'lucide-react';
 
 const SubmitButton = () => {
@@ -25,10 +25,7 @@ const SubmitButton = () => {
 };
 
 export default function UpdatePasswordPage() {
-  const [state, formAction] = useFormState<AuthActionState | null>(
-    updatePassword,
-    null
-  );
+  const [state, formAction] = useFormState(updatePassword, null);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">

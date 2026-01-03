@@ -9,7 +9,7 @@ import { Loader2, CheckCircle, Mail } from 'lucide-react';
 export default function VerifyEmailPage() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<{
-    email: string;
+    email?: string;
     email_confirmed_at?: string;
   } | null>(null);
   const [resending, setResending] = useState(false);

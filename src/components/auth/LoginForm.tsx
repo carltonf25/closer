@@ -1,7 +1,7 @@
 'use client';
 
 import { useFormState, useFormStatus } from 'react-dom';
-import { loginContractor, AuthActionState } from '@/actions/auth';
+import { loginContractor } from '@/actions/auth';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -26,10 +26,7 @@ const SubmitButton = () => {
 };
 
 export function LoginForm() {
-  const [state, formAction] = useFormState<AuthActionState | null>(
-    loginContractor,
-    null
-  );
+  const [state, formAction] = useFormState(loginContractor, null);
 
   return (
     <form
@@ -80,7 +77,8 @@ export function LoginForm() {
       {state?.message && !state.success && (
         <div className="bg-red-50 border border-red-200 rounded-lg p-3">
           <p className="text-sm text-red-600">{state.message}</p>
-          {state.data?.needsVerification && (
+          {(state.data as { needsVerification?: boolean })
+            ?.needsVerification && (
             <Link
               href="/contractor/verify-email"
               className="text-sm text-blue-600 hover:underline mt-2 inline-block"

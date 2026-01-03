@@ -1,7 +1,7 @@
 'use client';
 
 import { useFormState, useFormStatus } from 'react-dom';
-import { requestPasswordReset, AuthActionState } from '@/actions/auth';
+import { requestPasswordReset } from '@/actions/auth';
 import { Loader2, CheckCircle } from 'lucide-react';
 
 const SubmitButton = () => {
@@ -25,10 +25,7 @@ const SubmitButton = () => {
 };
 
 export function PasswordResetForm() {
-  const [state, formAction] = useFormState<AuthActionState | null>(
-    requestPasswordReset,
-    null
-  );
+  const [state, formAction] = useFormState(requestPasswordReset, null);
 
   if (state?.success) {
     return (

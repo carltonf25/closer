@@ -166,7 +166,7 @@ export async function loginContractor(
       .from('contractors')
       .select('status')
       .eq('user_id', data.user.id)
-      .single();
+      .single<{ status: string }>();
 
     if (contractorError || !contractor) {
       console.error('[AUTH] Contractor lookup failed:', contractorError);

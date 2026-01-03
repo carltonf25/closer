@@ -1,7 +1,7 @@
 'use client';
 
 import { useFormState, useFormStatus } from 'react-dom';
-import { signupContractor, AuthActionState } from '@/actions/auth';
+import { signupContractor } from '@/actions/auth';
 import { SERVICES } from '@/config/services';
 import { usePhoneFormat } from '@/lib/hooks/usePhoneFormat';
 import { useState } from 'react';
@@ -28,10 +28,7 @@ const SubmitButton = () => {
 };
 
 export function SignupForm() {
-  const [state, formAction] = useFormState<AuthActionState | null>(
-    signupContractor,
-    null
-  );
+  const [state, formAction] = useFormState(signupContractor, null);
   const phoneFormat = usePhoneFormat();
   const [serviceZips, setServiceZips] = useState(['']);
 
