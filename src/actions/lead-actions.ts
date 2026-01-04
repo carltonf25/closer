@@ -31,11 +31,14 @@ export async function acceptLead(deliveryId: string): Promise<ActionResult> {
     }
 
     // Get contractor
-    const { data: contractor } = await supabase
+    const { data: contractor } = (await supabase
       .from('contractors')
       .select('id')
       .eq('user_id', user.id)
-      .single();
+      .single()) as {
+      data: { id: string } | null;
+      error: any;
+    };
 
     if (!contractor) {
       return { success: false, message: 'Contractor not found' };
@@ -136,11 +139,14 @@ export async function rejectLead(
     }
 
     // Get contractor
-    const { data: contractor } = await supabase
+    const { data: contractor } = (await supabase
       .from('contractors')
       .select('id')
       .eq('user_id', user.id)
-      .single();
+      .single()) as {
+      data: { id: string } | null;
+      error: any;
+    };
 
     if (!contractor) {
       return { success: false, message: 'Contractor not found' };
@@ -219,11 +225,14 @@ export async function markAsContacted(
     }
 
     // Get contractor
-    const { data: contractor } = await supabase
+    const { data: contractor } = (await supabase
       .from('contractors')
       .select('id')
       .eq('user_id', user.id)
-      .single();
+      .single()) as {
+      data: { id: string } | null;
+      error: any;
+    };
 
     if (!contractor) {
       return { success: false, message: 'Contractor not found' };
@@ -312,11 +321,14 @@ export async function reportBadLead(
     }
 
     // Get contractor
-    const { data: contractor } = await supabase
+    const { data: contractor } = (await supabase
       .from('contractors')
       .select('id')
       .eq('user_id', user.id)
-      .single();
+      .single()) as {
+      data: { id: string } | null;
+      error: any;
+    };
 
     if (!contractor) {
       return { success: false, message: 'Contractor not found' };
@@ -400,11 +412,14 @@ export async function rateLead(
     }
 
     // Get contractor
-    const { data: contractor } = await supabase
+    const { data: contractor } = (await supabase
       .from('contractors')
       .select('id')
       .eq('user_id', user.id)
-      .single();
+      .single()) as {
+      data: { id: string } | null;
+      error: any;
+    };
 
     if (!contractor) {
       return { success: false, message: 'Contractor not found' };
