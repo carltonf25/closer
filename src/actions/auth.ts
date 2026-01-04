@@ -66,7 +66,7 @@ export async function signupContractor(
       email: data.email,
       password: data.password,
       options: {
-        emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/contractor/verify-email`,
+        emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback?next=/contractor/dashboard`,
         data: {
           company_name: data.company_name,
           contact_name: data.contact_name,
@@ -213,7 +213,7 @@ export async function requestPasswordReset(
     const supabase = createServerSupabaseClient();
 
     await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/contractor/update-password`,
+      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback?next=/contractor/update-password`,
     });
 
     // Always return success (security - don't reveal if email exists)

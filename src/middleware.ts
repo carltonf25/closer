@@ -15,6 +15,7 @@ export async function middleware(request: NextRequest) {
     '/contractor/reset-password',
     '/contractor/update-password',
     '/contractor/verify-email',
+    '/auth/callback', // Supabase auth callback for email verification
   ];
 
   // Check if accessing contractor routes
