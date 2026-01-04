@@ -21,7 +21,10 @@ export async function GET(request: NextRequest) {
       console.error('[AUTH CALLBACK] Error exchanging code:', error);
       // Redirect to login with error
       return NextResponse.redirect(
-        new URL('/contractor/login?error=verification_failed', requestUrl.origin)
+        new URL(
+          '/contractor/login?error=verification_failed',
+          requestUrl.origin
+        )
       );
     }
 
@@ -30,7 +33,5 @@ export async function GET(request: NextRequest) {
   }
 
   // No code provided - redirect to login
-  return NextResponse.redirect(
-    new URL('/contractor/login', requestUrl.origin)
-  );
+  return NextResponse.redirect(new URL('/contractor/login', requestUrl.origin));
 }
