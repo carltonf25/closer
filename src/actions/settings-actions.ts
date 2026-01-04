@@ -42,11 +42,14 @@ export async function updateProfile(
     }
 
     // Get contractor
-    const { data: contractor } = await supabase
+    const { data: contractor } = (await supabase
       .from('contractors')
       .select('id')
       .eq('user_id', user.id)
-      .single();
+      .single()) as {
+      data: { id: string } | null;
+      error: any;
+    };
 
     if (!contractor) {
       return { success: false, message: 'Contractor not found' };
@@ -102,11 +105,14 @@ export async function updateServiceAreas(
     }
 
     // Get contractor
-    const { data: contractor } = await supabase
+    const { data: contractor } = (await supabase
       .from('contractors')
       .select('id')
       .eq('user_id', user.id)
-      .single();
+      .single()) as {
+      data: { id: string } | null;
+      error: any;
+    };
 
     if (!contractor) {
       return { success: false, message: 'Contractor not found' };
@@ -156,11 +162,14 @@ export async function updateServicesOffered(
     }
 
     // Get contractor
-    const { data: contractor } = await supabase
+    const { data: contractor } = (await supabase
       .from('contractors')
       .select('id')
       .eq('user_id', user.id)
-      .single();
+      .single()) as {
+      data: { id: string } | null;
+      error: any;
+    };
 
     if (!contractor) {
       return { success: false, message: 'Contractor not found' };
@@ -221,11 +230,14 @@ export async function updateLeadPreferences(
     }
 
     // Get contractor
-    const { data: contractor } = await supabase
+    const { data: contractor } = (await supabase
       .from('contractors')
       .select('id')
       .eq('user_id', user.id)
-      .single();
+      .single()) as {
+      data: { id: string } | null;
+      error: any;
+    };
 
     if (!contractor) {
       return { success: false, message: 'Contractor not found' };
@@ -291,11 +303,14 @@ export async function updateNotificationSettings(
     }
 
     // Get contractor
-    const { data: contractor } = await supabase
+    const { data: contractor } = (await supabase
       .from('contractors')
       .select('id')
       .eq('user_id', user.id)
-      .single();
+      .single()) as {
+      data: { id: string } | null;
+      error: any;
+    };
 
     if (!contractor) {
       return { success: false, message: 'Contractor not found' };
@@ -350,11 +365,14 @@ export async function pauseLeadDelivery(): Promise<ActionResult> {
     }
 
     // Get contractor
-    const { data: contractor } = await supabase
+    const { data: contractor } = (await supabase
       .from('contractors')
       .select('id, status')
       .eq('user_id', user.id)
-      .single();
+      .single()) as {
+      data: { id: string; status: string } | null;
+      error: any;
+    };
 
     if (!contractor) {
       return { success: false, message: 'Contractor not found' };
@@ -402,11 +420,14 @@ export async function resumeLeadDelivery(): Promise<ActionResult> {
     }
 
     // Get contractor
-    const { data: contractor } = await supabase
+    const { data: contractor } = (await supabase
       .from('contractors')
       .select('id, status')
       .eq('user_id', user.id)
-      .single();
+      .single()) as {
+      data: { id: string; status: string } | null;
+      error: any;
+    };
 
     if (!contractor) {
       return { success: false, message: 'Contractor not found' };
