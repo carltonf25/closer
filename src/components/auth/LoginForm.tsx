@@ -25,7 +25,7 @@ const SubmitButton = () => {
   );
 };
 
-export function LoginForm() {
+export const LoginForm = () => {
   const [state, formAction] = useFormState(loginContractor, null);
 
   return (
@@ -92,4 +92,4 @@ export function LoginForm() {
       <SubmitButton />
     </form>
   );
-}
+};

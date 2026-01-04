@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { QuickLeadForm } from '@/components/forms/QuickLeadForm';
 
-export function ExitIntentPopup() {
+export const ExitIntentPopup = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [hasShown, setHasShown] = useState(false);
 
@@ -101,4 +101,4 @@ export function ExitIntentPopup() {
       </div>
     </>
   );
-}
+};

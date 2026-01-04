@@ -24,7 +24,7 @@ const SubmitButton = () => {
   );
 };
 
-export function PasswordResetForm() {
+export const PasswordResetForm = () => {
   const [state, formAction] = useFormState(requestPasswordReset, null);
 
   if (state?.success) {
@@ -73,4 +73,4 @@ export function PasswordResetForm() {
       <SubmitButton />
     </form>
   );
-}
+};

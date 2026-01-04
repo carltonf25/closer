@@ -26,7 +26,10 @@ export type Database = {
           notes: string | null;
           notification_email: string | null;
           notification_phone: string | null;
+          onboarding_completed: boolean;
+          onboarding_completed_at: string | null;
           phone: string;
+          pricing_tier: Database['public']['Enums']['pricing_tier'];
           service_zips: string[];
           services: Database['public']['Enums']['service_type'][];
           state: string;
@@ -52,7 +55,10 @@ export type Database = {
           notes?: string | null;
           notification_email?: string | null;
           notification_phone?: string | null;
+          onboarding_completed?: boolean;
+          onboarding_completed_at?: string | null;
           phone: string;
+          pricing_tier?: Database['public']['Enums']['pricing_tier'];
           service_zips: string[];
           services: Database['public']['Enums']['service_type'][];
           state?: string;
@@ -78,7 +84,10 @@ export type Database = {
           notes?: string | null;
           notification_email?: string | null;
           notification_phone?: string | null;
+          onboarding_completed?: boolean;
+          onboarding_completed_at?: string | null;
           phone?: string;
+          pricing_tier?: Database['public']['Enums']['pricing_tier'];
           service_zips?: string[];
           services?: Database['public']['Enums']['service_type'][];
           state?: string;
@@ -363,6 +372,7 @@ export type Database = {
         | 'converted'
         | 'invalid';
       lead_urgency: 'emergency' | 'today' | 'this_week' | 'flexible';
+      pricing_tier: 'starter' | 'pro' | 'elite';
       property_type: 'residential' | 'commercial';
       service_type:
         | 'hvac_repair'

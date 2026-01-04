@@ -104,6 +104,7 @@ export async function signupContractor(
       status: 'active', // Start as active per requirements
       billing_type: 'per_lead',
       max_leads_per_day: 10,
+      onboarding_completed: false, // Require onboarding after signup
     });
 
     if (dbError) {

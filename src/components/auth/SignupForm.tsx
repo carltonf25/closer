@@ -27,7 +27,7 @@ const SubmitButton = () => {
   );
 };
 
-export function SignupForm() {
+export const SignupForm = () => {
   const [state, formAction] = useFormState(signupContractor, null);
   const phoneFormat = usePhoneFormat();
   const [serviceZips, setServiceZips] = useState(['']);
@@ -373,4 +373,4 @@ export function SignupForm() {
       <SubmitButton />
     </form>
   );
-}
+};

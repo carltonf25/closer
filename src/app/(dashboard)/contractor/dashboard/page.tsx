@@ -2,12 +2,32 @@
 
 import { useAuth } from '@/lib/hooks/useAuth';
 import { signOut } from '@/actions/auth';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Inbox, Settings, CreditCard } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import Link from 'next/link';
 
 export default function ContractorDashboard() {
   const { contractor, loading } = useAuth();
+  const router = useRouter();
+
+  // Redirect to onboarding if not completed
+  useEffect(() => {
+    if (!loading && contractor && !contractor.onboarding_completed) {
+      router.push('/contractor/onboarding');
+    }
+  }, [loading, contractor, router]);
 
   if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+      </div>
+    );
+  }
+
+  // Show loading while redirecting to onboarding
+  if (contractor && !contractor.onboarding_completed) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
@@ -81,14 +101,41 @@ export default function ContractorDashboard() {
             </div>
           </div>
 
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-            <h2 className="text-lg font-semibold text-blue-900 mb-2">
-              Coming Soon
-            </h2>
-            <p className="text-blue-700 text-sm">
-              Your lead inbox, settings, and billing will be available here
-              soon.
-            </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Link
+              href="/contractor/leads"
+              className="bg-white border-2 border-blue-600 rounded-lg p-6 hover:bg-blue-50 transition group"
+            >
+              <div className="flex items-center mb-3">
+                <Inbox className="h-6 w-6 text-blue-600 mr-3" />
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Lead Inbox
+                </h3>
+              </div>
+              <p className="text-sm text-gray-600">
+                View and manage your incoming leads
+              </p>
+            </Link>
+
+            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 opacity-50 cursor-not-allowed">
+              <div className="flex items-center mb-3">
+                <Settings className="h-6 w-6 text-gray-400 mr-3" />
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Settings
+                </h3>
+              </div>
+              <p className="text-sm text-gray-600">Coming soon</p>
+            </div>
+
+            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 opacity-50 cursor-not-allowed">
+              <div className="flex items-center mb-3">
+                <CreditCard className="h-6 w-6 text-gray-400 mr-3" />
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Billing
+                </h3>
+              </div>
+              <p className="text-sm text-gray-600">Coming soon</p>
+            </div>
           </div>
         </div>
       </div>

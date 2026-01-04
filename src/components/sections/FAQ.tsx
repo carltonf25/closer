@@ -52,7 +52,7 @@ const faqs: FAQItem[] = [
   },
 ];
 
-export function FAQ() {
+export const FAQ = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   // Generate FAQ schema markup for SEO
@@ -146,4 +146,4 @@ export function FAQ() {
       </section>
     </>
   );
-}
+};

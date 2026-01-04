@@ -44,7 +44,7 @@ const testimonials: Testimonial[] = [
   },
 ];
 
-export function Testimonials() {
+export const Testimonials = () => {
   // Generate JSON-LD schema for reviews
   const reviewSchema = {
     '@context': 'https://schema.org',
@@ -162,4 +162,4 @@ export function Testimonials() {
       </section>
     </>
   );
-}
+};

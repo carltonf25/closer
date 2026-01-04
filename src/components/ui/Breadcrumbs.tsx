@@ -10,7 +10,7 @@ interface BreadcrumbsProps {
   items: BreadcrumbItem[];
 }
 
-export function Breadcrumbs({ items }: BreadcrumbsProps) {
+export const Breadcrumbs = ({ items }: BreadcrumbsProps) => {
   // Generate JSON-LD structured data for breadcrumbs
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -72,4 +72,4 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
       </nav>
     </>
   );
-}
+};
