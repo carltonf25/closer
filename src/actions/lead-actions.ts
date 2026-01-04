@@ -239,11 +239,14 @@ export async function markAsContacted(
     }
 
     // Verify this delivery belongs to this contractor
-    const { data: delivery } = await supabase
+    const { data: delivery } = (await supabase
       .from('lead_deliveries')
       .select('id, contractor_id, outcome')
       .eq('id', deliveryId)
-      .single();
+      .single()) as {
+      data: { id: string; contractor_id: string; outcome: string } | null;
+      error: any;
+    };
 
     if (!delivery) {
       return { success: false, message: 'Lead not found' };
