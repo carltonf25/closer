@@ -6,13 +6,18 @@ import {
   Phone,
   Mail,
   Clock,
-  DollarSign,
   ChevronDown,
   ChevronUp,
   Calendar,
   Home,
   AlertCircle,
+  Star,
+  Flag,
+  Loader2,
 } from 'lucide-react';
+import { acceptLead, markAsContacted, rateLead } from '@/actions/lead-actions';
+import { RejectLeadModal } from './RejectLeadModal';
+import { ReportBadLeadModal } from './ReportBadLeadModal';
 
 type Lead = {
   id: string;
@@ -48,12 +53,11 @@ type Props = {
   onUpdate: () => void;
 };
 
-const formatServiceType = (serviceType: string) => {
-  return serviceType
+const formatServiceType = (serviceType: string) =>
+  serviceType
     .split('_')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
-};
 
 const formatUrgency = (urgency: string) => {
   const urgencyMap: Record<string, { label: string; color: string }> = {
@@ -78,11 +82,52 @@ const getStatusBadge = (outcome: string) => {
 
 export const LeadCard = ({ delivery, onUpdate }: Props) => {
   const [expanded, setExpanded] = useState(false);
+  const [showRejectModal, setShowRejectModal] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [rating, setRating] = useState(delivery.quality_rating || 0);
+  const [actionLoading, setActionLoading] = useState(false);
   const { lead } = delivery;
 
   if (!lead) {
     return null;
   }
+
+  const handleAccept = async () => {
+    setActionLoading(true);
+    const result = await acceptLead(delivery.id);
+    setActionLoading(false);
+
+    if (result.success) {
+      onUpdate();
+    } else {
+      alert(result.message || 'Failed to accept lead');
+    }
+  };
+
+  const handleMarkContacted = async () => {
+    setActionLoading(true);
+    const result = await markAsContacted(delivery.id);
+    setActionLoading(false);
+
+    if (result.success) {
+      onUpdate();
+    } else {
+      alert(result.message || 'Failed to update lead');
+    }
+  };
+
+  const handleRate = async (newRating: number) => {
+    const result = await rateLead({
+      deliveryId: delivery.id,
+      rating: newRating,
+    });
+
+    if (result.success) {
+      setRating(newRating);
+    } else {
+      alert(result.message || 'Failed to save rating');
+    }
+  };
 
   const urgencyInfo = formatUrgency(lead.urgency);
   const statusBadge = getStatusBadge(delivery.outcome);
@@ -220,30 +265,90 @@ export const LeadCard = ({ delivery, onUpdate }: Props) => {
           </div>
 
           {/* Actions */}
-          <div className="mt-6 pt-4 border-t border-gray-200 flex gap-3">
-            {delivery.outcome === 'pending' && (
-              <>
-                <button
-                  type="button"
-                  className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
-                >
-                  Accept Lead
-                </button>
-                <button
-                  type="button"
-                  className="flex-1 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg font-semibold hover:bg-gray-200 transition"
-                >
-                  Reject
-                </button>
-              </>
-            )}
-            {delivery.outcome === 'accepted' && (
-              <button
-                type="button"
-                className="flex-1 bg-green-100 text-green-700 px-4 py-2 rounded-lg font-semibold hover:bg-green-200 transition"
-              >
-                Mark as Contacted
-              </button>
+          <div className="mt-6 pt-4 border-t border-gray-200">
+            <div className="flex gap-3 mb-3">
+              {delivery.outcome === 'pending' && (
+                <>
+                  <button
+                    type="button"
+                    onClick={handleAccept}
+                    disabled={actionLoading}
+                    className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-50 flex items-center justify-center"
+                  >
+                    {actionLoading ? (
+                      <>
+                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                        Accepting...
+                      </>
+                    ) : (
+                      'Accept Lead'
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowRejectModal(true)}
+                    disabled={actionLoading}
+                    className="flex-1 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg font-semibold hover:bg-gray-200 transition disabled:opacity-50"
+                  >
+                    Reject
+                  </button>
+                </>
+              )}
+              {delivery.outcome === 'accepted' && (
+                <>
+                  <button
+                    type="button"
+                    onClick={handleMarkContacted}
+                    disabled={actionLoading}
+                    className="flex-1 bg-green-100 text-green-700 px-4 py-2 rounded-lg font-semibold hover:bg-green-200 transition disabled:opacity-50 flex items-center justify-center"
+                  >
+                    {actionLoading ? (
+                      <>
+                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                        Updating...
+                      </>
+                    ) : (
+                      'Mark as Contacted'
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowReportModal(true)}
+                    className="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg transition flex items-center"
+                  >
+                    <Flag className="h-4 w-4 mr-1" />
+                    Report Issue
+                  </button>
+                </>
+              )}
+            </div>
+
+            {/* Rating */}
+            {(delivery.outcome === 'accepted' ||
+              delivery.outcome === 'rejected') && (
+              <div className="flex items-center justify-between pt-3 border-t">
+                <span className="text-sm text-gray-600">
+                  Rate lead quality:
+                </span>
+                <div className="flex gap-1">
+                  {[1, 2, 3, 4, 5].map(star => (
+                    <button
+                      key={star}
+                      type="button"
+                      onClick={() => handleRate(star)}
+                      className="p-1 hover:scale-110 transition"
+                    >
+                      <Star
+                        className={`h-5 w-5 ${
+                          star <= rating
+                            ? 'fill-yellow-400 text-yellow-400'
+                            : 'text-gray-300'
+                        }`}
+                      />
+                    </button>
+                  ))}
+                </div>
+              </div>
             )}
           </div>
 
@@ -255,7 +360,7 @@ export const LeadCard = ({ delivery, onUpdate }: Props) => {
                   <p className="font-semibold mb-1">Respond quickly!</p>
                   <p>
                     {delivery.is_exclusive
-                      ? "This is an exclusive lead - only you received it. The customer is waiting for your call."
+                      ? 'This is an exclusive lead - only you received it. The customer is waiting for your call.'
                       : 'This lead was sent to multiple contractors. The first to respond usually wins the job.'}
                   </p>
                 </div>
@@ -263,6 +368,23 @@ export const LeadCard = ({ delivery, onUpdate }: Props) => {
             </div>
           )}
         </div>
+      )}
+
+      {/* Modals */}
+      {showRejectModal && (
+        <RejectLeadModal
+          deliveryId={delivery.id}
+          onClose={() => setShowRejectModal(false)}
+          onSuccess={onUpdate}
+        />
+      )}
+
+      {showReportModal && (
+        <ReportBadLeadModal
+          deliveryId={delivery.id}
+          onClose={() => setShowReportModal(false)}
+          onSuccess={onUpdate}
+        />
       )}
     </div>
   );

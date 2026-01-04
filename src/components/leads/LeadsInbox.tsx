@@ -109,14 +109,14 @@ export const LeadsInbox = ({ contractorId }: Props) => {
     let filteredData = data || [];
     if (filters.service_type !== 'all') {
       filteredData = filteredData.filter(
-        (ld) => ld.lead?.service_type === filters.service_type
+        ld => ld.lead?.service_type === filters.service_type
       );
     }
 
     // Filter by date range
     if (filters.date_range !== 'all') {
       const now = new Date();
-      let cutoffDate = new Date();
+      const cutoffDate = new Date();
 
       switch (filters.date_range) {
         case 'today':
@@ -128,10 +128,12 @@ export const LeadsInbox = ({ contractorId }: Props) => {
         case 'month':
           cutoffDate.setMonth(now.getMonth() - 1);
           break;
+        default:
+          break;
       }
 
       filteredData = filteredData.filter(
-        (ld) => new Date(ld.created_at) >= cutoffDate
+        ld => new Date(ld.created_at) >= cutoffDate
       );
     }
 
@@ -171,9 +173,9 @@ export const LeadsInbox = ({ contractorId }: Props) => {
 
   const stats = {
     total: leads.length,
-    new: leads.filter((l) => l.outcome === 'pending').length,
-    viewed: leads.filter((l) => l.outcome === 'viewed').length,
-    accepted: leads.filter((l) => l.outcome === 'accepted').length,
+    new: leads.filter(l => l.outcome === 'pending').length,
+    viewed: leads.filter(l => l.outcome === 'viewed').length,
+    accepted: leads.filter(l => l.outcome === 'accepted').length,
   };
 
   if (loading) {
@@ -227,7 +229,7 @@ export const LeadsInbox = ({ contractorId }: Props) => {
             </p>
           </div>
         ) : (
-          leads.map((delivery) => (
+          leads.map(delivery => (
             <LeadCard
               key={delivery.id}
               delivery={delivery}

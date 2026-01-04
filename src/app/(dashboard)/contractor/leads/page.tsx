@@ -21,11 +21,18 @@ export default async function LeadsPage() {
   }
 
   // Get contractor profile
-  const { data: contractor } = await supabase
+  const { data: contractor } = (await supabase
     .from('contractors')
     .select('id, company_name, onboarding_completed')
     .eq('user_id', user.id)
-    .single();
+    .single()) as {
+    data: {
+      id: string;
+      company_name: string;
+      onboarding_completed: boolean;
+    } | null;
+    error: any;
+  };
 
   if (!contractor) {
     redirect('/contractor/login');

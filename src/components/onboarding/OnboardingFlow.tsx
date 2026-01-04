@@ -13,6 +13,7 @@ type PricingTier = 'starter' | 'pro' | 'elite';
 
 export type OnboardingData = {
   pricing_tier: PricingTier;
+  billing_type: 'per_lead' | 'monthly' | 'hybrid';
   notification_email: string;
   notification_phone: string;
   payment_method_id?: string;
@@ -39,6 +40,7 @@ export const OnboardingFlow = ({ contractor }: Props) => {
 
   const [onboardingData, setOnboardingData] = useState<OnboardingData>({
     pricing_tier: 'starter',
+    billing_type: 'per_lead',
     notification_email: contractor.email,
     notification_phone: contractor.phone,
   });
@@ -126,6 +128,7 @@ export const OnboardingFlow = ({ contractor }: Props) => {
         {currentStep === 3 && onboardingData.pricing_tier !== 'starter' && (
           <PaymentMethodStep
             tier={onboardingData.pricing_tier}
+            billingType={onboardingData.billing_type}
             onPaymentMethodAdded={paymentMethodId =>
               updateData({ payment_method_id: paymentMethodId })
             }

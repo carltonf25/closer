@@ -8,66 +8,98 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- ENUMS
 -- ============================================
 
-CREATE TYPE service_type AS ENUM (
-  'hvac_repair',
-  'hvac_install',
-  'hvac_maintenance',
-  'plumbing_emergency',
-  'plumbing_repair',
-  'plumbing_install',
-  'water_heater'
-);
+DO $$ BEGIN
+  CREATE TYPE service_type AS ENUM (
+    'hvac_repair',
+    'hvac_install',
+    'hvac_maintenance',
+    'plumbing_emergency',
+    'plumbing_repair',
+    'plumbing_install',
+    'water_heater'
+  );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
-CREATE TYPE lead_urgency AS ENUM (
-  'emergency',
-  'today',
-  'this_week',
-  'flexible'
-);
+DO $$ BEGIN
+  CREATE TYPE lead_urgency AS ENUM (
+    'emergency',
+    'today',
+    'this_week',
+    'flexible'
+  );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
-CREATE TYPE property_type AS ENUM (
-  'residential',
-  'commercial'
-);
+DO $$ BEGIN
+  CREATE TYPE property_type AS ENUM (
+    'residential',
+    'commercial'
+  );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
-CREATE TYPE lead_status AS ENUM (
-  'new',
-  'verified',
-  'sent',
-  'accepted',
-  'rejected',
-  'converted',
-  'invalid'
-);
+DO $$ BEGIN
+  CREATE TYPE lead_status AS ENUM (
+    'new',
+    'verified',
+    'sent',
+    'accepted',
+    'rejected',
+    'converted',
+    'invalid'
+  );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
-CREATE TYPE lead_source AS ENUM (
-  'seo',
-  'ppc',
-  'facebook',
-  'referral',
-  'direct'
-);
+DO $$ BEGIN
+  CREATE TYPE lead_source AS ENUM (
+    'seo',
+    'ppc',
+    'facebook',
+    'referral',
+    'direct'
+  );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
-CREATE TYPE contractor_status AS ENUM (
-  'pending',
-  'active',
-  'paused',
-  'churned'
-);
+DO $$ BEGIN
+  CREATE TYPE contractor_status AS ENUM (
+    'pending',
+    'active',
+    'paused',
+    'churned'
+  );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
-CREATE TYPE billing_type AS ENUM (
-  'per_lead',
-  'monthly',
-  'hybrid'
-);
+DO $$ BEGIN
+  CREATE TYPE billing_type AS ENUM (
+    'per_lead',
+    'monthly',
+    'hybrid'
+  );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
-CREATE TYPE delivery_outcome AS ENUM (
-  'pending',
-  'viewed',
-  'accepted',
-  'rejected',
-  'no_response'
-);
+DO $$ BEGIN
+  CREATE TYPE delivery_outcome AS ENUM (
+    'pending',
+    'viewed',
+    'accepted',
+    'rejected',
+    'no_response'
+  );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
 -- ============================================
 -- TABLES

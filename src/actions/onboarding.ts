@@ -8,6 +8,7 @@ import { z } from 'zod';
 
 const onboardingSchema = z.object({
   pricing_tier: z.enum(['starter', 'pro', 'elite']),
+  billing_type: z.enum(['per_lead', 'monthly', 'hybrid']),
   notification_email: z.string().email(),
   notification_phone: z.string().regex(/^\d{10}$/, 'Must be 10 digits'),
   payment_method_id: z.string().optional(),
@@ -73,6 +74,7 @@ export async function completeOnboarding(
       .from('contractors')
       .update({
         pricing_tier: result.data.pricing_tier,
+        billing_type: result.data.billing_type,
         notification_email: result.data.notification_email,
         notification_phone: result.data.notification_phone,
         onboarding_completed: true,
@@ -88,8 +90,11 @@ export async function completeOnboarding(
       };
     }
 
-    // TODO: If payment_method_id is provided and tier is pro/elite,
-    // create Stripe subscription (Phase 4)
+    console.log('[ONBOARDING] Completed successfully:', {
+      contractorId: contractor.id,
+      tier: result.data.pricing_tier,
+      billingType: result.data.billing_type,
+    });
 
     return {
       success: true,

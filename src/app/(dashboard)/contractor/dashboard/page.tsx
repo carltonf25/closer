@@ -117,22 +117,25 @@ export default function ContractorDashboard() {
               </p>
             </Link>
 
-            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 opacity-50 cursor-not-allowed">
+            <Link
+              href="/contractor/settings"
+              className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:bg-gray-50 transition group"
+            >
               <div className="flex items-center mb-3">
-                <Settings className="h-6 w-6 text-gray-400 mr-3" />
+                <Settings className="h-6 w-6 text-gray-600 mr-3 group-hover:text-gray-900" />
                 <h3 className="text-lg font-semibold text-gray-900">
                   Settings
                 </h3>
               </div>
-              <p className="text-sm text-gray-600">Coming soon</p>
-            </div>
+              <p className="text-sm text-gray-600">
+                Manage your profile and preferences
+              </p>
+            </Link>
 
             <div className="bg-white border-2 border-gray-200 rounded-lg p-6 opacity-50 cursor-not-allowed">
               <div className="flex items-center mb-3">
                 <CreditCard className="h-6 w-6 text-gray-400 mr-3" />
-                <h3 className="text-lg font-semibold text-gray-900">
-                  Billing
-                </h3>
+                <h3 className="text-lg font-semibold text-gray-900">Billing</h3>
               </div>
               <p className="text-sm text-gray-600">Coming soon</p>
             </div>
