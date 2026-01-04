@@ -5,7 +5,6 @@ import { createAdminSupabaseClient } from '@/lib/supabase/server';
 import { CONTRACTOR_TIERS } from '@/config/services';
 import type { BillingType } from '@/lib/database.types';
 import type { ChargeLeadResult } from '@/lib/stripe/types';
-import type Stripe from 'stripe';
 
 /**
  * Calculate final lead price with tier discount applied
