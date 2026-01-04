@@ -90,7 +90,10 @@ export async function approveRefund(
     );
 
     if (!refundResult.success) {
-      return { success: false, message: refundResult.message || 'Refund failed' };
+      return {
+        success: false,
+        message: refundResult.message || 'Refund failed',
+      };
     }
 
     if (result.data.adminNotes) {
@@ -115,7 +118,8 @@ export async function approveRefund(
     console.error('[ADMIN_ACTIONS] Approve refund error:', error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : 'Failed to process refund',
+      message:
+        error instanceof Error ? error.message : 'Failed to process refund',
     };
   }
 }

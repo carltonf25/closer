@@ -129,9 +129,6 @@ export const OnboardingFlow = ({ contractor }: Props) => {
           <PaymentMethodStep
             tier={onboardingData.pricing_tier}
             billingType={onboardingData.billing_type}
-            onPaymentMethodAdded={paymentMethodId =>
-              updateData({ payment_method_id: paymentMethodId })
-            }
             onNext={handleNext}
             onBack={handleBack}
           />

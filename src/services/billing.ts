@@ -5,6 +5,7 @@ import { createAdminSupabaseClient } from '@/lib/supabase/server';
 import { CONTRACTOR_TIERS } from '@/config/services';
 import type { BillingType } from '@/lib/database.types';
 import type { ChargeLeadResult } from '@/lib/stripe/types';
+import type Stripe from 'stripe';
 
 /**
  * Calculate final lead price with tier discount applied
@@ -21,7 +22,9 @@ function calculateFinalPrice(
  * Charge contractor for accepted lead
  * Handles all three billing types: per_lead, monthly, hybrid
  */
-export async function chargeForLead(deliveryId: string): Promise<ChargeLeadResult> {
+export async function chargeForLead(
+  deliveryId: string
+): Promise<ChargeLeadResult> {
   try {
     const supabase = createAdminSupabaseClient();
 
@@ -119,7 +122,7 @@ export async function chargeForLead(deliveryId: string): Promise<ChargeLeadResul
       },
     });
 
-    const paidInvoice = await stripe.invoices.pay(invoice.id);
+    const paidInvoice = (await stripe.invoices.pay(invoice.id)) as any;
 
     // Update delivery
     await supabase
@@ -140,7 +143,10 @@ export async function chargeForLead(deliveryId: string): Promise<ChargeLeadResul
     return {
       success: true,
       invoiceId: paidInvoice.id,
-      paymentIntentId: paidInvoice.payment_intent as string,
+      paymentIntentId:
+        typeof paidInvoice.payment_intent === 'string'
+          ? paidInvoice.payment_intent
+          : paidInvoice.payment_intent?.id,
     };
   } catch (error) {
     console.error('[BILLING] Charge failed:', error);
@@ -183,14 +189,19 @@ export async function processLeadRefund(
     }
 
     const stripe = getStripeClient();
-    const invoice = await stripe.invoices.retrieve(delivery.stripe_invoice_id);
+    const invoice = (await stripe.invoices.retrieve(
+      delivery.stripe_invoice_id
+    )) as any;
 
     if (!invoice.payment_intent) {
       return { success: false, message: 'No payment to refund' };
     }
 
     await stripe.refunds.create({
-      payment_intent: invoice.payment_intent as string,
+      payment_intent:
+        typeof invoice.payment_intent === 'string'
+          ? invoice.payment_intent
+          : invoice.payment_intent.id,
       reason: 'requested_by_customer',
       metadata: {
         lead_delivery_id: deliveryId,

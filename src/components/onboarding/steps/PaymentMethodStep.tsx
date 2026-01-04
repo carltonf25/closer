@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { CreditCard, AlertCircle, Shield, CheckCircle } from 'lucide-react';
+import { AlertCircle, Shield, CheckCircle } from 'lucide-react';
 import { loadStripe } from '@stripe/stripe-js';
 import {
   Elements,
@@ -21,7 +21,6 @@ const stripePromise = loadStripe(
 type Props = {
   tier: 'pro' | 'elite';
   billingType: 'per_lead' | 'monthly' | 'hybrid';
-  onPaymentMethodAdded: (paymentMethodId: string) => void;
   onNext: () => void;
   onBack: () => void;
 };
@@ -76,7 +75,7 @@ function PaymentForm({
           setIsProcessing(false);
         }
       }
-    } catch (err) {
+    } catch {
       setErrorMessage('An unexpected error occurred');
       setIsProcessing(false);
     }
@@ -124,9 +123,9 @@ export const PaymentMethodStep = ({
   onNext,
   onBack,
 }: Props) => {
-  const [setupIntent, setSetupIntent] = useState<{ clientSecret: string } | null>(
-    null
-  );
+  const [setupIntent, setSetupIntent] = useState<{
+    clientSecret: string;
+  } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -156,7 +155,7 @@ export const PaymentMethodStep = ({
     return (
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4" />
           <p className="text-gray-600">Setting up payment...</p>
         </div>
       </div>

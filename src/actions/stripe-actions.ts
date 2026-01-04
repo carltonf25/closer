@@ -35,11 +35,20 @@ export async function setupPaymentMethod(
       return { success: false, message: 'Not authenticated' };
     }
 
-    const { data: contractor } = await supabase
+    const { data: contractor } = (await supabase
       .from('contractors')
       .select('id, email, contact_name, company_name, stripe_customer_id')
       .eq('user_id', user.id)
-      .single();
+      .single()) as {
+      data: {
+        id: string;
+        email: string;
+        contact_name: string;
+        company_name: string;
+        stripe_customer_id: string | null;
+      } | null;
+      error: any;
+    };
 
     if (!contractor) {
       return { success: false, message: 'Contractor not found' };
@@ -71,8 +80,14 @@ export async function setupPaymentMethod(
         .eq('id', contractor.id);
 
       if (updateError) {
-        console.error('[STRIPE_ACTIONS] Failed to save customer ID:', updateError);
-        return { success: false, message: 'Failed to save payment information' };
+        console.error(
+          '[STRIPE_ACTIONS] Failed to save customer ID:',
+          updateError
+        );
+        return {
+          success: false,
+          message: 'Failed to save payment information',
+        };
       }
     }
 
@@ -96,7 +111,10 @@ export async function setupPaymentMethod(
     console.error('[STRIPE_ACTIONS] Setup payment method error:', error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : 'Failed to setup payment method',
+      message:
+        error instanceof Error
+          ? error.message
+          : 'Failed to setup payment method',
     };
   }
 }
@@ -129,18 +147,26 @@ export async function confirmPaymentMethod(
       return { success: false, message: 'Not authenticated' };
     }
 
-    const { data: contractor } = await supabase
+    const { data: contractor } = (await supabase
       .from('contractors')
       .select('id, stripe_customer_id')
       .eq('user_id', user.id)
-      .single();
+      .single()) as {
+      data: {
+        id: string;
+        stripe_customer_id: string | null;
+      } | null;
+      error: any;
+    };
 
     if (!contractor?.stripe_customer_id) {
       return { success: false, message: 'Payment setup not found' };
     }
 
     // Retrieve setup intent
-    const setupIntent = await stripe.setupIntents.retrieve(result.data.setupIntentId);
+    const setupIntent = await stripe.setupIntents.retrieve(
+      result.data.setupIntentId
+    );
 
     if (setupIntent.status !== 'succeeded') {
       return { success: false, message: 'Payment method setup not completed' };
@@ -156,14 +182,20 @@ export async function confirmPaymentMethod(
     });
 
     // Create subscription for monthly/hybrid
-    if (result.data.billingType === 'monthly' || result.data.billingType === 'hybrid') {
+    if (
+      result.data.billingType === 'monthly' ||
+      result.data.billingType === 'hybrid'
+    ) {
       const priceId =
         result.data.pricingTier === 'pro'
           ? process.env.STRIPE_PRICE_PRO_MONTHLY_ID
           : process.env.STRIPE_PRICE_ELITE_MONTHLY_ID;
 
       if (!priceId) {
-        console.error('[STRIPE_ACTIONS] Missing price ID for tier:', result.data.pricingTier);
+        console.error(
+          '[STRIPE_ACTIONS] Missing price ID for tier:',
+          result.data.pricingTier
+        );
         return { success: false, message: 'Subscription configuration error' };
       }
 
@@ -183,7 +215,10 @@ export async function confirmPaymentMethod(
     console.error('[STRIPE_ACTIONS] Confirm payment method error:', error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : 'Failed to confirm payment method',
+      message:
+        error instanceof Error
+          ? error.message
+          : 'Failed to confirm payment method',
     };
   }
 }

@@ -45,7 +45,8 @@ type LeadDelivery = {
   outcome: string;
   is_exclusive: boolean;
   price: number;
-  lead: Lead;
+  quality_rating: number | null;
+  lead: Lead | null;
 };
 
 type Props = {

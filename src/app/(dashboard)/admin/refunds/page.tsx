@@ -35,10 +35,6 @@ export default function RefundsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [processingId, setProcessingId] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadReports();
-  }, []);
-
   const loadReports = async () => {
     setIsLoading(true);
     try {
@@ -49,6 +45,11 @@ export default function RefundsPage() {
     }
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    loadReports();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleApprove = async (deliveryId: string, feedback: string) => {
     setProcessingId(deliveryId);
@@ -80,7 +81,7 @@ export default function RefundsPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" />
       </div>
     );
   }
@@ -98,7 +99,7 @@ export default function RefundsPage() {
         </div>
       ) : (
         <div className="space-y-6">
-          {reports.map((report) => (
+          {reports.map(report => (
             <div
               key={report.id}
               className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm"

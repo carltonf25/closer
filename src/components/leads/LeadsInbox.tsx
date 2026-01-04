@@ -32,7 +32,8 @@ type LeadDelivery = {
   outcome: string;
   is_exclusive: boolean;
   price: number;
-  lead: Lead;
+  quality_rating: number | null;
+  lead: Lead | null;
 };
 
 type Filters = {
@@ -71,6 +72,7 @@ export const LeadsInbox = ({ contractorId }: Props) => {
         outcome,
         is_exclusive,
         price,
+        quality_rating,
         lead:leads (
           id,
           created_at,
@@ -97,7 +99,10 @@ export const LeadsInbox = ({ contractorId }: Props) => {
       query = query.eq('outcome', filters.status);
     }
 
-    const { data, error } = await query;
+    const { data, error } = (await query) as {
+      data: LeadDelivery[] | null;
+      error: any;
+    };
 
     if (error) {
       console.error('Error fetching leads:', error);

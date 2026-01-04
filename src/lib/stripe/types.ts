@@ -1,5 +1,3 @@
-import { BillingType } from '@/lib/database.types';
-
 export type SetupPaymentMethodResult = {
   success: boolean;
   customerId?: string;

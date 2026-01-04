@@ -5,7 +5,6 @@ import {
   createAdminSupabaseClient,
 } from '@/lib/supabase/server';
 import { z } from 'zod';
-import type { Database } from '@/lib/database.types';
 import { chargeForLead } from '@/services/billing';
 
 type ActionResult = {
