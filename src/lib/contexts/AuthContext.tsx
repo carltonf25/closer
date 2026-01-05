@@ -38,11 +38,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.log('[AUTH CONTEXT] Fetching contractor for user:', userId);
 
       try {
-        const { data, error } = await supabase
+        // Add timeout to prevent hanging forever
+        const timeoutPromise = new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('Query timeout after 10 seconds')), 10000)
+        );
+
+        const queryPromise = supabase
           .from('contractors')
           .select('*')
           .eq('user_id', userId)
           .single();
+
+        const { data, error } = (await Promise.race([
+          queryPromise,
+          timeoutPromise,
+        ])) as Awaited<typeof queryPromise>;
 
         // eslint-disable-next-line no-console
         console.log('[AUTH CONTEXT] Query result - data:', !!data, 'error:', error);
@@ -57,7 +67,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           setContractor(data);
         } else {
           // eslint-disable-next-line no-console
-          console.warn('[AUTH CONTEXT] No contractor data and no error - this should not happen');
+          console.warn(
+            '[AUTH CONTEXT] No contractor data and no error - this should not happen'
+          );
           setContractor(null);
         }
       } catch (err) {
