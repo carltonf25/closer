@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
 
   if (code) {
     // Create response first so we can set cookies on it
-    let response = NextResponse.redirect(new URL(next, requestUrl.origin));
+    const response = NextResponse.redirect(new URL(next, requestUrl.origin));
 
     const supabase = createServerClient<Database>(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
