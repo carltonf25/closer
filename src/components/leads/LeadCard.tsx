@@ -51,6 +51,7 @@ type LeadDelivery = {
 
 type Props = {
   delivery: LeadDelivery;
+  pricingTier: string;
   onUpdate: () => void;
 };
 
@@ -103,7 +104,25 @@ const obscureAddress = (address: string) => {
   return `${streetNumber} ${'•'.repeat(10)}`;
 };
 
-export const LeadCard = ({ delivery, onUpdate }: Props) => {
+const calculateDiscountedPrice = (
+  basePrice: number,
+  tier: string
+): { price: number; discount: number; discountPercent: number } => {
+  let discountPercent = 0;
+
+  if (tier === 'pro') {
+    discountPercent = 20;
+  } else if (tier === 'elite') {
+    discountPercent = 30;
+  }
+
+  const discount = (basePrice * discountPercent) / 100;
+  const price = basePrice - discount;
+
+  return { price, discount, discountPercent };
+};
+
+export const LeadCard = ({ delivery, pricingTier, onUpdate }: Props) => {
   const [expanded, setExpanded] = useState(false);
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
@@ -210,9 +229,29 @@ export const LeadCard = ({ delivery, onUpdate }: Props) => {
           <div className="flex items-center gap-3 ml-4">
             <div className="text-right">
               <div className="text-sm text-gray-600">Lead Price</div>
-              <div className="text-xl font-bold text-gray-900">
-                ${delivery.price.toFixed(2)}
-              </div>
+              {(() => {
+                const { price, discountPercent } = calculateDiscountedPrice(
+                  delivery.price,
+                  pricingTier
+                );
+                return discountPercent > 0 ? (
+                  <div>
+                    <div className="text-sm text-gray-500 line-through">
+                      ${delivery.price.toFixed(2)}
+                    </div>
+                    <div className="text-xl font-bold text-green-600">
+                      ${price.toFixed(2)}
+                    </div>
+                    <div className="text-xs text-green-600 font-semibold">
+                      {discountPercent}% off
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-xl font-bold text-gray-900">
+                    ${delivery.price.toFixed(2)}
+                  </div>
+                );
+              })()}
             </div>
             {expanded ? (
               <ChevronUp className="h-5 w-5 text-gray-400" />

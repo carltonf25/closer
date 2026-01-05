@@ -44,9 +44,10 @@ type Filters = {
 
 type Props = {
   contractorId: string;
+  pricingTier: string;
 };
 
-export const LeadsInbox = ({ contractorId }: Props) => {
+export const LeadsInbox = ({ contractorId, pricingTier }: Props) => {
   const [leads, setLeads] = useState<LeadDelivery[]>([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState<Filters>({
@@ -238,6 +239,7 @@ export const LeadsInbox = ({ contractorId }: Props) => {
             <LeadCard
               key={delivery.id}
               delivery={delivery}
+              pricingTier={pricingTier}
               onUpdate={fetchLeads}
             />
           ))

@@ -23,13 +23,14 @@ export default async function LeadsPage() {
   // Get contractor profile
   const { data: contractor } = (await supabase
     .from('contractors')
-    .select('id, company_name, onboarding_completed')
+    .select('id, company_name, onboarding_completed, pricing_tier')
     .eq('user_id', user.id)
     .single()) as {
     data: {
       id: string;
       company_name: string;
       onboarding_completed: boolean;
+      pricing_tier: string;
     } | null;
     error: any;
   };
@@ -53,7 +54,10 @@ export default async function LeadsPage() {
           </p>
         </div>
 
-        <LeadsInbox contractorId={contractor.id} />
+        <LeadsInbox
+          contractorId={contractor.id}
+          pricingTier={contractor.pricing_tier}
+        />
       </div>
     </div>
   );
