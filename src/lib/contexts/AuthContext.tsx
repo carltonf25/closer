@@ -34,6 +34,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const fetchContractor = useCallback(
     async (userId: string) => {
+      // eslint-disable-next-line no-console
       console.log('[AUTH CONTEXT] Fetching contractor for user:', userId);
       const { data, error } = await supabase
         .from('contractors')
@@ -42,9 +43,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         .single();
 
       if (error) {
+        // eslint-disable-next-line no-console
         console.error('[AUTH CONTEXT] Failed to fetch contractor:', error);
         setContractor(null);
       } else if (data) {
+        // eslint-disable-next-line no-console
         console.log('[AUTH CONTEXT] Contractor fetched successfully');
         setContractor(data);
       }
@@ -55,7 +58,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
+      // eslint-disable-next-line no-console
       console.log('[AUTH CONTEXT] Initial session check:', session?.user?.email);
+      // eslint-disable-next-line no-console
       console.log('[AUTH CONTEXT] Email confirmed:', session?.user?.email_confirmed_at);
       setUser(session?.user ?? null);
       if (session?.user) {

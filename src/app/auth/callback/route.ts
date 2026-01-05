@@ -42,6 +42,7 @@ export async function GET(request: NextRequest) {
     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (error) {
+      // eslint-disable-next-line no-console
       console.error('[AUTH CALLBACK] Error exchanging code:', error);
       // Redirect to login with error
       return NextResponse.redirect(
@@ -53,7 +54,9 @@ export async function GET(request: NextRequest) {
     }
 
     // Log successful session creation
+    // eslint-disable-next-line no-console
     console.log('[AUTH CALLBACK] Session created for user:', data.user?.email);
+    // eslint-disable-next-line no-console
     console.log('[AUTH CALLBACK] Email confirmed:', data.user?.email_confirmed_at);
 
     // Return response with auth cookies set
