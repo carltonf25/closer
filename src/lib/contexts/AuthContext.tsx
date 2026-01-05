@@ -38,9 +38,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.log('[AUTH CONTEXT] Fetching contractor for user:', userId);
 
       try {
-        // Add timeout to prevent hanging forever
+        // Add timeout to prevent hanging forever (30s to handle slow first query)
         const timeoutPromise = new Promise((_, reject) =>
-          setTimeout(() => reject(new Error('Query timeout after 10 seconds')), 10000)
+          setTimeout(() => reject(new Error('Query timeout after 30 seconds')), 30000)
         );
 
         const queryPromise = supabase
