@@ -36,20 +36,34 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     async (userId: string) => {
       // eslint-disable-next-line no-console
       console.log('[AUTH CONTEXT] Fetching contractor for user:', userId);
-      const { data, error } = await supabase
-        .from('contractors')
-        .select('*')
-        .eq('user_id', userId)
-        .single();
 
-      if (error) {
+      try {
+        const { data, error } = await supabase
+          .from('contractors')
+          .select('*')
+          .eq('user_id', userId)
+          .single();
+
         // eslint-disable-next-line no-console
-        console.error('[AUTH CONTEXT] Failed to fetch contractor:', error);
+        console.log('[AUTH CONTEXT] Query result - data:', !!data, 'error:', error);
+
+        if (error) {
+          // eslint-disable-next-line no-console
+          console.error('[AUTH CONTEXT] Failed to fetch contractor:', error);
+          setContractor(null);
+        } else if (data) {
+          // eslint-disable-next-line no-console
+          console.log('[AUTH CONTEXT] Contractor fetched successfully');
+          setContractor(data);
+        } else {
+          // eslint-disable-next-line no-console
+          console.warn('[AUTH CONTEXT] No contractor data and no error - this should not happen');
+          setContractor(null);
+        }
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error('[AUTH CONTEXT] Exception while fetching contractor:', err);
         setContractor(null);
-      } else if (data) {
-        // eslint-disable-next-line no-console
-        console.log('[AUTH CONTEXT] Contractor fetched successfully');
-        setContractor(data);
       }
     },
     [supabase]
