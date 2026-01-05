@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
     );
 
     // Exchange the code for a session (this will set auth cookies)
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (error) {
       console.error('[AUTH CALLBACK] Error exchanging code:', error);
@@ -51,6 +51,10 @@ export async function GET(request: NextRequest) {
         )
       );
     }
+
+    // Log successful session creation
+    console.log('[AUTH CALLBACK] Session created for user:', data.user?.email);
+    console.log('[AUTH CALLBACK] Email confirmed:', data.user?.email_confirmed_at);
 
     // Return response with auth cookies set
     return response;

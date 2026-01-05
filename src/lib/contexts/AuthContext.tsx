@@ -34,6 +34,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const fetchContractor = useCallback(
     async (userId: string) => {
+      console.log('[AUTH CONTEXT] Fetching contractor for user:', userId);
       const { data, error } = await supabase
         .from('contractors')
         .select('*')
@@ -41,9 +42,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         .single();
 
       if (error) {
-        console.error('Failed to fetch contractor:', error);
+        console.error('[AUTH CONTEXT] Failed to fetch contractor:', error);
         setContractor(null);
       } else {
+        console.log('[AUTH CONTEXT] Contractor fetched:', data.email);
         setContractor(data);
       }
     },
@@ -53,6 +55,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log('[AUTH CONTEXT] Initial session check:', session?.user?.email);
+      console.log('[AUTH CONTEXT] Email confirmed:', session?.user?.email_confirmed_at);
       setUser(session?.user ?? null);
       if (session?.user) {
         fetchContractor(session.user.id);
