@@ -44,8 +44,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (error) {
         console.error('[AUTH CONTEXT] Failed to fetch contractor:', error);
         setContractor(null);
-      } else {
-        console.log('[AUTH CONTEXT] Contractor fetched:', data?.company_name || 'unknown');
+      } else if (data) {
+        console.log('[AUTH CONTEXT] Contractor fetched successfully');
         setContractor(data);
       }
     },
