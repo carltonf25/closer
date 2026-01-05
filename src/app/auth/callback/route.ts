@@ -1,6 +1,7 @@
-import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { Database } from '@/lib/database.types';
 
 /**
  * Auth callback handler for email verification and password reset
@@ -12,9 +13,32 @@ export async function GET(request: NextRequest) {
   const next = requestUrl.searchParams.get('next') || '/contractor/dashboard';
 
   if (code) {
-    const supabase = createServerSupabaseClient();
+    // Create response first so we can set cookies on it
+    let response = NextResponse.redirect(new URL(next, requestUrl.origin));
 
-    // Exchange the code for a session
+    const supabase = createServerClient<Database>(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          get(name: string) {
+            return request.cookies.get(name)?.value;
+          },
+          set(name: string, value: string, options: CookieOptions) {
+            // Set cookie on both request and response
+            request.cookies.set({ name, value, ...options });
+            response.cookies.set({ name, value, ...options });
+          },
+          remove(name: string, options: CookieOptions) {
+            // Remove cookie from both request and response
+            request.cookies.set({ name, value: '', ...options });
+            response.cookies.set({ name, value: '', ...options });
+          },
+        },
+      }
+    );
+
+    // Exchange the code for a session (this will set auth cookies)
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (error) {
@@ -28,8 +52,8 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Success - redirect to the next page
-    return NextResponse.redirect(new URL(next, requestUrl.origin));
+    // Return response with auth cookies set
+    return response;
   }
 
   // No code provided - redirect to login
