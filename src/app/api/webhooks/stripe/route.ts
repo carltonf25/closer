@@ -36,20 +36,57 @@ async function handleInvoicePaymentFailed(invoice: Stripe.Invoice) {
 
   const { data: contractor } = (await supabase
     .from('contractors')
-    .select('id, status')
+    .select('id, status, email, company_name')
     .eq('stripe_customer_id', customerId)
     .single()) as {
-    data: { id: string; status: string } | null;
+    data: {
+      id: string;
+      status: string;
+      email: string;
+      company_name: string;
+    } | null;
     error: any;
   };
 
-  if (contractor && (invoice.attempt_count || 0) >= 3) {
+  if (!contractor) {
+    console.error('[STRIPE_WEBHOOK] Contractor not found for:', customerId);
+    return;
+  }
+
+  const attemptCount = invoice.attempt_count || 0;
+
+  // Log the failed payment attempt (skip if table doesn't exist yet)
+  try {
+    await supabase.from('payment_failures' as any).insert({
+      contractor_id: contractor.id,
+      invoice_id: invoice.id,
+      amount: invoice.amount_due / 100,
+      attempt_count: attemptCount,
+      error_message: invoice.last_finalization_error?.message || 'Payment failed',
+      created_at: new Date().toISOString(),
+    });
+  } catch (err) {
+    console.log('[STRIPE_WEBHOOK] Payment failures table not available yet');
+  }
+
+  // Pause contractor after 3 failed attempts
+  if (attemptCount >= 3 && contractor.status !== 'paused') {
     await supabase
       .from('contractors')
       .update({ status: 'paused' })
       .eq('id', contractor.id);
 
     console.log('[STRIPE_WEBHOOK] Contractor paused:', contractor.id);
+
+    // TODO: Send email notification about account being paused
+    console.log('[STRIPE_WEBHOOK] Should send paused account email to:', contractor.email);
+  } else {
+    // Send payment failure notification
+    console.log(
+      '[STRIPE_WEBHOOK] Should send payment failure email to:',
+      contractor.email,
+      `(Attempt ${attemptCount}/3)`
+    );
   }
 }
 

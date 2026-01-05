@@ -191,36 +191,41 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 
 ### 3.4 Lead Actions
 
-- [ ] Implement "Accept Lead" action:
-  - [ ] Update lead_delivery status
-  - [ ] Trigger billing (if applicable)
-  - [ ] Send confirmation to homeowner
-- [ ] Implement "Reject Lead" action:
-  - [ ] Update lead_delivery status
-  - [ ] Optionally collect rejection reason
-  - [ ] Re-route to another contractor (if shared)
-- [ ] Implement "Mark as Contacted" action
-- [ ] Implement "Report Bad Lead" action:
-  - [ ] Collect feedback
-  - [ ] Flag for review
-  - [ ] Potential credit process
-- [ ] Add lead quality rating (1-5 stars)
+- [x] Implement "Accept Lead" action:
+  - [x] Update lead_delivery status
+  - [x] Trigger billing (if applicable)
+  - [x] Send confirmation to homeowner
+  - [x] Revert if billing fails
+- [x] Implement "Reject Lead" action:
+  - [x] Update lead_delivery status
+  - [x] Collect rejection reason via modal
+  - [ ] Re-route to another contractor (if shared) - Future enhancement
+- [x] Implement "Mark as Contacted" action
+- [x] Implement "Report Bad Lead" action:
+  - [x] Collect feedback via modal
+  - [x] Flag for review
+  - [x] Potential credit process (admin review)
+- [x] Add lead quality rating (1-5 stars)
+- [x] Obscure contact info until lead accepted
+- [x] Show discounted prices based on tier
 
 **Estimated Time:** 5-6 hours
+**Status:** ✅ Complete
 
 ### 3.5 Contractor Settings
 
-- [ ] Build settings page with sections:
-  - [ ] Profile information
-  - [ ] Service areas (add/remove ZIPs)
-  - [ ] Services offered (add/remove)
-  - [ ] Lead preferences (max per day/month)
-  - [ ] Notification settings (email/SMS toggles)
-  - [ ] Pause/resume lead delivery
-- [ ] Implement settings update server actions
-- [ ] Add confirmation for destructive changes
+- [x] Build settings page with sections:
+  - [x] Profile information
+  - [x] Service areas (add/remove ZIPs)
+  - [x] Services offered (add/remove)
+  - [x] Lead preferences (max per day/month)
+  - [x] Notification settings (email/SMS toggles)
+  - [x] Pause/resume lead delivery
+- [x] Implement settings update server actions
+- [x] Add confirmation for destructive changes
 
 **Estimated Time:** 4-5 hours
+**Status:** ✅ Complete
 
 ---
 
@@ -228,55 +233,61 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 
 ### 4.1 Stripe Setup
 
-- [ ] Create Stripe account and get API keys
-- [ ] Install Stripe SDK
-- [ ] Create Stripe utility functions
-- [ ] Set up webhook endpoint
-- [ ] Configure webhook signature verification
-- [ ] Test with Stripe CLI locally
+- [x] Create Stripe account and get API keys
+- [x] Install Stripe SDK
+- [x] Create Stripe utility functions
+- [x] Set up webhook endpoint
+- [x] Configure webhook signature verification
+- [x] Test with Stripe CLI locally
 
 **Estimated Time:** 2-3 hours
+**Status:** ✅ Complete
 
 ### 4.2 Contractor Pricing Tiers
 
-- [ ] Implement three-tier system:
-  - [ ] **Tier 1: Starter** - Pay-per-lead only, no monthly fee
-  - [ ] **Tier 2: Pro** - $99-$199/mo + 20-30% lead discount
-  - [ ] **Tier 3: Elite** - $299-$499/mo + exclusive leads
-- [ ] Add tier selection during contractor onboarding
-- [ ] Create tier upgrade/downgrade flow
-- [ ] Implement tier-based lead pricing discounts
-- [ ] Add tier benefits to contractor dashboard (priority routing, quality scores)
-- [ ] Create Stripe subscription products for Pro/Elite tiers
-- [ ] Handle tier change proration
+- [x] Implement three-tier system:
+  - [x] **Tier 1: Starter** - Pay-per-lead only, no monthly fee
+  - [x] **Tier 2: Pro** - Monthly subscription + 20% lead discount
+  - [x] **Tier 3: Elite** - Monthly subscription + 30% lead discount
+- [x] Add tier selection during contractor onboarding
+- [x] Implement tier-based lead pricing discounts (20% Pro, 30% Elite)
+- [x] Display discounted prices in lead inbox
+- [x] Create Stripe subscription products for Pro/Elite tiers
+- [ ] Create tier upgrade/downgrade flow in settings - Future enhancement
+- [ ] Add tier benefits to contractor dashboard (priority routing, quality scores) - Future
+- [ ] Handle tier change proration - Future
 
 **Estimated Time:** 6-8 hours
+**Status:** ✅ Core Complete (Tier selection + discounts working)
 
 ### 4.3 Contractor Billing Setup
 
-- [ ] Create Stripe Customer for each contractor
-- [ ] Build payment method management:
+- [x] Store Stripe customer ID and tier in contractors table
+- [x] Basic Stripe customer creation infrastructure
+- [ ] Build payment method management UI:
   - [ ] Add card via Stripe Elements
   - [ ] List saved payment methods
   - [ ] Set default payment method
   - [ ] Remove payment method
-- [ ] Store Stripe customer ID and tier in contractors table
-- [ ] Handle payment method failures
+- [ ] Handle payment method failures gracefully
 - [ ] Implement prepaid credit system for Starter tier
 
 **Estimated Time:** 5-6 hours
+**Status:** ⚠️ Partially Complete (Database ready, UI pending)
 
 ### 4.4 Lead Billing
 
-- [ ] Implement pay-per-lead billing:
-  - [ ] Create invoice item when lead accepted
-  - [ ] Calculate price based on service/urgency/exclusivity (from lead_prices table)
-  - [ ] Apply tier-based discounts (20-30% for Pro tier)
-  - [ ] Deduct from prepaid credits (Starter tier)
-  - [ ] Add to monthly invoice (Pro/Elite tiers)
-- [ ] Create billing record in lead_deliveries
-- [ ] Implement invoice generation (weekly/monthly)
-- [ ] Set up automatic payment collection
+- [x] Implement pay-per-lead billing:
+  - [x] Create invoice item when lead accepted
+  - [x] Calculate price from delivery.price (populated from lead_prices)
+  - [x] Apply tier-based discounts (20% Pro, 30% Elite)
+  - [x] Create and pay invoice immediately for per_lead billing
+  - [x] Skip charging for monthly subscription (covered by subscription)
+- [x] Create billing record in lead_deliveries (billed, billed_at, stripe_invoice_id)
+- [x] Set up automatic payment collection (charge_automatically)
+- [x] Revert lead acceptance if billing fails
+- [ ] Implement invoice generation (batched weekly/monthly)
+- [ ] Deduct from prepaid credits (Starter tier)
 - [ ] Handle failed payments:
   - [ ] Retry logic (3 attempts over 7 days)
   - [ ] Pause lead delivery after failure
@@ -284,30 +295,35 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
   - [ ] Downgrade tier if subscription payment fails
 
 **Estimated Time:** 6-8 hours
+**Status:** ✅ Core Complete (Immediate charging works)
 
 ### 4.5 Refund & Credit Management
 
+- [x] Build refund request UI:
+  - [x] "Report Bad Lead" modal on lead card
+  - [x] Reason dropdown with predefined options
+  - [x] Collect detailed feedback
+- [x] Implement Stripe refund processing (admin function)
+  - [x] Process refund via Stripe API
+  - [x] Update lead_deliveries record
+  - [x] Track refund reason in feedback
 - [ ] Implement automated refund system:
   - [ ] Auto-approve for invalid contact info (verify via system logs)
   - [ ] Auto-approve for wrong service area (geographic check)
   - [ ] Auto-approve for incorrect service type (data mismatch)
   - [ ] Auto-approve for duplicate leads within 7 days
   - [ ] Auto-deny for non-refundable scenarios (show reason)
-- [ ] Build refund request UI:
-  - [ ] "Request Review" button on lead detail page
-  - [ ] Reason dropdown with predefined options
-  - [ ] Show eligibility before submission
-  - [ ] Display refund policy link
-- [ ] Create refund management for admins:
-  - [ ] Manual review queue for edge cases
+- [ ] Create admin refund management UI:
+  - [ ] Manual review queue for requests
   - [ ] Approve/deny with notes
   - [ ] Track refund rate by contractor
   - [ ] Flag abuse patterns (>10% refund requests)
-- [ ] Issue refunds as account credits (default)
+- [ ] Issue refunds as account credits (vs Stripe refund)
 - [ ] Add credit balance display to contractor dashboard
 - [ ] Apply credits automatically to future lead purchases
 
 **Estimated Time:** 8-10 hours
+**Status:** ⚠️ Partially Complete (Backend ready, admin UI pending)
 
 ### 4.6 Billing Dashboard
 
@@ -329,6 +345,7 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 - [ ] Show tier comparison and upgrade prompts
 
 **Estimated Time:** 6-8 hours
+**Status:** ⏳ Pending (Backend ready, frontend UI needed)
 
 ---
 
@@ -607,4 +624,40 @@ This document breaks down the development of the HVAC/Plumbing lead generation p
 
 ---
 
-_Last Updated: December 2024_
+---
+
+## Recent Completion Summary (January 2026)
+
+### Authentication & Email Verification ✅
+- Implemented email confirmation flow with Supabase Auth
+- Created `/auth/callback` route handler for verification codes
+- Added proper session cookie handling for server-side auth
+- Fixed email confirmation link routing (now uses correct domain)
+- Added 30-second timeout for slow first contractor queries
+
+### Lead Inbox Enhancements ✅
+- Contact information obscuring for non-accepted leads
+  - Phone: (•••) •••-1234 (last 4 digits only)
+  - Email: c•••@example.com (first letter + domain)
+  - Address: 123 •••••••••• (street number only)
+- Tier-based pricing display
+  - Shows original + discounted price for Pro/Elite
+  - Green highlighting of savings
+  - Discount percentage badge
+
+### Billing System Core ✅
+- Integrated Stripe SDK and webhooks
+- Lead charging on acceptance (immediate invoicing)
+- Tier-based discount calculation (20% Pro, 30% Elite)
+- Refund processing (admin function)
+- Billing failure → lead acceptance reversion
+- All billing metadata tracked in lead_deliveries
+
+### Next Priority Items
+1. **Payment Method Management UI** - Allow contractors to add/update cards
+2. **Billing Dashboard** - Show charges, invoices, credits
+3. **Admin Refund Queue** - UI for reviewing bad lead reports
+4. **Subscription Management** - Create/cancel Pro/Elite subscriptions
+5. **Failed Payment Handling** - Retry logic and notifications
+
+_Last Updated: January 5, 2026_
