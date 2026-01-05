@@ -81,6 +81,28 @@ const getStatusBadge = (outcome: string) => {
   return statusMap[outcome] || { label: outcome, color: 'bg-gray-100' };
 };
 
+const obscurePhone = (phone: string) => {
+  // Show only last 4 digits: (***) ***-1234
+  const cleaned = phone.replace(/\D/g, '');
+  const lastFour = cleaned.slice(-4);
+  return `(•••) •••-${lastFour}`;
+};
+
+const obscureEmail = (email: string) => {
+  // Show only first letter and domain: c•••@example.com
+  const [username, domain] = email.split('@');
+  if (!username || !domain) return '•••@•••.com';
+  return `${username[0]}${'•'.repeat(Math.min(username.length - 1, 3))}@${domain}`;
+};
+
+const obscureAddress = (address: string) => {
+  // Show only street number and "•••": 123 •••••••
+  const parts = address.split(' ');
+  if (parts.length === 0) return '•••';
+  const streetNumber = parts[0].match(/^\d+/) ? parts[0] : '•••';
+  return `${streetNumber} ${'•'.repeat(10)}`;
+};
+
 export const LeadCard = ({ delivery, onUpdate }: Props) => {
   const [expanded, setExpanded] = useState(false);
   const [showRejectModal, setShowRejectModal] = useState(false);
@@ -210,37 +232,66 @@ export const LeadCard = ({ delivery, onUpdate }: Props) => {
               <h4 className="font-semibold text-gray-900 mb-3">
                 Contact Information
               </h4>
-              <div className="space-y-2">
-                <div className="flex items-center text-sm">
-                  <Phone className="h-4 w-4 mr-2 text-gray-500" />
-                  <a
-                    href={`tel:${lead.phone}`}
-                    className="text-blue-600 hover:underline"
-                  >
-                    {lead.phone}
-                  </a>
-                </div>
-                {lead.email && (
+              {delivery.outcome === 'accepted' ? (
+                <div className="space-y-2">
                   <div className="flex items-center text-sm">
-                    <Mail className="h-4 w-4 mr-2 text-gray-500" />
+                    <Phone className="h-4 w-4 mr-2 text-gray-500" />
                     <a
-                      href={`mailto:${lead.email}`}
+                      href={`tel:${lead.phone}`}
                       className="text-blue-600 hover:underline"
                     >
-                      {lead.email}
+                      {lead.phone}
                     </a>
                   </div>
-                )}
-                <div className="flex items-start text-sm">
-                  <MapPin className="h-4 w-4 mr-2 text-gray-500 mt-0.5" />
-                  <div>
-                    <div>{lead.address}</div>
-                    <div className="text-gray-600">
-                      {lead.city}, {lead.state} {lead.zip}
+                  {lead.email && (
+                    <div className="flex items-center text-sm">
+                      <Mail className="h-4 w-4 mr-2 text-gray-500" />
+                      <a
+                        href={`mailto:${lead.email}`}
+                        className="text-blue-600 hover:underline"
+                      >
+                        {lead.email}
+                      </a>
+                    </div>
+                  )}
+                  <div className="flex items-start text-sm">
+                    <MapPin className="h-4 w-4 mr-2 text-gray-500 mt-0.5" />
+                    <div>
+                      <div>{lead.address}</div>
+                      <div className="text-gray-600">
+                        {lead.city}, {lead.state} {lead.zip}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              ) : (
+                <div className="space-y-2">
+                  <div className="flex items-center text-sm text-gray-500">
+                    <Phone className="h-4 w-4 mr-2" />
+                    <span>{obscurePhone(lead.phone)}</span>
+                  </div>
+                  {lead.email && (
+                    <div className="flex items-center text-sm text-gray-500">
+                      <Mail className="h-4 w-4 mr-2" />
+                      <span>{obscureEmail(lead.email)}</span>
+                    </div>
+                  )}
+                  <div className="flex items-start text-sm">
+                    <MapPin className="h-4 w-4 mr-2 text-gray-500 mt-0.5" />
+                    <div>
+                      <div className="text-gray-500">
+                        {obscureAddress(lead.address)}
+                      </div>
+                      <div className="text-gray-600">
+                        {lead.city}, {lead.state} {lead.zip}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-3 p-2 bg-yellow-50 border border-yellow-200 rounded text-xs text-yellow-800">
+                    Accept this lead to view full contact details
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Service Details */}
